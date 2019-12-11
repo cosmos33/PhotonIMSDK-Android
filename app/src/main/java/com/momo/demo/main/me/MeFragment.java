@@ -20,6 +20,7 @@ import com.cosmos.photonim.imbase.utils.image.ImageLoaderUtils;
 import com.cosmos.photonim.imbase.utils.mvpbase.IPresenter;
 import com.momo.demo.R;
 import com.momo.demo.login.LoginActivity;
+import com.momo.demo.login.LoginInfo;
 import com.momo.demo.main.me.ime.IMeView;
 import com.momo.demo.view.ChangeNickNameDialog;
 
@@ -52,7 +53,7 @@ public class MeFragment extends IMeView {
     }
 
     private void initView() {
-        tvAccount.setText(ImBaseBridge.getInstance().getUserId());
+        tvAccount.setText(LoginInfo.getInstance().getUserId());
         swipeRefreshLayout.setOnRefreshListener(() -> registPresenter.getMyInfo());
     }
 

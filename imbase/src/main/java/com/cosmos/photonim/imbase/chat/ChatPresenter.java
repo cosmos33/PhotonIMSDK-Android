@@ -337,9 +337,9 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
             return;
         }
         getUserInfoSet.add(chatData.getFrom());
-        ImBaseBridge.IGetUserIconListener iGetUserIcon = ImBaseBridge.getInstance().getiGetUserIconListener();
-        if (iGetUserIcon != null) {
-            iGetUserIcon.getUserIcon(chatData.getFrom(), new ImBaseBridge.OnGetUserIconListener() {
+        ImBaseBridge.BusinessListener businessListener = ImBaseBridge.getInstance().getBusinessListener();
+        if (businessListener != null) {
+            businessListener.getUserIcon(chatData.getFrom(), new ImBaseBridge.OnGetUserIconListener() {
                 @Override
                 public void onGetUserIcon(String iconUrl, String name) {
                     getUserInfoSet.remove(chatData.getFrom());

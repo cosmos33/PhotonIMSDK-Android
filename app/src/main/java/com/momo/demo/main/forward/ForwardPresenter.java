@@ -4,7 +4,6 @@ import android.text.TextUtils;
 
 import com.cosmos.photon.im.PhotonIMMessage;
 import com.cosmos.photonim.imbase.ImBaseBridge;
-import com.cosmos.photonim.imbase.LoginInfo;
 import com.cosmos.photonim.imbase.chat.ChatData;
 import com.cosmos.photonim.imbase.chat.ChatModel;
 import com.cosmos.photonim.imbase.chat.ichat.IChatModel;
@@ -43,7 +42,7 @@ public class ForwardPresenter extends IForwardPresenter<IForwardView, IChatModel
                 if (TextUtils.isEmpty(chatData.getFileUrl())) {
                     TaskExecutor.getInstance().createAsycTask(() ->
                                     HttpUtils.getInstance().sendPic(chatData.getLocalFile(),
-                                            LoginInfo.getInstance().getSessenId(), LoginInfo.getInstance().getUserId())
+                                            com.momo.demo.login.LoginInfo.getInstance().getSessionId(), com.momo.demo.login.LoginInfo.getInstance().getUserId())
                             , result -> {
                                 if (((JsonResult) result).success()) {
                                     getiModel().sendMsgMulti(getChatData(chatData, selectedData, ((JsonUploadImage) ((JsonResult) result).get()).getData().getUrl()), null);
@@ -59,7 +58,7 @@ public class ForwardPresenter extends IForwardPresenter<IForwardView, IChatModel
                 if (TextUtils.isEmpty(chatData.getFileUrl())) {
                     TaskExecutor.getInstance().createAsycTask(() ->
                                     HttpUtils.getInstance().sendVoiceFile(chatData.getLocalFile(),
-                                            LoginInfo.getInstance().getSessenId(), LoginInfo.getInstance().getUserId())
+                                            com.momo.demo.login.LoginInfo.getInstance().getSessionId(), com.momo.demo.login.LoginInfo.getInstance().getUserId())
                             , result -> {
                                 if (((JsonResult) result).success()) {
                                     getiModel().sendMsgMulti(getChatData(chatData, selectedData, ((JsonUploadVoice) ((JsonResult) result).get()).getData().getUrl()), null);
@@ -110,13 +109,13 @@ public class ForwardPresenter extends IForwardPresenter<IForwardView, IChatModel
             result.add(new ChatData.Builder()
                     .msgStatus(PhotonIMMessage.SENDING)
                     .itemType(Constants.ITEM_TYPE_CHAT_NORMAL_RIGHT)
-                    .icon(LoginInfo.getInstance().getIcon())
+                    .icon(ImBaseBridge.getInstance().getMyIcon())
                     .voiceDuration(chatData.getMediaTime())
                     .msgType(chatData.getMsgType())
                     .chatType(temp.getChatType())
                     .chatWith(toId)
                     .content(chatData.getContent())
-                    .from(ImBaseBridge.getInstance().getUserId())
+                    .from(com.momo.demo.login.LoginInfo.getInstance().getUserId())
                     .to(toId)
                     .fileUrl(fileUrl == null ? chatData.getFileUrl() : fileUrl)
                     .time(System.currentTimeMillis())

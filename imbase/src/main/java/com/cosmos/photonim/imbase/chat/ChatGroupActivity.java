@@ -17,17 +17,17 @@ public class ChatGroupActivity extends ChatBaseActivity {
 
     @Override
     protected void onInfoClick() {
-        ImBaseBridge.OnGroupInfoClickListener onGroupInfoClickListener = ImBaseBridge.getInstance().getOnGroupInfoClickListener();
-        if (onGroupInfoClickListener != null) {
-            onGroupInfoClickListener.onGroupInfoClick(this, chatWith);
+        ImBaseBridge.BusinessListener businessListener = ImBaseBridge.getInstance().getBusinessListener();
+        if (businessListener != null) {
+            businessListener.onGroupInfoClick(this, chatWith);
         }
     }
 
     @Override
     protected void onAtCharacterInput() {
-        ImBaseBridge.IAtListener iAtListener = ImBaseBridge.getInstance().getiAtListener();
-        if (iAtListener != null) {
-            iAtListener.onAtListener(this, chatWith);
+        ImBaseBridge.BusinessListener businessListener = ImBaseBridge.getInstance().getBusinessListener();
+        if (businessListener != null) {
+            businessListener.onAtListener(this, chatWith);
         }
     }
 

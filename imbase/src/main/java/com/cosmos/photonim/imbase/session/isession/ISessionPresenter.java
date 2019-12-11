@@ -15,15 +15,15 @@ public abstract class ISessionPresenter<V extends ISessionView, M extends ISessi
         super(iView);
     }
 
-    public abstract void loadHistoryData(String sessionId, String userId);
+    public abstract void loadHistoryData();
 
-    public abstract void loadHistoryFromRemote(String sessionId, String userId);
+    public abstract void loadHistoryFromRemote();
 
     public abstract void getOthersInfo(SessionData sessionData);
 
     public abstract void saveSession(SessionData sessionData);
 
-    public abstract void upDateSessions(String sessionId, String userId);
+    public abstract void upDateSessions();
 
     public abstract void deleteSession(SessionData data);
 

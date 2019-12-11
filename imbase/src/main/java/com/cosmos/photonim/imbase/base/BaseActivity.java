@@ -56,8 +56,9 @@ public class BaseActivity extends AppCompatActivity {
         switch (status.status) {
             case PhotonIMClient.IM_STATE_KICK:
             case PhotonIMClient.IM_STATE_AUTH_FAILED:
-                if (ImBaseBridge.getInstance().getOnStickListener() != null) {
-                    ImBaseBridge.getInstance().getOnStickListener().onKickUser(this);
+                ImBaseBridge.BusinessListener businessListener = ImBaseBridge.getInstance().getBusinessListener();
+                if (businessListener != null) {
+                    businessListener.onKickUser(this);
                 }
                 break;
         }

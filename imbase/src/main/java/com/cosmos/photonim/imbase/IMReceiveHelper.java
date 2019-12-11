@@ -82,12 +82,17 @@ public class IMReceiveHelper {
             handler.sendMessage(msg);
         });
         LogUtils.log("startim", "setPhotonIMStateListener");
-        PhotonIMClient.getInstance().attachUserId(LoginInfo.getInstance().getUserId());
+        ImBaseBridge.BusinessListener businessListener = ImBaseBridge.getInstance().getBusinessListener();
+        String loginUserId = "";
+        if (businessListener != null) {
+            loginUserId = businessListener.getUserId();
+        }
+        PhotonIMClient.getInstance().attachUserId(loginUserId);
         LogUtils.log("startim", "attachUserId");
         PhotonIMClient.getInstance().setDBMode(PhotonIMClient.DB_SYNC);
         LogUtils.log("startim", "setDBMode");
         PhotonIMClient.getInstance().setPhotonIMReSendCallback((code, msg, retTime, chatType, chatWith, msgId) -> {
-            LogUtils.log("pim_demo","Recv DB PhotonIMReSendCallback "+msgId);
+            LogUtils.log("pim_demo", "Recv DB PhotonIMReSendCallback " + msgId);
             if (code != -1) {
                 code = ChatModel.MSG_ERROR_CODE_SUCCESS;
             }
@@ -104,23 +109,27 @@ public class IMReceiveHelper {
 
         LogUtils.log("startim", "setPhotonIMMessageReceiver");
         PhotonIMClient.getInstance().setPhotonIMSyncEventListener((i -> {
-            switch (i){
+            switch (i) {
                 case PhotonIMClient.SYNC_START:
-                    LogUtils.log("pim_demo","SYNC_START");
+                    LogUtils.log("pim_demo", "SYNC_START");
                     break;
                 case PhotonIMClient.SYNC_END:
-                    LogUtils.log("pim_demo","SYNC_END");
+                    LogUtils.log("pim_demo", "SYNC_END");
                     break;
                 case PhotonIMClient.SYNCT_IMEOUT:
                     // 这个不会打印，因为默认sync超时，sdk主动断开重连
-                    LogUtils.log("pim_demo","SYNCT_IMEOUT");
+                    LogUtils.log("pim_demo", "SYNCT_IMEOUT");
                     break;
             }
         }));
         LogUtils.log("startim", "setPhotonIMSyncEventListener");
         PhotonIMDatabase.getInstance().addSessionDataChangeObserver(new SessionDataChangeObserverImpl());
         LogUtils.log("startim", "addSessionDataChangeObserver");
-        PhotonIMClient.getInstance().login(LoginInfo.getInstance().getUserId(), LoginInfo.getInstance().getTokenId(), new HashMap<>());
+        String tokenId = "";
+        if (businessListener != null) {
+            tokenId = businessListener.getTokenId();
+        }
+        PhotonIMClient.getInstance().login(loginUserId, tokenId, new HashMap<>());
         LogUtils.log("startim", "login");
     }
 

@@ -1,12 +1,12 @@
 package com.momo.demo.main.groupmemberselected;
 
-import com.cosmos.photonim.imbase.ImBaseBridge;
 import com.cosmos.photonim.imbase.utils.CollectionUtils;
 import com.cosmos.photonim.imbase.utils.Constants;
 import com.cosmos.photonim.imbase.utils.http.HttpUtils;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonGroupMembers;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;
 import com.cosmos.photonim.imbase.utils.task.TaskExecutor;
+import com.momo.demo.login.LoginInfo;
 import com.momo.demo.main.groupmemberselected.igroupmember.IGroupMemberModel;
 
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ public class GroupMemberSelectModel extends IGroupMemberModel {
     @Override
     public void getGroupMembers(int itemType, String gid, boolean containSelf, boolean showCb, OnGetGroupMemberListener onGetGroupMemberListener) {
         TaskExecutor.getInstance().createAsycTask(() ->
-                getGroupMembersInner(ImBaseBridge.getInstance().getSessenId(), ImBaseBridge.getInstance().getUserId(), gid, itemType, containSelf, showCb), result -> {
+                getGroupMembersInner(LoginInfo.getInstance().getSessionId(), LoginInfo.getInstance().getUserId(), gid, itemType, containSelf, showCb), result -> {
             if (onGetGroupMemberListener != null) {
                 onGetGroupMemberListener.onGetGroupMembers((List<GroupMembersData>) result);
             }
@@ -53,7 +53,7 @@ public class GroupMemberSelectModel extends IGroupMemberModel {
             } else {
                 List<GroupMembersData> result = new ArrayList<>(lists.size());
                 for (JsonGroupMembers.DataBean.ListsBean list : lists) {
-                    if (!containSelf && list.getUserId().equals(ImBaseBridge.getInstance().getUserId())) {
+                    if (!containSelf && list.getUserId().equals(LoginInfo.getInstance().getUserId())) {
                         continue;
                     }
                     result.add(new GroupMembersData(list.getAvatar(), list.getNickname(), list.getUserId(), showCb, itemType));

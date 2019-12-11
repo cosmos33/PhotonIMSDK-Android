@@ -7,7 +7,7 @@ import com.cosmos.photonim.imbase.utils.mvpbase.IModel;
 import java.util.List;
 
 public abstract class ISessionModel implements IModel {
-    abstract public void loadLocalHostoryMsg(String sessionId, String userId, OnLoadHistoryListener onLoadHistoryListener);
+    abstract public void loadLocalHostoryMsg(OnLoadHistoryListener onLoadHistoryListener);
 
     public abstract void getOtherInfo(SessionData sessionData, OnGetOtherInfoListener onGetOtherInfoListener);
 
@@ -23,7 +23,7 @@ public abstract class ISessionModel implements IModel {
 
     public abstract void updateSessionUnreadCount(int chatType, String chatWith, int unReadCount);
 
-    public abstract void loadHistoryFromRemote(String sessionId, String userId, OnLoadHistoryFromRemoteListener onLoadHistoryFromRemoteListener);
+    public abstract void loadHistoryFromRemote(OnLoadHistoryFromRemoteListener onLoadHistoryFromRemoteListener);
 
     public abstract void resendSendingStatusMsgs();
 

@@ -5,6 +5,7 @@ import com.cosmos.photonim.imbase.utils.http.HttpUtils;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonGroups;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;
 import com.cosmos.photonim.imbase.utils.task.TaskExecutor;
+import com.momo.demo.login.LoginInfo;
 import com.momo.demo.main.contacts.group.igroup.IGroupModel;
 
 import java.util.ArrayList;
@@ -24,8 +25,8 @@ public class GroupModel extends IGroupModel {
     @Override
     public void joinGroup(String groupID, OnJoinGroupListener onJoinGroupListener) {
         TaskExecutor.getInstance().createAsycTask(() -> HttpUtils.getInstance().joinGroup(
-                ImBaseBridge.getInstance().getSessenId(),
-                ImBaseBridge.getInstance().getUserId(),
+                LoginInfo.getInstance().getSessionId(),
+                LoginInfo.getInstance().getUserId(),
                 groupID),
                 result -> {
                     if (onJoinGroupListener != null) {
@@ -36,7 +37,7 @@ public class GroupModel extends IGroupModel {
 
     private Object getGroups() {
         JsonResult jsonResult = HttpUtils.getInstance().getGroups(
-                ImBaseBridge.getInstance().getSessenId(), ImBaseBridge.getInstance().getUserId());
+                LoginInfo.getInstance().getSessionId(), LoginInfo.getInstance().getUserId());
         if (jsonResult.success()) {
             JsonGroups jsonGroups = (JsonGroups) jsonResult.get();
             List<GroupData> groupData = new ArrayList<>();

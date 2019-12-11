@@ -1,7 +1,6 @@
 package com.momo.demo.main.forward;
 
 import com.cosmos.photon.im.PhotonIMMessage;
-import com.cosmos.photonim.imbase.LoginInfo;
 import com.cosmos.photonim.imbase.session.SessionData;
 import com.cosmos.photonim.imbase.session.SessionModel;
 import com.cosmos.photonim.imbase.utils.CollectionUtils;
@@ -9,6 +8,7 @@ import com.cosmos.photonim.imbase.utils.http.HttpUtils;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;
 import com.cosmos.photonim.imbase.utils.mvpbase.IModel;
 import com.cosmos.photonim.imbase.utils.task.TaskExecutor;
+import com.momo.demo.login.LoginInfo;
 import com.momo.demo.main.contacts.single.OnlineUserData;
 import com.momo.demo.main.contacts.single.OnlineUserModel;
 
@@ -76,7 +76,7 @@ public class ForwardModel implements IModel {
     }
 
     private JsonResult getOtherInfoInner(String otherId) {
-        return (JsonResult) HttpUtils.getInstance().getOthersInfo(new String[]{otherId}, LoginInfo.getInstance().getSessenId(),
+        return (JsonResult) HttpUtils.getInstance().getOthersInfo(new String[]{otherId}, com.momo.demo.login.LoginInfo.getInstance().getSessionId(),
                 LoginInfo.getInstance().getUserId());
     }
 

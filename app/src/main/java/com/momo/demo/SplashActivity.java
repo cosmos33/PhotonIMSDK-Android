@@ -10,6 +10,7 @@ import com.cosmos.photonim.imbase.ImBaseBridge;
 import com.cosmos.photonim.imbase.base.BaseActivity;
 import com.cosmos.photonim.imbase.utils.LocalRestoreUtils;
 import com.momo.demo.login.LoginActivity;
+import com.momo.demo.login.LoginInfo;
 import com.momo.demo.main.MainActivity;
 
 public class SplashActivity extends BaseActivity {
@@ -25,9 +26,10 @@ public class SplashActivity extends BaseActivity {
         Intent intent;
         if (auth.length != 0 && !TextUtils.isEmpty(auth[0]) && !TextUtils.isEmpty(auth[1])) {
             intent = new Intent(this, MainActivity.class);
-            ImBaseBridge.getInstance().setLoginInfo(auth[2], auth[1]);
             PhotonPushManager.getInstance().registerWithAlias(auth[1]);
-            ImBaseBridge.getInstance().setTokenId(auth[0]);
+            LoginInfo.getInstance().setTokenId(auth[0]);
+            LoginInfo.getInstance().setUserId(auth[1]);
+            LoginInfo.getInstance().setSessionId(auth[2]);
             ImBaseBridge.getInstance().startIm();
         } else {
             intent = new Intent(this, LoginActivity.class);

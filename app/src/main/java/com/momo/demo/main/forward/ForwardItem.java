@@ -5,13 +5,13 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.cosmos.photonim.imbase.LoginInfo;
 import com.cosmos.photonim.imbase.utils.Constants;
 import com.cosmos.photonim.imbase.utils.image.ImageLoaderUtils;
 import com.cosmos.photonim.imbase.utils.recycleadapter.ItemData;
 import com.cosmos.photonim.imbase.utils.recycleadapter.ItemTypeAbstract;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvViewHolder;
 import com.momo.demo.R;
+import com.momo.demo.login.LoginInfo;
 
 public class ForwardItem extends ItemTypeAbstract {
     private String igoreId;

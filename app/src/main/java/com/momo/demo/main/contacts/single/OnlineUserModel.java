@@ -1,12 +1,12 @@
 package com.momo.demo.main.contacts.single;
 
-import com.cosmos.photonim.imbase.ImBaseBridge;
 import com.cosmos.photonim.imbase.utils.dbhelper.DBHelperUtils;
 import com.cosmos.photonim.imbase.utils.dbhelper.Profile;
 import com.cosmos.photonim.imbase.utils.http.HttpUtils;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonContactOnline;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;
 import com.cosmos.photonim.imbase.utils.task.TaskExecutor;
+import com.momo.demo.login.LoginInfo;
 import com.momo.demo.main.contacts.single.ionline.IOnlineUserModel;
 
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class OnlineUserModel extends IOnlineUserModel {
 
     public static Object getOnLineUsers(int itemType) {
         JsonResult jsonResult = HttpUtils.getInstance().getOnLineUsers(
-                ImBaseBridge.getInstance().getSessenId(), ImBaseBridge.getInstance().getUserId());
+                LoginInfo.getInstance().getSessionId(), LoginInfo.getInstance().getUserId());
         if (!jsonResult.success()) {
             return null;
         }

@@ -7,6 +7,7 @@ import com.cosmos.photonim.imbase.utils.http.jsons.JsonMyInfo;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonSetNickName;
 import com.cosmos.photonim.imbase.utils.task.TaskExecutor;
+import com.momo.demo.login.LoginInfo;
 import com.momo.demo.main.me.ime.IMeModel;
 
 public class MeModel extends IMeModel {
@@ -19,7 +20,7 @@ public class MeModel extends IMeModel {
     @Override
     public void changeNickName(String nickName, OnChangeNickNameListener listener) {
         TaskExecutor.getInstance().createAsycTask(() -> HttpUtils.getInstance().changeNickName(nickName,
-                ImBaseBridge.getInstance().getSessenId(), ImBaseBridge.getInstance().getUserId()), result -> {
+                LoginInfo.getInstance().getSessionId(), LoginInfo.getInstance().getUserId()), result -> {
             JsonResult jsonResult = (JsonResult) result;
             if (listener != null) {
                 listener.onChangeNickName((JsonSetNickName) jsonResult.get());
@@ -31,8 +32,8 @@ public class MeModel extends IMeModel {
     @Override
     public void getMyInfo(onGetMyInfoListener listener) {
         TaskExecutor.getInstance().createAsycTask(() ->
-                HttpUtils.getInstance().getMyInfo(ImBaseBridge.getInstance().getSessenId(),
-                        ImBaseBridge.getInstance().getUserId()), result -> {
+                HttpUtils.getInstance().getMyInfo(LoginInfo.getInstance().getSessionId(),
+                        LoginInfo.getInstance().getUserId()), result -> {
             JsonResult jsonResult = (JsonResult) result;
             if (listener != null) {
                 listener.onGetMyInfo((JsonMyInfo) jsonResult.get());

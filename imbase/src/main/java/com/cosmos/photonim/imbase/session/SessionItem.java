@@ -49,7 +49,10 @@ public class SessionItem extends ItemTypeAbstract {
         sessionData = (SessionData) data;
         boolean isSendFromMe = false;
         if (sessionData.getLastMsgFr() != null) {
-            isSendFromMe = sessionData.getLastMsgFr().equals(ImBaseBridge.getInstance().getUserId());
+            ImBaseBridge.BusinessListener businessListener = ImBaseBridge.getInstance().getBusinessListener();
+            if (businessListener != null) {
+                isSendFromMe = sessionData.getLastMsgFr().equals(businessListener.getUserId());
+            }
         }
         sessionData.setItemPosition(position);
         if (!TextUtils.isEmpty(sessionData.getNickName())) {
@@ -88,7 +91,7 @@ public class SessionItem extends ItemTypeAbstract {
 //            if (sessionData.getUnreadCount() > UNREAD_MAX_SHOW) {
 //                tvTemp.setText(UNREAD_MAX_SHOW + "+");
 //            } else {
-                tvTemp.setText(sessionData.getUnreadCount() + "");
+            tvTemp.setText(sessionData.getUnreadCount() + "");
 //            }
         } else {
             rvViewHolder.getView(R.id.tvUnRead).setVisibility(View.GONE);

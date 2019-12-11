@@ -17,7 +17,6 @@ import android.widget.TextView;
 import com.cosmos.photon.im.PhotonIMClient;
 import com.cosmos.photon.push.PhotonPushManager;
 import com.cosmos.photon.push.msg.MoMessage;
-import com.cosmos.photonim.imbase.ImBaseBridge;
 import com.cosmos.photonim.imbase.utils.LocalRestoreUtils;
 import com.cosmos.photonim.imbase.utils.ToastUtils;
 import com.cosmos.photonim.imbase.utils.event.IMStatus;
@@ -142,7 +141,8 @@ public class LoginActivity extends ILoginView implements MyApplication.PushToken
     public void onLoginResult(JsonLogin requestResult) {
         if (requestResult != null && requestResult.success()) {
             loginPresenter.getAuth(requestResult.getData().getSessionId(), requestResult.getData().getUserId());
-            ImBaseBridge.getInstance().setLoginInfo(requestResult.getData().getSessionId(), requestResult.getData().getUserId());
+            LoginInfo.getInstance().setSessionId(requestResult.getData().getSessionId());
+            LoginInfo.getInstance().setUserId(requestResult.getData().getUserId());
         } else {
             ToastUtils.showText(this, "登录失败");
         }
@@ -151,8 +151,8 @@ public class LoginActivity extends ILoginView implements MyApplication.PushToken
     @Override
     public void onAuthResult(JsonAuth jsonAuth) {
         if (jsonAuth != null && jsonAuth.success()) {
-            LocalRestoreUtils.saveAuth(jsonAuth.getData().getToken(), jsonAuth.getData().getUserId(), ImBaseBridge.getInstance().getSessenId());
-            ImBaseBridge.getInstance().setTokenId(jsonAuth.getData().getToken());
+            LocalRestoreUtils.saveAuth(jsonAuth.getData().getToken(), jsonAuth.getData().getUserId(), LoginInfo.getInstance().getSessionId());
+            LoginInfo.getInstance().setTokenId(jsonAuth.getData().getToken());
             loginPresenter.startIm();
         } else {
             ToastUtils.showText(this, "认证失败");
@@ -164,7 +164,7 @@ public class LoginActivity extends ILoginView implements MyApplication.PushToken
         hideDialog();
         switch (imStatus.status) {
             case PhotonIMClient.IM_STATE_AUTH_SUCCESS:
-                PhotonPushManager.getInstance().registerWithAlias(ImBaseBridge.getInstance().getUserId());
+                PhotonPushManager.getInstance().registerWithAlias(LoginInfo.getInstance().getUserId());
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();

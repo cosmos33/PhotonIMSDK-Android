@@ -8,6 +8,8 @@ import com.cosmos.photon.im.PhotonIMClient;
 import com.cosmos.photonim.imbase.chat.ChatData;
 import com.cosmos.photonim.imbase.chat.emoji.EmojiUtils;
 import com.cosmos.photonim.imbase.utils.LocalRestoreUtils;
+import com.cosmos.photonim.imbase.utils.http.jsons.JsonContactRecent;
+import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;
 import com.cosmos.photonim.imbase.utils.task.TaskExecutor;
 
 import java.util.ArrayList;
@@ -15,54 +17,21 @@ import java.util.List;
 
 public class ImBaseBridge {
     private Application application;
-    private OnRelayClickListener onRelayClickListener;
-    private IGetUserIconListener iGetUserIconListener;
-    private OnKickUserListener onKickUserListener;
-    private OnGroupInfoClickListener onGroupInfoClickListener;
-    private String appId;
+    private BusinessListener businessListener;
+    private String avatar;
 
-    private IAtListener iAtListener;
     private List<String> joinedGids;
 
     private ImBaseBridge(Builder builder) {
-        appId = builder.appId;
+
     }
 
     public void setMyIcon(String avatar) {
-        LoginInfo.getInstance().setMyIcon(avatar);
+        this.avatar = avatar;
     }
 
-    public void setTokenId(String token) {
-        LoginInfo.getInstance().setTokenId(token);
-    }
-
-
-    public String getUserId() {
-        checkinit();
-        return LoginInfo.getInstance().getUserId();
-    }
-
-    private void checkinit() {
-        if (application == null) {
-            throw new IllegalStateException("init should call frist");
-        }
-    }
-
-    public String getSessenId() {
-        return LoginInfo.getInstance().getSessenId();
-    }
-
-    public void setLoginInfo(String sessionId, String userId) {
-        LoginInfo.getInstance().setSessenId(sessionId);
-        LoginInfo.getInstance().setUserId(userId);
-    }
-
-    public OnKickUserListener getOnStickListener() {
-        return onKickUserListener;
-    }
-
-    public IAtListener getiAtListener() {
-        return iAtListener;
+    public String getMyIcon() {
+        return avatar;
     }
 
     public void setGids(List<String> joinedGids) {
@@ -95,12 +64,8 @@ public class ImBaseBridge {
 
     public void init(Builder builder) {
         application = builder.application;
-        onRelayClickListener = builder.onRelayClickListener;
-        iGetUserIconListener = builder.iGetUserIconListener;
-        onKickUserListener = builder.onKickUserListener;
-        onGroupInfoClickListener = builder.onGroupInfoClickListener;
-        iAtListener = builder.iAtListener;
-        PhotonIMClient.getInstance().supportGroup();
+//        PhotonIMClient.getInstance().supportGroup();
+        businessListener = builder.businessListener;
         PhotonIMClient.getInstance().openDebugLog();
         PhotonIMClient.getInstance().init(application, builder.appId);
         // TODO: 2019-08-18 maybe should change position
@@ -121,18 +86,6 @@ public class ImBaseBridge {
         return application;
     }
 
-    public OnRelayClickListener getOnRelayClickListener() {
-        return onRelayClickListener;
-    }
-
-    public IGetUserIconListener getiGetUserIconListener() {
-        return iGetUserIconListener;
-    }
-
-    public OnGroupInfoClickListener getOnGroupInfoClickListener() {
-        return onGroupInfoClickListener;
-    }
-
     public void startIm() {
         IMReceiveHelper.getInstance().start();
     }
@@ -141,38 +94,63 @@ public class ImBaseBridge {
         IMReceiveHelper.getInstance().stop();
     }
 
-    public interface OnRelayClickListener {
-        void onRelayClick(Activity activity, ChatData chatData);
-    }
-
-    public interface IGetUserIconListener {
-        void getUserIcon(String userId, OnGetUserIconListener onGetUserIconListener);
-    }
-
-    public interface IAtListener {
-        void onAtListener(Activity activity, String gid);
+    public BusinessListener getBusinessListener() {
+        return businessListener;
     }
 
     public interface OnGetUserIconListener {
         void onGetUserIcon(String iconUrl, String name);
     }
 
-    public interface OnKickUserListener {
+    public interface BusinessListener {
+        //转发
+        void onRelayClick(Activity activity, ChatData chatData);
+
+        //获取用户icon
+        void getUserIcon(String userId, OnGetUserIconListener onGetUserIconListener);
+
+        //群聊@成员
+        void onAtListener(Activity activity, String gid);
+
+        //收到服务器踢人
         void onKickUser(Activity activity);
+
+        //获取群组信息
+        void onGroupInfoClick(Activity activity, String gId);
+
+        //获取他人信息
+        JsonResult getOthersInfo(String[] ids);
+
+        //获取群组信息呢
+        JsonResult getGroupProfile(String groupId);
+
+        //获取最近联系人
+        JsonContactRecent getRecentUser();
+
+        //设置勿扰状态
+        JsonResult setIgnoreStatus(String remoteId, boolean igoreAlert);
+
+        //获取勿扰状态
+        JsonResult getIgnoreStatus(String otherId);
+
+        //上传语音文件
+        JsonResult sendVoiceFile(String localFile);
+
+        //上传图片
+        JsonResult sendPic(String localFile);
+
+        //返回用户id
+        String getUserId();
+
+        //返回tokenId
+        String getTokenId();
     }
 
-    public interface OnGroupInfoClickListener {
-        void onGroupInfoClick(Activity activity, String gId);
-    }
 
     public static final class Builder {
         private Application application;
-        private OnRelayClickListener onRelayClickListener;
-        private IGetUserIconListener iGetUserIconListener;
-        private OnKickUserListener onKickUserListener;
-        private OnGroupInfoClickListener onGroupInfoClickListener;
-        private IAtListener iAtListener;
         private String appId;
+        private BusinessListener businessListener;
 
         public Builder() {
         }
@@ -182,33 +160,13 @@ public class ImBaseBridge {
             return this;
         }
 
-        public Builder onRelayClickListener(OnRelayClickListener val) {
-            onRelayClickListener = val;
-            return this;
-        }
-
-        public Builder iGetUserIconListener(IGetUserIconListener val) {
-            iGetUserIconListener = val;
-            return this;
-        }
-
-        public Builder onKickUserListener(OnKickUserListener val) {
-            onKickUserListener = val;
-            return this;
-        }
-
-        public Builder onGroupInfoClickListener(OnGroupInfoClickListener val) {
-            onGroupInfoClickListener = val;
-            return this;
-        }
-
-        public Builder iAtListener(IAtListener val) {
-            iAtListener = val;
-            return this;
-        }
-
         public Builder appId(String val) {
             appId = val;
+            return this;
+        }
+
+        public Builder addListener(BusinessListener listener) {
+            this.businessListener = listener;
             return this;
         }
     }

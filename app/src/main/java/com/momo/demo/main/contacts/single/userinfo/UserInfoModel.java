@@ -1,11 +1,11 @@
 package com.momo.demo.main.contacts.single.userinfo;
 
-import com.cosmos.photonim.imbase.ImBaseBridge;
 import com.cosmos.photonim.imbase.utils.dbhelper.DBHelperUtils;
 import com.cosmos.photonim.imbase.utils.http.HttpUtils;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonOtherInfo;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;
 import com.cosmos.photonim.imbase.utils.task.TaskExecutor;
+import com.momo.demo.login.LoginInfo;
 import com.momo.demo.main.contacts.single.userinfo.iuserinfo.IUserInfoModel;
 
 public class UserInfoModel extends IUserInfoModel {
@@ -20,7 +20,7 @@ public class UserInfoModel extends IUserInfoModel {
 //                    if (profile != null) {
 //                        return profile;
 //                    }
-                    JsonResult otherInfo = HttpUtils.getInstance().getOtherInfo(ImBaseBridge.getInstance().getSessenId()
+                    JsonResult otherInfo = HttpUtils.getInstance().getOtherInfo(LoginInfo.getInstance().getSessionId()
                             , id);
                     if (otherInfo.success()) {
                         JsonOtherInfo other = (JsonOtherInfo) otherInfo.get();

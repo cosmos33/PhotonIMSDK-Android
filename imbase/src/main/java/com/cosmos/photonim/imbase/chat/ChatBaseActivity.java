@@ -27,7 +27,6 @@ import android.widget.TextView;
 import com.cosmos.photon.im.PhotonIMClient;
 import com.cosmos.photon.im.PhotonIMMessage;
 import com.cosmos.photonim.imbase.ImBaseBridge;
-import com.cosmos.photonim.imbase.LoginInfo;
 import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.R2;
 import com.cosmos.photonim.imbase.chat.adapter.ChatAdapter;
@@ -151,6 +150,7 @@ public abstract class ChatBaseActivity extends IChatView {
     private EditText etCustomContent;
     private TextView tvAuthSuccess;
     private TextView tvAuthFailed;
+    private String loginUserId;
 
     public static void startActivity(Activity from, int chatType, String chatWith, String myIcon,
                                      String name, String otherIcon, boolean igoreAlert) {
@@ -175,10 +175,14 @@ public abstract class ChatBaseActivity extends IChatView {
         setContentView(R.layout.activity_chat);
         chatType = getIntent().getIntExtra(EXTRA_CHATTYPE, 0);
         chatWith = getIntent().getStringExtra(EXTRA_CHATWITH);
-        myIcon = LoginInfo.getInstance().getIcon();
+        myIcon = ImBaseBridge.getInstance().getMyIcon();
         singleChatUserIcon = getIntent().getStringExtra(EXTRA_OTHERICON);
         name = getIntent().getStringExtra(EXTRA_NAME);
         igoreAlert = getIntent().getBooleanExtra(EXTRA_IGOREALERT, false);
+        ImBaseBridge.BusinessListener businessListener = ImBaseBridge.getInstance().getBusinessListener();
+        if (businessListener != null) {
+            loginUserId = businessListener.getUserId();
+        }
 
         getHistory(false, 0L, "");
         initView();
@@ -213,7 +217,7 @@ public abstract class ChatBaseActivity extends IChatView {
         } else {
             lastLoadHistoryFromRemote = false;
             chatPresenter.loadLocalHistory(chatType, chatWith, anchorMsgId, true, false,
-                    PAGE_ONE, LoginInfo.getInstance().getUserId());
+                    PAGE_ONE, loginUserId);
         }
     }
 
@@ -425,7 +429,7 @@ public abstract class ChatBaseActivity extends IChatView {
                     .msgType(PhotonIMMessage.TEXT)
                     .chatWith(chatWith)
                     .chatType(chatType)
-                    .from(LoginInfo.getInstance().getUserId())
+                    .from(loginUserId)
                     .to(chatWith);
             if (currentContent == 1) {
                 tvFirstTime.setText(System.currentTimeMillis() + "");
@@ -491,7 +495,7 @@ public abstract class ChatBaseActivity extends IChatView {
                 .chatType(chatType)
                 .voiceDuration(duration / 1000)
                 .chatWith(chatWith)
-                .from(LoginInfo.getInstance().getUserId())
+                .from(loginUserId)
                 .to(chatWith);
 
         chatPresenter.sendMsg(chatDataBuilder);
@@ -796,7 +800,7 @@ public abstract class ChatBaseActivity extends IChatView {
                 .msgType(PhotonIMMessage.TEXT)
                 .chatWith(chatWith)
                 .chatType(chatType)
-                .from(LoginInfo.getInstance().getUserId())
+                .from(loginUserId)
                 .to(chatWith);
         getAtStatus(chatDataBuilder);
         chatPresenter.sendMsg(chatDataBuilder);
@@ -849,7 +853,7 @@ public abstract class ChatBaseActivity extends IChatView {
                     int viewId = view.getId();
                     if (viewId == R.id.llVoice) {
                         chatPresenter.cancelPlay();
-                        if (chatData.getFrom().equals(LoginInfo.getInstance().getUserId())) {
+                        if (chatData.getFrom().equals(loginUserId)) {
                             chatPresenter.play(ChatBaseActivity.this, ((ChatData) data).getLocalFile());
                         } else {
                             if (TextUtils.isEmpty(((ChatData) data).getLocalFile())) {
@@ -905,7 +909,7 @@ public abstract class ChatBaseActivity extends IChatView {
         if (chatPopupWindow != null) {
             chatPopupWindow.dismiss();
         }
-        boolean showRevert = data.getFrom().equals(LoginInfo.getInstance().getUserId())
+        boolean showRevert = data.getFrom().equals(loginUserId)
                 && System.currentTimeMillis() - data.getTime() < 1000 * 60 * 2
                 && data.getMsgStatus() != PhotonIMMessage.SEND_FAILED;
         boolean showCopy = data.getMsgType() == PhotonIMMessage.TEXT;
@@ -918,9 +922,9 @@ public abstract class ChatBaseActivity extends IChatView {
 
             @Override
             public void onRelayClick() {
-                ImBaseBridge.OnRelayClickListener onRelayClickListener = ImBaseBridge.getInstance().getOnRelayClickListener();
-                if (onRelayClickListener != null) {
-                    onRelayClickListener.onRelayClick(ChatBaseActivity.this, data);
+                ImBaseBridge.BusinessListener businessListener = ImBaseBridge.getInstance().getBusinessListener();
+                if (businessListener != null) {
+                    businessListener.onRelayClick(ChatBaseActivity.this, data);
                 }
             }
 
@@ -977,7 +981,7 @@ public abstract class ChatBaseActivity extends IChatView {
                 .to(msg.to)
                 .from(msg.from)
                 .time(msg.time)
-                .itemType(msg.from.equals(LoginInfo.getInstance().getUserId()) ? Constants.ITEM_TYPE_CHAT_NORMAL_RIGHT : Constants.ITEM_TYPE_CHAT_NORMAL_LEFT)
+                .itemType(msg.from.equals(loginUserId) ? Constants.ITEM_TYPE_CHAT_NORMAL_RIGHT : Constants.ITEM_TYPE_CHAT_NORMAL_LEFT)
                 .fileUrl(msg.fileUrl)
                 .msgStatus(msg.status)
                 .icon(getChatIcon(msg))
@@ -1034,7 +1038,7 @@ public abstract class ChatBaseActivity extends IChatView {
                     .msgType(PhotonIMMessage.IMAGE)
                     .chatType(chatType)
                     .chatWith(chatWith)
-                    .from(LoginInfo.getInstance().getUserId())
+                    .from(loginUserId)
                     .to(chatWith);
 
             chatPresenter.sendMsg(chatDataBuild);
@@ -1049,7 +1053,7 @@ public abstract class ChatBaseActivity extends IChatView {
                     .msgType(PhotonIMMessage.IMAGE)
                     .chatType(chatType)
                     .chatWith(chatWith)
-                    .from(LoginInfo.getInstance().getUserId())
+                    .from(loginUserId)
                     .to(chatWith);
             chatPresenter.sendMsg(chatDataBuild);
         }

@@ -1,5 +1,6 @@
 package com.momo.demo;
 
+import android.app.Activity;
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -20,8 +21,13 @@ import com.cosmos.photon.push.PushMessageReceiver;
 import com.cosmos.photon.push.msg.MoMessage;
 import com.cosmos.photon.push.notification.MoNotify;
 import com.cosmos.photonim.imbase.ImBaseBridge;
+import com.cosmos.photonim.imbase.chat.ChatData;
 import com.cosmos.photonim.imbase.utils.ToastUtils;
+import com.cosmos.photonim.imbase.utils.http.HttpUtils;
+import com.cosmos.photonim.imbase.utils.http.jsons.JsonContactRecent;
+import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;
 import com.momo.demo.login.LoginActivity;
+import com.momo.demo.login.LoginInfo;
 import com.momo.demo.main.contacts.single.userinfo.UserInfoModel;
 import com.momo.demo.main.contacts.single.userinfo.iuserinfo.IUserInfoModel;
 import com.momo.demo.main.forward.ForwardActivity;
@@ -37,9 +43,9 @@ public class MyApplication extends Application {
     private static MyApplication myApplication;
 
 
-    public static final String NOTIFICATION_CHANNEL_ID_DEFAULT = "com.immomo.momo.notification.default";
-    public static final String NOTIFICATION_CHANNEL_ID_MSG = "com.immomo.momo.notification.msg";
-    public static final String NOTIFICATION_CHANNEL_ID_OTHERS = "com.immomo.momo.notification.others";
+    public static final String NOTIFICATION_CHANNEL_ID_DEFAULT = "notification.default";
+    public static final String NOTIFICATION_CHANNEL_ID_MSG = "notification.msg";
+    public static final String NOTIFICATION_CHANNEL_ID_OTHERS = "notification.others";
     private static String pushToken;
 
     @Override
@@ -130,52 +136,107 @@ public class MyApplication extends Application {
         ImBaseBridge.Builder builder = new ImBaseBridge.Builder()
                 .application(this)
                 .appId(APP_ID)
-                .iAtListener(getAtListener())
-                .iGetUserIconListener(getUserIconListener())
-                .onGroupInfoClickListener(getGroupInfoListener())
-                .onKickUserListener(getKickListener())
-                .onRelayClickListener(getRelayClickListener());
+                .addListener(getListener());
 
         ImBaseBridge.getInstance().init(builder);
     }
 
-    private ImBaseBridge.IAtListener getAtListener() {
-        return (activity, gid) -> GroupMemberSelectActivity.start(activity, gid);
-    }
+    private ImBaseBridge.BusinessListener getListener() {
+        return new ImBaseBridge.BusinessListener() {
+            private IUserInfoModel iUserInfoModel;
 
-    private ImBaseBridge.OnKickUserListener getKickListener() {
-        return (activity) -> {
-            PhotonPushManager.getInstance().unRegister();
-            ImBaseBridge.getInstance().logout();
+            @Override
+            public void onRelayClick(Activity activity, ChatData chatData) {
+                ForwardActivity.startActivity(activity, chatData);
+            }
 
-            ToastUtils.showText(activity, "服务器强制下线");
-            Intent intent = new Intent(activity, LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            activity.startActivity(intent);
-            activity.finish();
-        };
-    }
-
-    private ImBaseBridge.OnGroupInfoClickListener getGroupInfoListener() {
-        return GroupInfoActivity::startActivity;
-    }
-
-    private ImBaseBridge.IGetUserIconListener getUserIconListener() {
-        return (userId, onGetUserIconListener) -> {
-            IUserInfoModel iUserInfoModel = new UserInfoModel();
-            iUserInfoModel.getUserInfo(userId, jsonOtherInfo -> {
-                if (jsonOtherInfo != null && jsonOtherInfo.success() && onGetUserIconListener != null) {
-                    onGetUserIconListener.onGetUserIcon(jsonOtherInfo.getData().getProfile().getAvatar(),
-                            jsonOtherInfo.getData().getProfile().getNickname());
+            @Override
+            public void getUserIcon(String userId, ImBaseBridge.OnGetUserIconListener onGetUserIconListener) {
+                if (iUserInfoModel == null) {
+                    iUserInfoModel = new UserInfoModel();
                 }
-            });
+                iUserInfoModel.getUserInfo(userId, jsonOtherInfo -> {
+                    if (jsonOtherInfo != null && jsonOtherInfo.success() && onGetUserIconListener != null) {
+                        onGetUserIconListener.onGetUserIcon(jsonOtherInfo.getData().getProfile().getAvatar(),
+                                jsonOtherInfo.getData().getProfile().getNickname());
+                    }
+                });
+            }
+
+            @Override
+            public void onAtListener(Activity activity, String gid) {
+                GroupMemberSelectActivity.start(activity, gid);
+            }
+
+            @Override
+            public void onKickUser(Activity activity) {
+                PhotonPushManager.getInstance().unRegister();
+                ImBaseBridge.getInstance().logout();
+
+                ToastUtils.showText(activity, "服务器强制下线");
+                Intent intent = new Intent(activity, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                activity.startActivity(intent);
+                activity.finish();
+            }
+
+            @Override
+            public void onGroupInfoClick(Activity activity, String gId) {
+                GroupInfoActivity.startActivity(activity, gId);
+            }
+
+            @Override
+            public JsonResult getOthersInfo(String[] ids) {
+                return (JsonResult) HttpUtils.getInstance().getOthersInfo(ids, LoginInfo.getInstance().getSessionId(),
+                        LoginInfo.getInstance().getUserId());
+            }
+
+            @Override
+            public JsonResult getGroupProfile(String groupId) {
+                return HttpUtils.getInstance().getGroupProfile(LoginInfo.getInstance().getSessionId(),
+                        LoginInfo.getInstance().getUserId(), groupId);
+            }
+
+            @Override
+            public JsonContactRecent getRecentUser() {
+                return (JsonContactRecent) HttpUtils.getInstance().getRecentUser(LoginInfo.getInstance().getSessionId(), LoginInfo.getInstance().getUserId()).get();
+            }
+
+            @Override
+            public JsonResult setIgnoreStatus(String remoteId, boolean igoreAlert) {
+                return HttpUtils.getInstance().setIgnoreStatus(remoteId, igoreAlert,
+                        LoginInfo.getInstance().getSessionId(), LoginInfo.getInstance().getUserId());
+            }
+
+            @Override
+            public JsonResult getIgnoreStatus(String userId) {
+                return (JsonResult) HttpUtils.getInstance().getIgnoreStatus(LoginInfo.getInstance().getSessionId()
+                        , LoginInfo.getInstance().getUserId(), userId);
+            }
+
+            @Override
+            public JsonResult sendVoiceFile(String localFile) {
+                return (JsonResult) HttpUtils.getInstance().sendVoiceFile(localFile,
+                        LoginInfo.getInstance().getSessionId(), LoginInfo.getInstance().getUserId());
+            }
+
+            @Override
+            public JsonResult sendPic(String localFile) {
+                return (JsonResult) HttpUtils.getInstance().sendPic(localFile,
+                        LoginInfo.getInstance().getSessionId(), LoginInfo.getInstance().getUserId());
+            }
+
+            @Override
+            public String getUserId() {
+                return LoginInfo.getInstance().getUserId();
+            }
+
+            @Override
+            public String getTokenId() {
+                return LoginInfo.getInstance().getToken();
+            }
         };
     }
-
-    private ImBaseBridge.OnRelayClickListener getRelayClickListener() {
-        return ForwardActivity::startActivity;
-    }
-
 
     public static MyApplication getApplication() {
         return myApplication;

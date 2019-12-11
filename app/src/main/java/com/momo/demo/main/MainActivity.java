@@ -113,6 +113,7 @@ public class MainActivity extends BaseActivity {
         initAdapter();
         viewPager.setAdapter(baseFragmentPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setSelectedTabIndicatorHeight(0);
         viewPager.setOffscreenPageLimit(3);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

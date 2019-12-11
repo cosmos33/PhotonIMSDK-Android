@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.cosmos.photon.im.PhotonIMMessage;
-import com.cosmos.photonim.imbase.LoginInfo;
 import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.R2;
 import com.cosmos.photonim.imbase.chat.ChatBaseActivity;
@@ -62,7 +61,7 @@ public class SessionFragment extends ISessionView implements SessionItem.UpdateO
         ButterKnife.bind(this, view);
         isFirstLoad = LocalRestoreUtils.getFirstLoadSession();
         recyclerView = view.findViewById(R.id.recyclerView);
-        iSessionPresenter.loadHistoryData(LoginInfo.getInstance().getSessenId(), LoginInfo.getInstance().getUserId());
+        iSessionPresenter.loadHistoryData();
         iSessionPresenter.getAllUnReadCount();
         // 删除demo层的重发机制，防止和sdk内部重发逻辑混淆
 //        iSessionPresenter.resendSendingStatusMsgs();
@@ -151,7 +150,7 @@ public class SessionFragment extends ISessionView implements SessionItem.UpdateO
             case 1://修改
             case 2://删除
 //                iSessionPresenter.getSessionUnRead(onDBChanged.chatType,onDBChanged.chatWith);
-                iSessionPresenter.loadHistoryData(LoginInfo.getInstance().getSessenId(), LoginInfo.getInstance().getUserId());
+                iSessionPresenter.loadHistoryData();
                 break;
         }
         iSessionPresenter.getAllUnReadCount();
@@ -256,8 +255,7 @@ public class SessionFragment extends ISessionView implements SessionItem.UpdateO
     public void onLoadHistory(List<SessionData> sessionData) {
         if (CollectionUtils.isEmpty(sessionData)) {
             if (isFirstLoad) {
-                iSessionPresenter.loadHistoryFromRemote(LoginInfo.getInstance().getSessenId(),
-                        LoginInfo.getInstance().getUserId());
+                iSessionPresenter.loadHistoryFromRemote();
                 isFirstLoad = false;
             }
             recyclerView.setVisibility(View.GONE);

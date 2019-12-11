@@ -7,7 +7,6 @@ import com.cosmos.photon.im.PhotonIMDatabase;
 import com.cosmos.photon.im.PhotonIMMessage;
 import com.cosmos.photon.im.PhotonIMSession;
 import com.cosmos.photonim.imbase.ImBaseBridge;
-import com.cosmos.photonim.imbase.LoginInfo;
 import com.cosmos.photonim.imbase.chat.ChatData;
 import com.cosmos.photonim.imbase.chat.ChatModel;
 import com.cosmos.photonim.imbase.session.isession.ISessionModel;
@@ -16,7 +15,6 @@ import com.cosmos.photonim.imbase.utils.Utils;
 import com.cosmos.photonim.imbase.utils.dbhelper.DBHelperUtils;
 import com.cosmos.photonim.imbase.utils.dbhelper.Profile;
 import com.cosmos.photonim.imbase.utils.event.ChatDataWrapper;
-import com.cosmos.photonim.imbase.utils.http.HttpUtils;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonContactRecent;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonGroupProfile;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonOtherInfoMulti;
@@ -32,7 +30,7 @@ import java.util.concurrent.Callable;
 
 public class SessionModel extends ISessionModel {
     @Override
-    public void loadLocalHostoryMsg(String sessionId, String userId, OnLoadHistoryListener onLoadHistoryListener) {
+    public void loadLocalHostoryMsg(OnLoadHistoryListener onLoadHistoryListener) {
         TaskExecutor.getInstance().createAsycTask(() -> getLocalHistoryMsg(),
                 result -> onLoadHistoryListener.onLoadHistory((List<SessionData>) result));
     }
@@ -61,8 +59,11 @@ public class SessionModel extends ISessionModel {
     }
 
     private Object getGroupInfo(String otherId, SessionData sessionData) {
-        JsonResult othersInfo = HttpUtils.getInstance().getGroupProfile(LoginInfo.getInstance().getSessenId(),
-                LoginInfo.getInstance().getUserId(), otherId);
+        ImBaseBridge.BusinessListener businessListener = ImBaseBridge.getInstance().getBusinessListener();
+        if (businessListener == null) {
+            return null;
+        }
+        JsonResult othersInfo = businessListener.getGroupProfile(otherId);
         if (othersInfo.success()) {
             JsonGroupProfile jsonGroupProfile = (JsonGroupProfile) othersInfo.get();
             JsonGroupProfile.DataBean.ProfileBean profile = jsonGroupProfile.getData().getProfile();
@@ -73,8 +74,11 @@ public class SessionModel extends ISessionModel {
     }
 
     private Object getUserinfo(String otherId, SessionData sessionData, boolean saveSessionExtra) {
-        JsonResult othersInfo = (JsonResult) HttpUtils.getInstance().getOthersInfo(new String[]{otherId}, LoginInfo.getInstance().getSessenId(),
-                LoginInfo.getInstance().getUserId());
+        ImBaseBridge.BusinessListener businessListener = ImBaseBridge.getInstance().getBusinessListener();
+        if (businessListener == null) {
+            return null;
+        }
+        JsonResult othersInfo = businessListener.getOthersInfo(new String[]{otherId});
         if (othersInfo.success()) {
             if (((JsonOtherInfoMulti) othersInfo.get()).getData().getLists().size() > 0) {
                 List<JsonOtherInfoMulti.DataBean.ListsBean> lists = ((JsonOtherInfoMulti) othersInfo.get()).getData().getLists();
@@ -150,8 +154,8 @@ public class SessionModel extends ISessionModel {
     }
 
     @Override
-    public void loadHistoryFromRemote(String sessionId, String userId, OnLoadHistoryFromRemoteListener onLoadHistoryFromRemoteListener) {
-        TaskExecutor.getInstance().createAsycTask(() -> getRequestJson(sessionId, userId), result -> {
+    public void loadHistoryFromRemote(OnLoadHistoryFromRemoteListener onLoadHistoryFromRemoteListener) {
+        TaskExecutor.getInstance().createAsycTask(() -> getRequestJson(), result -> {
             if (onLoadHistoryFromRemoteListener != null) {
                 onLoadHistoryFromRemoteListener.onLoadHistoryFromRemote((List<SessionData>) result);
             }
@@ -165,8 +169,12 @@ public class SessionModel extends ISessionModel {
             if (CollectionUtils.isEmpty(messageList)) {
                 return null;
             }
-            String iconTemp = LoginInfo.getInstance().getIcon();
-            String myId = ImBaseBridge.getInstance().getUserId();
+            String iconTemp = ImBaseBridge.getInstance().getMyIcon();
+            ImBaseBridge.BusinessListener businessListener = ImBaseBridge.getInstance().getBusinessListener();
+            String myId = "";
+            if (businessListener != null) {
+                myId = businessListener.getUserId();
+            }
             for (PhotonIMMessage photonIMMessage : messageList) {
                 ChatData chatData = new ChatData.Builder()
                         .msgType(photonIMMessage.messageType)
@@ -280,7 +288,12 @@ public class SessionModel extends ISessionModel {
                     tempContent = "[未知消息]";
             }
             boolean isAtMeMsg = false;
-            if (!photonIMSession.lastMsgFr.equals(ImBaseBridge.getInstance().getUserId())
+            String loginUserId = "";
+            ImBaseBridge.BusinessListener businessListener = ImBaseBridge.getInstance().getBusinessListener();
+            if (businessListener != null) {
+                loginUserId = businessListener.getUserId();
+            }
+            if (!photonIMSession.lastMsgFr.equals(loginUserId)
                     && photonIMSession.chatType == PhotonIMMessage.GROUP) {
                 isAtMeMsg = isAtMeMsg(photonIMSession);
                 Profile profile = DBHelperUtils.getInstance().findProfile(photonIMSession.lastMsgFr);
@@ -328,8 +341,12 @@ public class SessionModel extends ISessionModel {
         return photonIMSession.unreadCount != 0;
     }
 
-    private Object getRequestJson(String sessionId, String userId) {
-        JsonContactRecent recentUser = (JsonContactRecent) HttpUtils.getInstance().getRecentUser(sessionId, userId).get();
+    private Object getRequestJson() {
+        ImBaseBridge.BusinessListener businessListener = ImBaseBridge.getInstance().getBusinessListener();
+        if (businessListener == null) {
+            return null;
+        }
+        JsonContactRecent recentUser = businessListener.getRecentUser();
         if (recentUser.success()) {
             List<JsonContactRecent.DataBean.ListsBean> lists = recentUser.getData().getLists();
             List<SessionData> sessionData = new ArrayList<>(lists.size());

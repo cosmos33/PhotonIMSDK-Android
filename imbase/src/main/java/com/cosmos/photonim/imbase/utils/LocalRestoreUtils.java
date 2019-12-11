@@ -39,7 +39,12 @@ public class LocalRestoreUtils {
 
     public static boolean getFirstLoadSession() {
         SharedPreferences preferences = ImBaseBridge.getInstance().getApplication().getSharedPreferences(AUTH, Context.MODE_PRIVATE);
-        final String key = FRISTLOADSESSION + "_" + ImBaseBridge.getInstance().getUserId();
+        ImBaseBridge.BusinessListener businessListener = ImBaseBridge.getInstance().getBusinessListener();
+        String userId = "";
+        if (businessListener != null) {
+            userId = businessListener.getUserId();
+        }
+        final String key = FRISTLOADSESSION + "_" + userId;
         boolean aBoolean = preferences.getBoolean(key, true);
 
         SharedPreferences.Editor edit = preferences.edit();

@@ -4,7 +4,6 @@ import com.cosmos.photon.im.PhotonIMClient;
 import com.cosmos.photon.im.PhotonIMDatabase;
 import com.cosmos.photon.im.PhotonIMMessage;
 import com.cosmos.photonim.imbase.ImBaseBridge;
-import com.cosmos.photonim.imbase.LoginInfo;
 import com.cosmos.photonim.imbase.chat.ichat.IChatModel;
 import com.cosmos.photonim.imbase.utils.Constants;
 import com.cosmos.photonim.imbase.utils.LogUtils;
@@ -72,10 +71,14 @@ public class ChatModel extends IChatModel {
         String iconTemp;
         String nameTemp = null;
         int msgStatus;
-        String myId = ImBaseBridge.getInstance().getUserId();
+        ImBaseBridge.BusinessListener businessListener = ImBaseBridge.getInstance().getBusinessListener();
+        String myId = "";
+        if (businessListener != null) {
+            myId = businessListener.getUserId();
+        }
         for (PhotonIMMessage photonIMMessage : photonIMMessages) {
             if (photonIMMessage.from.equals(myId)) {
-                iconTemp = LoginInfo.getInstance().getIcon();
+                iconTemp = ImBaseBridge.getInstance().getMyIcon();
             } else {
                 profileTemp = DBHelperUtils.getInstance().findProfile(photonIMMessage.from);
                 iconTemp = profileTemp != null ? profileTemp.getIcon() : null;
@@ -201,8 +204,11 @@ public class ChatModel extends IChatModel {
         TaskExecutor.getInstance().createAsycTask(() -> {
             PhotonIMMessage message = chatData.convertToIMMessage();
             PhotonIMDatabase.getInstance().saveMessage(message);
-            return HttpUtils.getInstance().sendPic(chatData.getLocalFile(),
-                    LoginInfo.getInstance().getSessenId(), LoginInfo.getInstance().getUserId());
+            ImBaseBridge.BusinessListener businessListener = ImBaseBridge.getInstance().getBusinessListener();
+            if (businessListener == null) {
+                return null;
+            }
+            return businessListener.sendPic(chatData.getLocalFile());
         }, result -> {
             if (onPicUploadListener != null) {
                 onPicUploadListener.onPicUpload(chatData, (JsonResult) result);
@@ -220,8 +226,12 @@ public class ChatModel extends IChatModel {
         TaskExecutor.getInstance().createAsycTask(() -> {
             PhotonIMMessage message = chatData.convertToIMMessage();
             PhotonIMDatabase.getInstance().saveMessage(message);
-            return HttpUtils.getInstance().sendVoiceFile(chatData.getLocalFile(),
-                    LoginInfo.getInstance().getSessenId(), LoginInfo.getInstance().getUserId());
+
+            ImBaseBridge.BusinessListener businessListener = ImBaseBridge.getInstance().getBusinessListener();
+            if (businessListener == null) {
+                return null;
+            }
+            return businessListener.sendVoiceFile(chatData.getLocalFile());
         }, result -> {
             if (onVoiceUploadListener != null) {
                 onVoiceUploadListener.onVoiceFileUpload(chatData, (JsonResult) result);

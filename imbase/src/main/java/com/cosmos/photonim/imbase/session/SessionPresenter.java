@@ -15,8 +15,8 @@ public class SessionPresenter extends ISessionPresenter<ISessionView, ISessionMo
     }
 
     @Override
-    public void loadHistoryData(String sessionId, String userId) {
-        getiModel().loadLocalHostoryMsg(sessionId, userId, messageData -> {
+    public void loadHistoryData() {
+        getiModel().loadLocalHostoryMsg(messageData -> {
             getIView().onLoadHistory(messageData);
         });
     }
@@ -42,8 +42,8 @@ public class SessionPresenter extends ISessionPresenter<ISessionView, ISessionMo
     }
 
     @Override
-    public void upDateSessions(String sessionId, String userId) {
-        getiModel().loadLocalHostoryMsg(sessionId, userId, messageData -> {
+    public void upDateSessions() {
+        getiModel().loadLocalHostoryMsg(messageData -> {
             getIView().onLoadHistory(messageData);
         });
     }
@@ -108,8 +108,8 @@ public class SessionPresenter extends ISessionPresenter<ISessionView, ISessionMo
     }
 
     @Override
-    public void loadHistoryFromRemote(String sessionId, String userId) {
-        getiModel().loadHistoryFromRemote(sessionId, userId, new ISessionModel.OnLoadHistoryFromRemoteListener() {
+    public void loadHistoryFromRemote() {
+        getiModel().loadHistoryFromRemote(new ISessionModel.OnLoadHistoryFromRemoteListener() {
             @Override
             public void onLoadHistoryFromRemote(List<SessionData> sessionData) {
                 getIView().onLoadHistoryFromRemote(sessionData);

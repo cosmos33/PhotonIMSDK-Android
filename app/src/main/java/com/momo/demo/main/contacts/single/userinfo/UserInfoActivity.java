@@ -9,12 +9,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cosmos.photon.im.PhotonIMMessage;
-import com.cosmos.photonim.imbase.ImBaseBridge;
 import com.cosmos.photonim.imbase.chat.ChatBaseActivity;
 import com.cosmos.photonim.imbase.utils.image.ImageLoaderUtils;
 import com.cosmos.photonim.imbase.utils.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.view.TitleBar;
 import com.momo.demo.R;
+import com.momo.demo.login.LoginInfo;
 import com.momo.demo.main.contacts.single.userinfo.iuserinfo.IUserInfoView;
 
 import butterknife.BindView;
@@ -68,7 +68,7 @@ public class UserInfoActivity extends IUserInfoView {
 
     private void initView() {
         userId = getIntent().getStringExtra(USER_ID);
-        if (userId.equals(ImBaseBridge.getInstance().getUserId())) {
+        if (userId.equals(LoginInfo.getInstance().getUserId())) {
             tvSendMsg.setVisibility(View.GONE);
         }
         titleBar.setTitle("");

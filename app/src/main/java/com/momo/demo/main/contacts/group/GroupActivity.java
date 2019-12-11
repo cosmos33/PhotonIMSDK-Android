@@ -10,7 +10,6 @@ import android.widget.LinearLayout;
 
 import com.cosmos.photon.im.PhotonIMMessage;
 import com.cosmos.photonim.imbase.ImBaseBridge;
-import com.cosmos.photonim.imbase.LoginInfo;
 import com.cosmos.photonim.imbase.chat.ChatBaseActivity;
 import com.cosmos.photonim.imbase.utils.ToastUtils;
 import com.cosmos.photonim.imbase.utils.mvpbase.IPresenter;
@@ -93,7 +92,7 @@ public class GroupActivity extends IGroupView {
 
     private void enterGroup(GroupData gData) {
         ChatBaseActivity.startActivity(this, PhotonIMMessage.GROUP, gData.getGroupId(),
-                LoginInfo.getInstance().getIcon(), gData.getName(), null, false);
+                ImBaseBridge.getInstance().getMyIcon(), gData.getName(), null, false);
     }
 
     @Override
