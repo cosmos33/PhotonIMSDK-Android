@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:apps="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/activity_bg"
+    android:orientation="vertical">
+
+    <com.cosmos.photonim.imbase.view.TitleBar
+        android:id="@+id/titleBar"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="@dimen/title_margin_top"
+        android:layout_height="wrap_content">
+
+    </com.cosmos.photonim.imbase.view.TitleBar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="@dimen/activity_padding">
+
+        <ImageView
+            android:id="@+id/ivIcon"
+            android:layout_width="@dimen/user_info_icon_size"
+            android:layout_height="@dimen/user_info_icon_size"
+            apps:src="@drawable/head_placeholder" />
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="4dp">
+
+            <TextView
+                android:id="@+id/tvNickName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                apps:text="昵称：" />
+
+            <TextView
+                android:id="@+id/tvAcount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                apps:text="账号：" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvSendMsg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_padding"
+        android:layout_marginRight="@dimen/activity_padding"
+        android:layout_marginTop="32dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="@string/userinfo_sendmsg" />
+
+</LinearLayout>

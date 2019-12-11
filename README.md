@@ -1,0 +1,2 @@
+cosmos中demo的下载地址为：app/apks下的apk在github中的地址;
+apks下apk如何生成：build

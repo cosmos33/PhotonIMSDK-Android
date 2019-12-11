@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/dialog_bg"
+    android:padding="@dimen/dialog_padding"
+    android:minWidth="@dimen/dialog_nickname_minwidth"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/activity_padding"
+        android:text="@string/session_handle" />
+
+    <include layout="@layout/divider_gray" />
+
+    <TextView
+        android:id="@+id/tvDelete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/activity_padding"
+        android:layout_marginTop="@dimen/activity_padding"
+        android:text="@string/session_delete" />
+
+    <include layout="@layout/divider_gray" />
+
+    <TextView
+        android:id="@+id/tvDeleteContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/activity_padding"
+        android:layout_marginTop="@dimen/activity_padding"
+        android:text="@string/session_delete_content" />
+
+</LinearLayout>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:id="@+id/self_layout1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:background="#ECF0F1"
+        android:layout_weight="1"
+        >
+
+        <TextView
+            android:id="@+id/headTextLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="2"
+
+            />
+
+        <ImageButton
+            android:id="@+id/headTextMid"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/groups"
+            android:scaleType="centerInside"
+            android:layout_weight="0"
+            />
+
+        <ImageButton
+            android:id="@+id/headTextRight"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0"
+
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/self_layout2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:background="#ECF0F1"
+        android:layout_weight="1"
+
+        >
+
+        <TextView
+            android:id="@+id/accoutTextLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_weight="2"
+            android:layout_marginLeft="5dp"
+
+
+            />
+        <TextView
+            android:id="@+id/accoutTextRight"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0"
+            android:gravity="center_vertical"
+
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/self_layout3"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:background="#ECF0F1"
+        android:layout_weight="1"
+
+        >
+
+        <TextView
+            android:id="@+id/nameTextLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_weight="2"
+            android:layout_marginLeft="5dp"
+
+
+            />
+        <TextView
+            android:id="@+id/nameTextMid"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0"
+            android:gravity="center_vertical"
+
+            />
+
+        <ImageButton
+            android:id="@+id/nameTextRight"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0"
+            />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/exitLogInBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp"
+        android:text="退出登录" />
+
+</LinearLayout>
