@@ -80,7 +80,7 @@ public interface BusinessListener {
         
 ```
 
-- 获取到token之后
+获取到token之后
 ```
 ImBaseBridge.getInstance().startIm();
 ```
@@ -98,4 +98,3 @@ http包下的逻辑比如获取头像需要接入方根据自己服务器的逻�
 
 
 cosmos中demo app的下载地址为：app/apks下的apk在github中的地址;
-apks下apk如何生成：build
