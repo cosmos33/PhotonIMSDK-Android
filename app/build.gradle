@@ -1,0 +1,222 @@
+apply plugin: 'com.android.application'
+
+def releaseTime() {
+    return new Date().format("MMddHHmm")
+}
+
+def increasedVersionName() {
+    def propFile = file('gradle.properties')
+    Properties props = new Properties()
+    props.load(new FileInputStream(propFile))
+    def code = props.getProperty('VERSION_NAME_PRE', "0")
+    code += releaseTime()
+    props['VERSION_NAME'] = code.toString()
+    props.store(propFile.newWriter(), null)
+}
+
+def outputApkName
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "$applicationID"
+        minSdkVersion 21
+        targetSdkVersion 28
+        versionCode 1
+        versionName VERSION_NAME
+
+        ndk {
+            abiFilters "arm64-v8a", "armeabi-v7a"
+        }
+
+        //接入SDK需要进行配置的选项,这里是厂商
+        manifestPlaceholders = [
+                //应用的包名
+                PACKAGE_NAME       : android.defaultConfig.applicationId,
+                "HUAWEI_PUSH_APPID": "@string/HUAWEI_PUSH_APPID",
+                "MI_PUSH_APPID"    : "@string/MI_PUSH_APPID",
+                "MI_PUSH_APPKEY"   : "@string/MI_PUSH_APPKEY",
+                "OPPO_PUSH_APPKEY" : "@string/OPPO_PUSH_APPKEY",
+                "OPPO_PUSH_SECRET" : "@string/OPPO_PUSH_SECRET",
+                "VIVO_PUSH_APPID"  : "@string/VIVO_PUSH_APPID",
+                "VIVO_PUSH_APPKEY" : "@string/VIVO_PUSH_APPKEY",
+                "MEIZU_PUSH_APPID" : "@string/MEIZU_PUSH_APPID",
+                "MEIZU_PUSH_APPKEY": "@string/MEIZU_PUSH_APPKEY",
+                "PUSH_PROCESS"     : ":push"
+        ]
+
+        multiDexEnabled = true
+
+    }
+
+    packagingOptions {
+        pickFirst 'lib/armeabi-v7a/libprotobuf.so'
+        pickFirst 'lib/arm64-v8a/libprotobuf.so'
+    }
+    signingConfigs {
+        debug {
+            storeFile file("keystore")
+            storePassword "immomo"
+            keyAlias "im"
+            keyPassword "immomo"
+        }
+
+        release {
+            storeFile file("keystore")
+            storePassword "immomo"
+            keyAlias "im"
+            keyPassword "immomo"
+            v2SigningEnabled true   // android 5.0-8.0，必须用V2，否则会有安全问题
+            v1SigningEnabled true
+        }
+    }
+    buildTypes {
+        debug {
+            minifyEnabled false
+            zipAlignEnabled false
+            signingConfig signingConfigs.debug
+            applicationVariants.all { variant ->
+                if (variant.buildType.name == 'debug') {
+                    variant.outputs.all {
+                        outputFileName = "im_v${defaultConfig.versionName}.apk"
+                        outputApkName = outputFileName
+                    }
+                }
+            }
+//            multiDexKeepProguard file('multidex-config.pro')
+        }
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//            multiDexKeepProguard file('multidex-config.pro')
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+
+    afterEvaluate {
+        tasks.matching {
+            it.name.startsWith('dex')
+        }.each { dx ->
+            if (dx.additionalParameters == null) {
+                dx.additionalParameters = []
+            }
+            dx.additionalParameters += '--multi-dex'
+
+            // 设置multidex.keep文件中class为第一个dex文件中包含的class，如果没有下一项设置此项无作用
+            dx.additionalParameters += "--main-dex-list=$projectDir/multidex.keep".toString()
+
+            //此项添加后第一个classes.dex文件只能包含-main-dex-list列表中class
+            dx.additionalParameters += '--minimal-main-dex'
+        }
+    }
+
+}
+
+
+dependencies {
+
+    // 引入okHttp的依赖
+    implementation("com.squareup.okhttp3:okhttp:3.12.0")
+    implementation 'com.squareup.okio:okio:2.2.2'
+
+    implementation "com.jakewharton:butterknife:$butterknifeversion"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$butterknifeversion"
+
+    implementation "com.github.bumptech.glide:glide:$glideversion"
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.6.0'
+
+    // 引入mdlog coded
+    implementation "com.cosmos.baseutil:mdlog:2.0.0"
+    implementation "com.cosmos.baseutil:codedlib:1.0.0"
+
+    //    //可任意选择三方push的接入，如果不想使用某一类厂商，不添加即可
+    implementation "com.cosmos.photon:thirdpush-huawei:2.1.0"
+    implementation "com.cosmos.photon:push:2.1.5"
+
+    implementation project(":imbase")
+    implementation 'org.greenrobot:eventbus:3.1.1'
+
+    // 引用imcore模块(本地maven仓库)，因为是本地maven依赖所以间接依赖需要手动添加一下
+    implementation "$imversion"
+    implementation "com.cosmos.baseutil:mdlog:2.0.0"
+    implementation "com.cosmos.baseutil:codedlib:1.0.0"
+    implementation "com.cosmos.baseutil:mmdevice:2.0.0"
+    implementation "com.cosmos.baseutil:cpp_shared:r17c"
+    implementation "com.android.support:support-compat:$supportverion"
+    implementation "com.android.support:appcompat-v7:$supportverion"
+    implementation "com.android.support:design:$supportverion"
+    implementation "com.android.support:recyclerview-v7:$supportverion"
+
+    // jcenter上push修改了mmfile版本之后可以注释
+//    implementation "com.cosmos.baseutil:mmfile:3.0.2"
+//    implementation "com.cosmos.photon:thirdpush-xiaomi:$thirdPushVersion"
+//    implementation "com.cosmos.photon:thirdpush-huawei:$thirdPushVersion"
+//    implementation "com.cosmos.photon:thirdpush-oppo:$thirdPushVersion"
+//    implementation "com.cosmos.photon:thirdpush-vivo:$thirdPushVersion"
+//    implementation "com.cosmos.photon:thirdpush-meizu:$thirdPushVersion"
+//    implementation "com.cosmos.photon:thirdpush:$thirdPushVersion"
+//    implementation "com.cosmos.photon:baseim:$pushIMVersion"
+
+}
+
+task copyApk(type: Copy) {
+    from "app/build/outputs/apk/debug/$outputApkName"
+    into "app/apks"
+    mustRunAfter 'app:assembleDebug'
+    rename { String fileName ->
+        print "app/build/outputs/apk/debug/$outputApkName"
+        fileName = "im_demo.apk"
+    }
+}
+
+
+afterEvaluate { project ->
+    tasks.matching {
+        it.name.startsWith('assembleDebug')
+    }.each { task ->
+        task.doFirst {
+            increasedVersionName()
+        }
+        task.doLast {
+            copyApk(outputApkName)
+        }
+    }
+}
+
+
+def copyApk(String fileName) {
+    print "copy start==========\r\n"
+    def path = 'app/build/outputs/apk/debug/'
+    File originFile = new File(path, fileName)
+    print "fileabsult:" + originFile.absolutePath + "\r\n"
+    if (!originFile.exists()) {
+        print "originFile not exists==========\r\n"
+        return
+    }
+    path = 'app/apks/'
+    File file = new File(path)
+    if (!file.exists()) {
+        file.mkdirs()
+    }
+    File targetFile = new File(file, "im_demo.apk")
+    FileOutputStream outputStream = new FileOutputStream(targetFile)
+    FileInputStream inputStream = new FileInputStream(originFile)
+    byte[] bytes = new byte[1024]
+    int length;
+    while ((length = inputStream.read(bytes)) != -1) {
+        outputStream.write(bytes, 0, length)
+    }
+    outputStream.flush()
+    outputStream.close()
+    inputStream.close()
+    print "copy end==========\r\n"
+}

@@ -1,0 +1,82 @@
+<resources>
+    <string name="app_name">ImDemo</string>
+    <string name="stringId_logInSuccess">"Login Success"</string>
+    <string name="stringId_logInFail">"Login Fail"</string>
+    <string name="openString">open</string>
+    <string name="closeString">close</string>
+    <string name="login_login">登录</string>
+    <string name="login_regist">新账号注册</string>
+    <string name="login_input_pwd">请输入登录密码</string>
+    <string name="login_input_account">请输入登录账号</string>
+    <string name="login_wait">请稍后...</string>
+    <string name="regist_regist">注册</string>
+    <string name="regist_input_account">请输入注册的账号(6~20字符)</string>
+    <string name="regist_input_pwd">请输入密码(8~20字符)</string>
+    <string name="regist_login">已有账号登录</string>
+    <string name="main_message">消息</string>
+    <string name="main_nomsg">暂无消息</string>
+    <string name="main_contact">通讯录</string>
+    <string name="main_me">我</string>
+    <string name="me_icon">头像</string>
+    <string name="me_logout">退出登录</string>
+    <string name="me_dialg_nickname">设置昵称</string>
+    <string name="me_nickname_hint">请设置昵称</string>
+    <string name="cancel">取消</string>
+    <string name="complete">完成</string>
+    <string name="fragment_tag_nickname">nick_tag</string>
+    <string name="userinfo_sendmsg">发消息</string>
+    <string name="contacts_online">在线联系人</string>
+    <string name="chatset_top">消息置顶</string>
+    <string name="chatset_ban">消息免打扰</string>
+    <string name="chat_toast_voice">松开发送，上滑取消</string>
+    <string name="chat_toast_time_short">时间太短</string>
+    <string name="chat_toast_send_failed">发送失败</string>
+    <string name="chat_toast_expire">已过期，无法下载</string>
+    <string name="chat_send_illegal">提示：您发送的内容不合规，请检查后重发</string>
+    <string name="chat_send_status_read">已读</string>
+    <string name="chat_send_status_sent">已送达</string>
+    <string name="msg_title">消息(%d)</string>
+    <string name="main_message_title">消息(%d)</string>
+    <string name="main_contact_title">通讯录</string>
+    <string name="msg_me_title">我</string>
+    <string name="chatset_title">消息设置</string>
+    <string name="userinfo_nickname">昵称：%s</string>
+    <string name="userinfo_account">账号：%s</string>
+    <string name="chat_send">发送</string>
+    <string name="me_account">账号</string>
+    <string name="me_nickname">昵称</string>
+    <string name="me_nickname_notset">未设置</string>
+    <string name="chat_revoke_failed">消息不可撤回</string>
+    <string name="chat_send_failed_frequency">消息发送频率过高</string>
+    <string name="chat_send_status_sending">发送中</string>
+    <string name="chat_pic">图片</string>
+    <string name="userinfo_get_failed">获取他人信息失败</string>
+    <string name="chat_msg_nomore">已经加载全部</string>
+    <string name="chat_popup_copy">复制</string>
+    <string name="chat_popup_relay">转发</string>
+    <string name="chat_popup_revert">撤回</string>
+    <string name="session_handle">操作</string>
+    <string name="session_delete">删除</string>
+    <string name="forward_selectcount">已选择：%d个</string>
+    <string name="forward_confirm">确定</string>
+
+    <!--华为push APPID配置-->
+    <string name="HUAWEI_PUSH_APPID">1023563</string>
+
+    <!--小米APPID和APPKEY配置-->
+    <string name="MI_PUSH_APPID">2882303761517123881</string>
+    <string name="MI_PUSH_APPKEY">5221712367881</string>
+
+    <!--OPPO push APPKEY和APPKEY配置-->
+    <string name="OPPO_PUSH_APPKEY">6FIZKhkAepkg8EcDqYiFQh3X</string>
+    <string name="OPPO_PUSH_SECRET">wxsIp7JXlUzjd8BHoXxymoN9</string>
+
+    <!--VIVO push -->
+    <string name="VIVO_PUSH_APPID">10462</string>
+    <string name="VIVO_PUSH_APPKEY">237e1161-5672-423d-a1cd-7cda01fa13a5</string>
+
+    <!--MEIZU push -->
+    <string name="MEIZU_PUSH_APPID">121142</string>
+    <string name="MEIZU_PUSH_APPKEY">2a4a7ff93ad845b5828d5e459b36039c</string>
+
+</resources>

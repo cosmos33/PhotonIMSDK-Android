@@ -1,0 +1,2 @@
+int string action_settings 0x7f140001
+int string hello_world 0x7f140002

@@ -1,0 +1,53 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/momo/Documents/momosdk/photon-im-android/opuslib/src/main/AndroidManifest.xml:2:1-15:12
+INJECTED from /Users/momo/Documents/momosdk/photon-im-android/opuslib/src/main/AndroidManifest.xml:2:1-15:12
+INJECTED from /Users/momo/Documents/momosdk/photon-im-android/opuslib/src/main/AndroidManifest.xml:2:1-15:12
+INJECTED from /Users/momo/Documents/momosdk/photon-im-android/opuslib/src/main/AndroidManifest.xml:2:1-15:12
+INJECTED from /Users/momo/Documents/momosdk/photon-im-android/opuslib/src/main/AndroidManifest.xml:2:1-15:12
+INJECTED from /Users/momo/Documents/momosdk/photon-im-android/opuslib/src/main/AndroidManifest.xml:2:1-15:12
+INJECTED from /Users/momo/Documents/momosdk/photon-im-android/opuslib/src/main/AndroidManifest.xml:2:1-15:12
+	package
+		ADDED from /Users/momo/Documents/momosdk/photon-im-android/opuslib/src/main/AndroidManifest.xml:3:5-31
+		INJECTED from /Users/momo/Documents/momosdk/photon-im-android/opuslib/src/main/AndroidManifest.xml
+		INJECTED from /Users/momo/Documents/momosdk/photon-im-android/opuslib/src/main/AndroidManifest.xml
+	android:versionName
+		INJECTED from /Users/momo/Documents/momosdk/photon-im-android/opuslib/src/main/AndroidManifest.xml
+		ADDED from /Users/momo/Documents/momosdk/photon-im-android/opuslib/src/main/AndroidManifest.xml:2:1-15:12
+		INJECTED from /Users/momo/Documents/momosdk/photon-im-android/opuslib/src/main/AndroidManifest.xml
+	android:versionCode
+		INJECTED from /Users/momo/Documents/momosdk/photon-im-android/opuslib/src/main/AndroidManifest.xml
+		ADDED from /Users/momo/Documents/momosdk/photon-im-android/opuslib/src/main/AndroidManifest.xml:2:1-15:12
+		INJECTED from /Users/momo/Documents/momosdk/photon-im-android/opuslib/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/momo/Documents/momosdk/photon-im-android/opuslib/src/main/AndroidManifest.xml:2:11-69
+application
+ADDED from /Users/momo/Documents/momosdk/photon-im-android/opuslib/src/main/AndroidManifest.xml:5:5-13:19
+	android:allowBackup
+		ADDED from /Users/momo/Documents/momosdk/photon-im-android/opuslib/src/main/AndroidManifest.xml:5:18-44
+service#top.oply.opuslib.OpusService
+ADDED from /Users/momo/Documents/momosdk/photon-im-android/opuslib/src/main/AndroidManifest.xml:6:9-12:19
+	android:exported
+		ADDED from /Users/momo/Documents/momosdk/photon-im-android/opuslib/src/main/AndroidManifest.xml:8:13-36
+	android:name
+		ADDED from /Users/momo/Documents/momosdk/photon-im-android/opuslib/src/main/AndroidManifest.xml:7:13-40
+intent-filter#action:name:top.oply.opuslib.action.OPUSSERVICE
+ADDED from /Users/momo/Documents/momosdk/photon-im-android/opuslib/src/main/AndroidManifest.xml:9:13-11:29
+action#top.oply.opuslib.action.OPUSSERVICE
+ADDED from /Users/momo/Documents/momosdk/photon-im-android/opuslib/src/main/AndroidManifest.xml:10:17-78
+	android:name
+		ADDED from /Users/momo/Documents/momosdk/photon-im-android/opuslib/src/main/AndroidManifest.xml:10:25-75
+uses-sdk
+INJECTED from /Users/momo/Documents/momosdk/photon-im-android/opuslib/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/momo/Documents/momosdk/photon-im-android/opuslib/src/main/AndroidManifest.xml
+INJECTED from /Users/momo/Documents/momosdk/photon-im-android/opuslib/src/main/AndroidManifest.xml
+INJECTED from /Users/momo/Documents/momosdk/photon-im-android/opuslib/src/main/AndroidManifest.xml
+INJECTED from /Users/momo/Documents/momosdk/photon-im-android/opuslib/src/main/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /Users/momo/Documents/momosdk/photon-im-android/opuslib/src/main/AndroidManifest.xml
+		ADDED from /Users/momo/Documents/momosdk/photon-im-android/opuslib/src/main/AndroidManifest.xml
+		INJECTED from /Users/momo/Documents/momosdk/photon-im-android/opuslib/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/momo/Documents/momosdk/photon-im-android/opuslib/src/main/AndroidManifest.xml
+		ADDED from /Users/momo/Documents/momosdk/photon-im-android/opuslib/src/main/AndroidManifest.xml
+		INJECTED from /Users/momo/Documents/momosdk/photon-im-android/opuslib/src/main/AndroidManifest.xml

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/activity_bg">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="@dimen/title_margin_top"
+        android:paddingLeft="8dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:gravity="bottom"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="auth成功:"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/tvAuthSuccess"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textColor="@color/black" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:gravity="bottom"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="auth总数:"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/tvAuthFailed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textColor="@color/black" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvClear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|right"
+            android:padding="8dp"
+            android:layout_marginRight="8dp"
+            android:textColor="@color/white"
+            android:background="@drawable/selector_sendmsg"
+            android:text="清空" />
+    </FrameLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="68dp" />
+
+
+    <TextView
+        android:id="@+id/tvLog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:padding="8dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="20dp"
+        android:textColor="@color/white"
+        android:background="@drawable/selector_sendmsg"
+        android:text="日志" />
+
+    <TextView
+        android:id="@+id/tvAddTest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/selector_sendmsg"
+        android:paddingLeft="40dp"
+        android:paddingTop="8dp"
+        android:paddingRight="40dp"
+        android:paddingBottom="8dp"
+        android:text="添加测试会话"
+        android:textColor="@color/white" />
+
+
+    <include layout="@layout/layout_nomsg" />
+</FrameLayout>

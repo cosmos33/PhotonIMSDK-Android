@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="top.oply.opuslib.test" >
+
+    <uses-sdk
+        android:minSdkVersion="19"
+        android:targetSdkVersion="28" />
+
+    <instrumentation
+        android:name="android.test.InstrumentationTestRunner"
+        android:functionalTest="false"
+        android:handleProfiling="false"
+        android:label="Tests for top.oply.opuslib.test"
+        android:targetPackage="top.oply.opuslib.test" />
+
+    <application
+        android:allowBackup="true"
+        android:debuggable="true" >
+        <uses-library android:name="android.test.runner" />
+
+        <service
+            android:name="top.oply.opuslib.OpusService"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="top.oply.opuslib.action.OPUSSERVICE" />
+            </intent-filter>
+        </service>
+    </application>
+
+</manifest>
