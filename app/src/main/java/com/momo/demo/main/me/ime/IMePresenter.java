@@ -1,5 +1,7 @@
 package com.momo.demo.main.me.ime;
 
+import android.view.View;
+
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonMyInfo;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonSetNickName;
 import com.cosmos.photonim.imbase.utils.mvpbase.IPresenter;
@@ -18,6 +20,16 @@ public abstract class IMePresenter<V extends IMeView, M extends IMeModel> extend
     @Override
     public V getEmptyView() {
         return (V) new IMeView() {
+
+            @Override
+            public int getLayoutId() {
+                return 0;
+            }
+
+            @Override
+            protected void initView(View view) {
+
+            }
 
             @Override
             public void onChangeNickName(JsonSetNickName jsonResult) {

@@ -1,12 +1,9 @@
 package com.cosmos.photonim.imbase.session;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.cosmos.photon.im.PhotonIMMessage;
@@ -38,7 +35,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class SessionFragment extends ISessionView implements SessionItem.UpdateOtherInfoListener {
     private static final String TAG = "SessionFragment";
@@ -55,11 +51,13 @@ public class SessionFragment extends ISessionView implements SessionItem.UpdateO
     private boolean isFirstLoad;
     private List<String> itemContent;
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main_message, null);
-        ButterKnife.bind(this, view);
+    public int getLayoutId() {
+        return R.layout.fragment_main_message;
+    }
+
+    @Override
+    protected void initView(View view) {
         isFirstLoad = LocalRestoreUtils.getFirstLoadSession();
         recyclerView = view.findViewById(R.id.recyclerView);
         iSessionPresenter.loadHistoryData();
@@ -69,8 +67,6 @@ public class SessionFragment extends ISessionView implements SessionItem.UpdateO
         itemContent.add("清空会话");
         // 删除demo层的重发机制，防止和sdk内部重发逻辑混淆
 //        iSessionPresenter.resendSendingStatusMsgs();
-
-        return view;
     }
 
     @Override

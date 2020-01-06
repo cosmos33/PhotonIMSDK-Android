@@ -3,6 +3,8 @@ package com.cosmos.photonim.imbase.base;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,5 +61,22 @@ public class BaseActivity extends AppCompatActivity {
                 ImBaseBridge.getInstance().onKickUser(this);
                 break;
         }
+    }
+
+    public Fragment replaceNewFragment(int containerId, String fName) {
+        return replaceNewFragment(containerId, fName, null);
+    }
+
+    public Fragment replaceNewFragment(int containerId, String fName, Bundle args) {
+        Fragment fragment = Fragment.instantiate(this, fName);
+        fragment.setArguments(args);
+        replaceFragment(containerId, fragment);
+        return fragment;
+    }
+
+    public void replaceFragment(int containerId, Fragment fragment) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(containerId, fragment);
+        fragmentTransaction.commit();
     }
 }

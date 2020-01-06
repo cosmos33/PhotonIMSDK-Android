@@ -1,14 +1,9 @@
 package com.momo.demo.main.me;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,7 +20,6 @@ import com.momo.demo.main.me.ime.IMeView;
 import com.momo.demo.view.ChangeNickNameDialog;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MeFragment extends IMeView {
@@ -42,17 +36,15 @@ public class MeFragment extends IMeView {
     private String nickName;
 
 
-    @Nullable
+
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main_me, null);
-        ButterKnife.bind(this, view);
-        registPresenter.getMyInfo();
-        initView();
-        return view;
+    public int getLayoutId() {
+        return R.layout.fragment_main_me;
     }
 
-    private void initView() {
+    @Override
+    protected void initView(View view) {
+        registPresenter.getMyInfo();
         tvAccount.setText(LoginInfo.getInstance().getUserId());
         swipeRefreshLayout.setOnRefreshListener(() -> registPresenter.getMyInfo());
     }

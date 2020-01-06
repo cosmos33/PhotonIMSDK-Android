@@ -31,6 +31,8 @@ import com.cosmos.photonim.imbase.chat.emoji.EmojiContainerFragment;
 import com.cosmos.photonim.imbase.chat.ichat.IChatView;
 import com.cosmos.photonim.imbase.chat.image.ImageCheckActivity;
 import com.cosmos.photonim.imbase.chat.map.MapActivity;
+import com.cosmos.photonim.imbase.chat.media.TakePhotoActivity;
+import com.cosmos.photonim.imbase.chat.media.TakePhotoResultFragment;
 import com.cosmos.photonim.imbase.utils.AtEditText;
 import com.cosmos.photonim.imbase.utils.CheckAudioPermission;
 import com.cosmos.photonim.imbase.utils.CollectionUtils;
@@ -69,7 +71,6 @@ public abstract class ChatBaseActivity extends IChatView {
     private static final int LIMIT_LOADREMOTE = 200;
     private static final String IMAGE_UNSPECIFIED = "image/*";
     protected static final String AT_ALL_CONTENT = "所有人 ";
-    private static final int REQUEST_CAMERA = 1000;
     private static final int SEND_COUNT_LIMIT = 480;
     private static final int VOICE_MAX_LENGTH = 3 * 60 * 1000;
     private static final int IMAGE_MAX_SIZE = 10 * 1024 * 1024;
@@ -126,7 +127,7 @@ public abstract class ChatBaseActivity extends IChatView {
     private int lastPosition;
     private boolean igoreAlert;
     private Uri mImageUri;
-    private File imageFile;
+    //    private File imageFile;
     private EmojiContainerFragment fragment;
     private boolean lastLoadHistoryFromRemote = false;
     private TestSendFragment testSendFragment;
@@ -597,21 +598,7 @@ public abstract class ChatBaseActivity extends IChatView {
 
     @OnClick(R2.id.llTakePic)
     public void onTakePic() {
-//        Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);//打开相机的Intent
-//        if (takePhotoIntent.resolveActivity(getPackageManager()) != null) {//这句作用是如果没有相机则该应用不会闪退，要是不加这句则当系统没有相机应用的时候该应用会闪退
-//            imageFile = FileUtils.createImageFile(this);//创建用来保存照片的文件
-//            if (imageFile != null) {
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//                    /*7.0以上要通过FileProvider将File转化为Uri*/
-//                    mImageUri = FileProvider.getUriForFile(this, FILE_PROVIDER_AUTHORITY, imageFile);
-//                } else {
-//                    /*7.0以下则直接使用Uri的fromFile方法将File转化为Uri*/
-//                    mImageUri = Uri.fromFile(imageFile);
-//                }
-//                takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);//将用于输出的文件Uri传递给相机
-//                startActivityForResult(takePhotoIntent, REQUEST_CAMERA);//打开相机
-//            }
-//        }
+        TakePhotoActivity.start(this);
     }
 
     @OnClick(R2.id.llPosition)
@@ -871,14 +858,18 @@ public abstract class ChatBaseActivity extends IChatView {
                     .to(chatWith);
 
             chatPresenter.sendMsg(chatDataBuild);
-        } else if (requestCode == REQUEST_CAMERA && resultCode == RESULT_OK) {
-            if (new File(imageFile.getAbsolutePath()).length() >= IMAGE_MAX_SIZE) {
+        } else if (requestCode == TakePhotoActivity.REQUEST_CAMERA && resultCode == RESULT_OK) {
+            String result = data.getStringExtra(TakePhotoResultFragment.BUNDLE_PHOTO_PATH);
+            if (result == null) {
+                return;
+            }
+            if (new File(result).length() >= IMAGE_MAX_SIZE) {
                 ToastUtils.showText(this, "仅支持发送10M以内的图片");
                 return;
             }
             ChatData.Builder chatDataBuild = new ChatData.Builder()
                     .icon(myIcon)
-                    .localFile(imageFile.getAbsolutePath())
+                    .localFile(result)
                     .msgType(PhotonIMMessage.IMAGE)
                     .chatType(chatType)
                     .chatWith(chatWith)

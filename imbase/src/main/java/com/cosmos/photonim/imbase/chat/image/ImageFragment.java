@@ -1,9 +1,6 @@
 package com.cosmos.photonim.imbase.chat.image;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.base.BaseFragment;
@@ -20,9 +17,12 @@ public class ImageFragment extends BaseFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_chat_image, null);
+    public int getLayoutId() {
+        return R.layout.fragment_chat_image;
+    }
+
+    @Override
+    protected void initView(View view) {
         ImageLoaderUtils.getInstance().loadImage(getContext(), imageUrl, R.drawable.chat_placeholder, view.findViewById(R.id.ivImage));
-        return view;
     }
 }

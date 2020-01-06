@@ -5,9 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.base.RvBaseFragment;
@@ -15,8 +13,6 @@ import com.cosmos.photonim.imbase.utils.recycleadapter.RvBaseAdapter;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvListenerImpl;
 
 import java.util.List;
-
-import butterknife.ButterKnife;
 
 public class EmojiFragment extends RvBaseFragment {
     private RecyclerView recyclerView;
@@ -26,11 +22,13 @@ public class EmojiFragment extends RvBaseFragment {
     private RecyclerView.RecycledViewPool recycledViewPool;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_chat_emoji_emoji, null);
-        ButterKnife.bind(this, view);
+    public int getLayoutId() {
+        return R.layout.fragment_chat_emoji_emoji;
+    }
+
+    @Override
+    protected void initView(View view) {
         recyclerView = view.findViewById(R.id.recyclerView);
-        return view;
     }
 
     @Override

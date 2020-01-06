@@ -1,11 +1,6 @@
 package com.cosmos.photonim.imbase.chat;
 
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,7 +17,6 @@ import com.cosmos.photonim.imbase.utils.test.TestSendManager;
 import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class TestSendFragment extends BaseFragment {
@@ -52,16 +46,13 @@ public class TestSendFragment extends BaseFragment {
     private String myIcon;
     private int chatType;
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View inflate = inflater.inflate(R.layout.layout_chat_test, container, false);
-        ButterKnife.bind(this, inflate);
-        initTestTool();
-        return inflate;
+    public int getLayoutId() {
+        return R.layout.layout_chat_test;
     }
 
-    private void initTestTool() {
+    @Override
+    protected void initView(View view) {
         // TODO: 2019-12-0 fragment？
         testSendBean = TestSendManager.getInstance().bind(chatWith, new TestSendManager.OnSendChatResultListener() {
             @Override

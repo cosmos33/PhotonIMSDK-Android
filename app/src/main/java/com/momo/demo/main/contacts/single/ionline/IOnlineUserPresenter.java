@@ -2,6 +2,7 @@ package com.momo.demo.main.contacts.single.ionline;
 
 
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.cosmos.photonim.imbase.utils.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvBaseAdapter;
@@ -18,6 +19,16 @@ public abstract class IOnlineUserPresenter<V extends IOnlineUserView, M extends 
     @Override
     public V getEmptyView() {
         return (V) new IOnlineUserView() {
+            @Override
+            public int getLayoutId() {
+                return 0;
+            }
+
+            @Override
+            protected void initView(View view) {
+
+            }
+
             @Override
             public void loadContacts(List<OnlineUserData> onlineUserData) {
 

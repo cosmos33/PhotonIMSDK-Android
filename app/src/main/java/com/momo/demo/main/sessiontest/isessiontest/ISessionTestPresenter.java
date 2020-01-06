@@ -2,6 +2,7 @@ package com.momo.demo.main.sessiontest.isessiontest;
 
 
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;
 import com.cosmos.photonim.imbase.utils.mvpbase.IPresenter;
@@ -29,6 +30,16 @@ public abstract class ISessionTestPresenter<V extends ISessionTestView, M extend
     @Override
     public V getEmptyView() {
         return (V) new ISessionTestView() {
+            @Override
+            public int getLayoutId() {
+                return 0;
+            }
+
+            @Override
+            protected void initView(View view) {
+
+            }
+
             @Override
             public void onLoadHistory(List<SessionTestData> sessionData) {
 

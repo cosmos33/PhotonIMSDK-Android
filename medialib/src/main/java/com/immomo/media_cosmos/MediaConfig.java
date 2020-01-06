@@ -1,5 +1,6 @@
 package com.immomo.media_cosmos;
 
+import android.hardware.Camera;
 import android.util.Size;
 
 public class MediaConfig {
@@ -27,8 +28,8 @@ public class MediaConfig {
     }
 
     public static final class Builder {
-        private int cameraId;
-        private Size encodeSize;
+        private int cameraId = Camera.CameraInfo.CAMERA_FACING_FRONT;
+        private Size encodeSize = new Size(1280, 720);
         private Size targetVideoSize;
 
         public Builder() {

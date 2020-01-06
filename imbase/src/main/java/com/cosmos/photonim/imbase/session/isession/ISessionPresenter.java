@@ -2,6 +2,7 @@ package com.cosmos.photonim.imbase.session.isession;
 
 
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.cosmos.photonim.imbase.session.SessionData;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;
@@ -42,6 +43,16 @@ public abstract class ISessionPresenter<V extends ISessionView, M extends ISessi
     @Override
     public V getEmptyView() {
         return (V) new ISessionView() {
+            @Override
+            public int getLayoutId() {
+                return 0;
+            }
+
+            @Override
+            protected void initView(View view) {
+
+            }
+
             @Override
             public void onLoadHistory(List<SessionData> sessionData) {
 

@@ -143,6 +143,7 @@ dependencies {
     implementation "com.cosmos.photon:push:2.1.5"
 
     implementation project(":imbase")
+    implementation project(":medialib")
     implementation 'org.greenrobot:eventbus:3.1.1'
 
     // 引用imcore模块(本地maven仓库)，因为是本地maven依赖所以间接依赖需要手动添加一下

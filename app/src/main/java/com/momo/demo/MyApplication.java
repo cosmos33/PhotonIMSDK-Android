@@ -26,6 +26,7 @@ import com.cosmos.photonim.imbase.utils.ToastUtils;
 import com.cosmos.photonim.imbase.utils.http.HttpUtils;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonContactRecent;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;
+import com.immomo.media_cosmos.RecorderFactory;
 import com.momo.demo.login.LoginActivity;
 import com.momo.demo.login.LoginInfo;
 import com.momo.demo.main.contacts.single.userinfo.UserInfoModel;
@@ -38,7 +39,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class MyApplication extends Application {
-    private static final String APP_ID = "280f8ef2cec41cde3bed705236ab9bc4";
+    public static final String APP_ID = "280f8ef2cec41cde3bed705236ab9bc4";
     //    private static final String APP_ID = "326a7a61d5e8f170957f9bf6591a7c9b";
     private static MyApplication myApplication;
 
@@ -53,8 +54,12 @@ public class MyApplication extends Application {
         myApplication = this;
         super.onCreate();
 
-        pushinit();
+        pushInit();
+        mediaInit();
+        imInit();
+    }
 
+    private void imInit() {
         ImBaseBridge.Builder builder = new ImBaseBridge.Builder()
                 .application(this)
                 .appId(APP_ID)
@@ -63,7 +68,11 @@ public class MyApplication extends Application {
         ImBaseBridge.getInstance().init(builder);
     }
 
-    private void pushinit() {
+    private void mediaInit() {
+        RecorderFactory.init(this, APP_ID);
+    }
+
+    private void pushInit() {
         // push初始化
         // 如果targetSdkVersion >= 26, 则CHANNEL_MODE必须设置为true
         PhotonPushManager.CHANNEL_MODE = true;
