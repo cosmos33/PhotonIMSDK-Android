@@ -16,11 +16,11 @@ def increasedVersionName() {
 
 def outputApkName
 android {
-    compileSdkVersion 28
+    compileSdkVersion ext_complieSdkVersion
     defaultConfig {
         applicationId "$applicationID"
-        minSdkVersion 21
-        targetSdkVersion 28
+        minSdkVersion ext_minSdkVersion
+        targetSdkVersion ext_targetSdkVersion
         versionCode 1
         versionName VERSION_NAME
 

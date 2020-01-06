@@ -46,4 +46,6 @@
     <string name="forward_selectcount">已选择：%d个</string>
     <string name="forward_confirm">确定</string>
     <string name="chat_takepic">拍照</string>
+    <string name="map_title">位置</string>
+    <string name="chat_location">位置</string>
 </resources>

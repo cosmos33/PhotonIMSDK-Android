@@ -18,12 +18,16 @@
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="IMSDK"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:usesCleartextTraffic="true"
-        android:supportsRtl="true"
         android:persistent="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
+        tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:allowBackup">
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="8668381078a2058e177a75d674950fa8" />
 
         <activity
             android:name=".login.LoginActivity"

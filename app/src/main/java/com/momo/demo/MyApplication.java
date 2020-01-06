@@ -52,6 +52,18 @@ public class MyApplication extends Application {
     public void onCreate() {
         myApplication = this;
         super.onCreate();
+
+        pushinit();
+
+        ImBaseBridge.Builder builder = new ImBaseBridge.Builder()
+                .application(this)
+                .appId(APP_ID)
+                .addListener(getListener());
+
+        ImBaseBridge.getInstance().init(builder);
+    }
+
+    private void pushinit() {
         // push初始化
         // 如果targetSdkVersion >= 26, 则CHANNEL_MODE必须设置为true
         PhotonPushManager.CHANNEL_MODE = true;
@@ -129,16 +141,6 @@ public class MyApplication extends Application {
                 return false;
             }
         });
-
-//        String[] auth = LocalRestoreUtils.getAuth();
-//        tokenId = auth[0];
-//        userId = auth[1];
-        ImBaseBridge.Builder builder = new ImBaseBridge.Builder()
-                .application(this)
-                .appId(APP_ID)
-                .addListener(getListener());
-
-        ImBaseBridge.getInstance().init(builder);
     }
 
     private ImBaseBridge.BusinessListener getListener() {

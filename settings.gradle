@@ -1,1 +1,1 @@
-include ':app', ':imbase', ':opuslib'
+include ':app', ':imbase', ':opuslib', ':maplib', ':medialib'

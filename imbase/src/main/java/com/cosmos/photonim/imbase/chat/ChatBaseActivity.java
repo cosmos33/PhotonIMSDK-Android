@@ -3,12 +3,10 @@ package com.cosmos.photonim.imbase.chat;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,11 +30,11 @@ import com.cosmos.photonim.imbase.chat.adapter.ChatAdapter;
 import com.cosmos.photonim.imbase.chat.emoji.EmojiContainerFragment;
 import com.cosmos.photonim.imbase.chat.ichat.IChatView;
 import com.cosmos.photonim.imbase.chat.image.ImageCheckActivity;
+import com.cosmos.photonim.imbase.chat.map.MapActivity;
 import com.cosmos.photonim.imbase.utils.AtEditText;
 import com.cosmos.photonim.imbase.utils.CheckAudioPermission;
 import com.cosmos.photonim.imbase.utils.CollectionUtils;
 import com.cosmos.photonim.imbase.utils.Constants;
-import com.cosmos.photonim.imbase.utils.FileUtils;
 import com.cosmos.photonim.imbase.utils.LogUtils;
 import com.cosmos.photonim.imbase.utils.TimeUtils;
 import com.cosmos.photonim.imbase.utils.ToastUtils;
@@ -599,21 +597,26 @@ public abstract class ChatBaseActivity extends IChatView {
 
     @OnClick(R2.id.llTakePic)
     public void onTakePic() {
-        Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);//打开相机的Intent
-        if (takePhotoIntent.resolveActivity(getPackageManager()) != null) {//这句作用是如果没有相机则该应用不会闪退，要是不加这句则当系统没有相机应用的时候该应用会闪退
-            imageFile = FileUtils.createImageFile(this);//创建用来保存照片的文件
-            if (imageFile != null) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    /*7.0以上要通过FileProvider将File转化为Uri*/
-                    mImageUri = FileProvider.getUriForFile(this, FILE_PROVIDER_AUTHORITY, imageFile);
-                } else {
-                    /*7.0以下则直接使用Uri的fromFile方法将File转化为Uri*/
-                    mImageUri = Uri.fromFile(imageFile);
-                }
-                takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);//将用于输出的文件Uri传递给相机
-                startActivityForResult(takePhotoIntent, REQUEST_CAMERA);//打开相机
-            }
-        }
+//        Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);//打开相机的Intent
+//        if (takePhotoIntent.resolveActivity(getPackageManager()) != null) {//这句作用是如果没有相机则该应用不会闪退，要是不加这句则当系统没有相机应用的时候该应用会闪退
+//            imageFile = FileUtils.createImageFile(this);//创建用来保存照片的文件
+//            if (imageFile != null) {
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//                    /*7.0以上要通过FileProvider将File转化为Uri*/
+//                    mImageUri = FileProvider.getUriForFile(this, FILE_PROVIDER_AUTHORITY, imageFile);
+//                } else {
+//                    /*7.0以下则直接使用Uri的fromFile方法将File转化为Uri*/
+//                    mImageUri = Uri.fromFile(imageFile);
+//                }
+//                takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);//将用于输出的文件Uri传递给相机
+//                startActivityForResult(takePhotoIntent, REQUEST_CAMERA);//打开相机
+//            }
+//        }
+    }
+
+    @OnClick(R2.id.llPosition)
+    public void onPositionClick() {
+        MapActivity.start(this);
     }
 
     @OnClick(R2.id.tvSendMsg)

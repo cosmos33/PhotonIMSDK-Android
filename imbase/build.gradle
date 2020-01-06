@@ -2,13 +2,13 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.jakewharton.butterknife'
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion "28.0.3"
+    compileSdkVersion ext_complieSdkVersion
+    buildToolsVersion ext_buildToolsVersion
 
 
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 28
+        minSdkVersion ext_minSdkVersion
+        targetSdkVersion ext_targetSdkVersion
         versionCode 1
         versionName "1.0"
     }
@@ -59,6 +59,7 @@ dependencies {
 //    implementation 'androidx.appcompat:appcompat:1.0.2'
 
     implementation project(":opuslib")
+    implementation project(':maplib')
     implementation 'android.arch.persistence.room:runtime:1.1.1'
     annotationProcessor 'android.arch.persistence.room:compiler:1.1.1'
 
