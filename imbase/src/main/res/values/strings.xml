@@ -49,4 +49,6 @@
     <string name="map_title">位置</string>
     <string name="chat_location">位置</string>
     <string name="chat_media_takephoto">拍照</string>
+    <string name="chat_video">短视频</string>
+    <string name="chat_file">文件</string>
 </resources>

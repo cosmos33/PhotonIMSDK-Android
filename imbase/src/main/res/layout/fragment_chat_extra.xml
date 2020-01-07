@@ -71,78 +71,11 @@
             android:src="@drawable/chat_extra" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/llExtra"
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="@color/white"
-        android:orientation="horizontal"
-        android:visibility="gone">
-
-        <LinearLayout
-            android:id="@+id/llPic"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="50dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="@dimen/chat_pic_height"
-                android:layout_height="@dimen/chat_pic_height"
-                android:src="@drawable/chat_pic" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/chat_pic" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/llTakePic"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="50dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="@dimen/chat_pic_height"
-                android:layout_height="@dimen/chat_pic_height"
-                android:src="@drawable/chat_takepic" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/chat_takepic" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/llPosition"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="50dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="@dimen/chat_pic_height"
-                android:layout_height="@dimen/chat_pic_height"
-                android:src="@drawable/chat_takepic" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/chat_location" />
-        </LinearLayout>
-    </LinearLayout>
+        android:id="@+id/recyclerView"
+        android:visibility="gone"
+        android:layout_height="wrap_content" />
 
     <ViewStub
         android:id="@+id/vsEmoji"

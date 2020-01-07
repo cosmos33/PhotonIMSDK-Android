@@ -1,4 +1,4 @@
-package com.cosmos.photonim.imbase.chat.adapter;
+package com.cosmos.photonim.imbase.chat.adapter.chat;
 
 import android.text.TextUtils;
 import android.view.View;

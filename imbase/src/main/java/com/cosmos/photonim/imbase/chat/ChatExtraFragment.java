@@ -2,6 +2,10 @@ package com.cosmos.photonim.imbase.chat;
 
 import android.content.Intent;
 import android.provider.MediaStore;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
@@ -11,12 +15,13 @@ import android.view.View;
 import android.view.ViewStub;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.R2;
-import com.cosmos.photonim.imbase.base.BaseFragment;
+import com.cosmos.photonim.imbase.base.RvBaseFragment;
+import com.cosmos.photonim.imbase.chat.adapter.chatextra.ChatExtraAdapter;
+import com.cosmos.photonim.imbase.chat.adapter.chatextra.ChatExtraItemData;
 import com.cosmos.photonim.imbase.chat.emoji.EmojiContainerFragment;
 import com.cosmos.photonim.imbase.chat.map.MapActivity;
 import com.cosmos.photonim.imbase.chat.media.TakePhotoActivity;
@@ -24,6 +29,8 @@ import com.cosmos.photonim.imbase.utils.AtEditText;
 import com.cosmos.photonim.imbase.utils.CheckAudioPermission;
 import com.cosmos.photonim.imbase.utils.ToastUtils;
 import com.cosmos.photonim.imbase.utils.Utils;
+import com.cosmos.photonim.imbase.utils.recycleadapter.RvBaseAdapter;
+import com.cosmos.photonim.imbase.utils.recycleadapter.RvListener;
 import com.cosmos.photonim.imbase.view.ChatToastUtils;
 import com.cosmos.photonim.imbase.view.VoiceTextView;
 
@@ -33,12 +40,10 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class ChatExtraFragment extends BaseFragment {
+public class ChatExtraFragment extends RvBaseFragment {
     public static final String IMAGE_UNSPECIFIED = "image/*";
     private static final int SEND_COUNT_LIMIT = 480;
     private static final int VOICE_MAX_LENGTH = 3 * 60 * 1000;
-    @BindView(R2.id.llExtra)
-    LinearLayout llExtra;
     @BindView(R2.id.ivVoice)
     ImageView ivVoice;
     @BindView(R2.id.etInput)
@@ -54,6 +59,10 @@ public class ChatExtraFragment extends BaseFragment {
     @BindView(R2.id.vsEmoji)
     ViewStub vsEmoji;
 
+    private RecyclerView recyclerView;
+    private ChatExtraAdapter chatExtraAdapter;
+    private ArrayList<ChatExtraItemData> chatExtraItemData;
+
     private FrameLayout emojiRoot;
     private EmojiContainerFragment fragment;
     private File voiceFile;
@@ -67,6 +76,7 @@ public class ChatExtraFragment extends BaseFragment {
 
     @Override
     protected void initView(View view) {
+        recyclerView = view.findViewById(R.id.recyclerView);
         rootView = view;
         etInput.addTextChangedListener(new TextWatcher() {
             @Override
@@ -82,7 +92,7 @@ public class ChatExtraFragment extends BaseFragment {
                 if (etInput.getText().toString().trim().length() > 0) {
                     tvSendMsg.setVisibility(View.VISIBLE);
                     ivExtra.setVisibility(View.GONE);
-                    llExtra.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.GONE);
                 } else {
                     tvSendMsg.setVisibility(View.GONE);
                     ivExtra.setVisibility(View.VISIBLE);
@@ -93,7 +103,7 @@ public class ChatExtraFragment extends BaseFragment {
         etInput.setFilters(new InputFilter[]{new EditFilter()});
 
         etInput.setOnFocusChangeListener((v, hasFocus) -> {
-            llExtra.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.GONE);
             if (emojiRoot != null) {
                 emojiRoot.setVisibility(View.GONE);
             }
@@ -164,10 +174,22 @@ public class ChatExtraFragment extends BaseFragment {
         }
     }
 
+    @Override
+    public RecyclerView.LayoutManager getLayoutManager() {
+        return new GridLayoutManager(getContext(), 4);
+    }
+
+    @Override
+    public RecyclerView.ItemDecoration getItemDecoration() {
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL);
+        dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.empty));
+        return dividerItemDecoration;
+    }
+
     @OnClick(R2.id.ivEmoji)
     public void onEmojiClick() {
         Utils.keyBoard(getContext(), etInput, false);
-        llExtra.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.GONE);
         if (fragment == null) {
             vsEmoji.inflate();
             emojiRoot = rootView.findViewById(R.id.emojiRoot);
@@ -212,23 +234,6 @@ public class ChatExtraFragment extends BaseFragment {
 
     }
 
-    @OnClick(R2.id.llPic)
-    public void onPicClick() {
-        Intent intent = new Intent(Intent.ACTION_PICK, null);
-        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, IMAGE_UNSPECIFIED);
-        startActivityForResult(intent, ChatBaseActivity.REQUEST_IMAGE_CODE);
-    }
-
-    @OnClick(R2.id.llTakePic)
-    public void onTakePic() {
-        TakePhotoActivity.start(getActivity());
-    }
-
-    @OnClick(R2.id.llPosition)
-    public void onPositionClick() {
-        MapActivity.start(getActivity());
-    }
-
     private void setControlEnable(boolean enable) {
         ivVoice.setEnabled(enable);
         ivEmoji.setEnabled(enable);
@@ -254,11 +259,11 @@ public class ChatExtraFragment extends BaseFragment {
     }
 
     public void setLLExtraVisibility(int visibility) {
-        llExtra.setVisibility(visibility);
+        recyclerView.setVisibility(visibility);
     }
 
     public int getLLExtraVisibility() {
-        return llExtra.getVisibility();
+        return recyclerView.getVisibility();
     }
 
     public void setEmojiRootVisibility(int visibility) {
@@ -273,6 +278,48 @@ public class ChatExtraFragment extends BaseFragment {
 
     public void addAtContent(Object o, String atAllContent) {
         etInput.addAtContent(null, atAllContent);
+    }
+
+    @Override
+    public RecyclerView getRecycleView() {
+        return recyclerView;
+    }
+
+    @Override
+    public RvBaseAdapter getAdapter() {
+        if (chatExtraAdapter == null) {
+            chatExtraItemData = new ArrayList<>();
+            chatExtraItemData.add(new ChatExtraItemData(R.drawable.chat_pic, "图片"));
+            chatExtraItemData.add(new ChatExtraItemData(R.drawable.chat_takepic, "拍照"));
+            chatExtraItemData.add(new ChatExtraItemData(R.drawable.chat_video, "短视频"));
+            chatExtraItemData.add(new ChatExtraItemData(R.drawable.chat_file, "文件"));
+            chatExtraItemData.add(new ChatExtraItemData(R.drawable.chat_position, "位置"));
+            chatExtraAdapter = new ChatExtraAdapter(chatExtraItemData);
+            chatExtraAdapter.setRvListener(new RvListener() {
+                @Override
+                public void onClick(View view, Object data, int position) {
+                    if (position == 0) {
+                        Intent intent = new Intent(Intent.ACTION_PICK, null);
+                        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, IMAGE_UNSPECIFIED);
+                        startActivityForResult(intent, ChatBaseActivity.REQUEST_IMAGE_CODE);
+                    } else if (position == 1) {
+                        TakePhotoActivity.start(getActivity());
+                    } else if (position == 2) {
+
+                    } else if (position == 3) {
+
+                    } else if (position == 4) {
+                        MapActivity.start(getActivity());
+                    }
+                }
+
+                @Override
+                public void onLongClick(View view, Object data, int position) {
+
+                }
+            });
+        }
+        return chatExtraAdapter;
     }
 
     private class EditFilter implements InputFilter {

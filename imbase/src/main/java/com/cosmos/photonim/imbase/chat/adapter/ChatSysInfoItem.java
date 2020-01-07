@@ -4,6 +4,7 @@ import android.widget.TextView;
 
 import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.chat.ChatData;
+import com.cosmos.photonim.imbase.chat.adapter.chat.ChatItemTypeAbstract;
 import com.cosmos.photonim.imbase.utils.Constants;
 import com.cosmos.photonim.imbase.utils.recycleadapter.ItemData;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvViewHolder;

@@ -1,6 +1,7 @@
-package com.cosmos.photonim.imbase.chat.adapter;
+package com.cosmos.photonim.imbase.chat.adapter.chat;
 
 
+import com.cosmos.photonim.imbase.chat.adapter.ChatSysInfoItem;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvBaseAdapter;
 
 import java.util.List;

@@ -16,7 +16,7 @@ import com.cosmos.photon.im.PhotonIMMessage;
 import com.cosmos.photonim.imbase.ImBaseBridge;
 import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.R2;
-import com.cosmos.photonim.imbase.chat.adapter.ChatAdapter;
+import com.cosmos.photonim.imbase.chat.adapter.chat.ChatAdapter;
 import com.cosmos.photonim.imbase.chat.ichat.IChatView;
 import com.cosmos.photonim.imbase.chat.image.ImageCheckActivity;
 import com.cosmos.photonim.imbase.chat.media.TakePhotoActivity;

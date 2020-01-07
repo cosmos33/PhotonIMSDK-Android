@@ -1,4 +1,4 @@
-package com.cosmos.photonim.imbase.chat.adapter;
+package com.cosmos.photonim.imbase.chat.adapter.chat;
 
 import android.support.annotation.CallSuper;
 import android.text.TextUtils;
