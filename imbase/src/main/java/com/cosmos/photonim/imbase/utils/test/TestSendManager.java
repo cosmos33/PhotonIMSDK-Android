@@ -68,12 +68,12 @@ public class TestSendManager {
         testSendBean.setSendSuccessNum(0);
 
 
-        CustomRunnable customRunnable = new CustomRunnable();
+        CustomRunnable customRunnable = new CustomRunnable.Builder()
+                .runnable(new SendRunnable(testSendBean))
+                .delayTime(testSendBean.getInterval())
+                .repeated(true).build();
         testSendBean.setCustomRunnable(customRunnable);
 
-        customRunnable.setRunnable(new SendRunnable(testSendBean));
-        customRunnable.setDelayTime(testSendBean.getInterval());
-        customRunnable.setRepeated(true);
         MainLooperExecuteUtil.getInstance().post(customRunnable);
     }
 
@@ -123,12 +123,15 @@ public class TestSendManager {
             chatPresenter.sendMsg(testSendBean.getChatBuilder());
 
 
-            CustomRunnable customRunnable = new CustomRunnable();
-            customRunnable.setRunnable(() -> {
-                if (onSendChatResultListener != null && onSendChatResultListener.getChatWith().equals(testSendBean.getChatWith())) {
-                    onSendChatResultListener.onSendChatResult(testSendBean);
-                }
-            });
+            CustomRunnable customRunnable = new CustomRunnable.Builder()
+                    .runnable(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (onSendChatResultListener != null && onSendChatResultListener.getChatWith().equals(testSendBean.getChatWith())) {
+                                onSendChatResultListener.onSendChatResult(testSendBean);
+                            }
+                        }
+                    }).build();
             MainLooperExecuteUtil.getInstance().post(customRunnable);
         }
     }

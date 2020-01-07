@@ -277,12 +277,15 @@ public class ChatModel extends IChatModel {
             public void onGetFile(String path) {
                 PhotonIMDatabase.getInstance().updateMessageLocalFile(data.getChatType(), data.getChatWith(), data.getMsgId(), savePath);
 
-                CustomRunnable customRunnable = new CustomRunnable();
-                customRunnable.setRunnable(() -> {
-                    if (onGetFileListener != null) {
-                        onGetFileListener.onGetFile(path);
-                    }
-                });
+                CustomRunnable customRunnable = new CustomRunnable.Builder()
+                        .runnable(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (onGetFileListener != null) {
+                                    onGetFileListener.onGetFile(path);
+                                }
+                            }
+                        }).build();
                 MainLooperExecuteUtil.getInstance().post(customRunnable);
             }
         }));
@@ -334,10 +337,13 @@ public class ChatModel extends IChatModel {
                     PhotonIMDatabase.getInstance().updataMessageStatus(messageData.getChatType(), messageData.getChatWith(), messageData.getMsgId(), PhotonIMMessage.RECV_READ);
                 }
                 if (onSendReadListener != null) {
-                    CustomRunnable customRunnable = new CustomRunnable();
-                    customRunnable.setRunnable(() -> {
-                        onSendReadListener.onSendRead(messageData, error, msg);
-                    });
+                    CustomRunnable customRunnable = new CustomRunnable.Builder()
+                            .runnable(new Runnable() {
+                                @Override
+                                public void run() {
+                                    onSendReadListener.onSendRead(messageData, error, msg);
+                                }
+                            }).build();
                     MainLooperExecuteUtil.getInstance().post(customRunnable);
                 }
             }
@@ -353,10 +359,13 @@ public class ChatModel extends IChatModel {
             @Override
             public void onSent(int error, String msg, long retTime) {
                 if (onRevertListener != null) {
-                    CustomRunnable customRunnable = new CustomRunnable();
-                    customRunnable.setRunnable(() -> {
-                        onRevertListener.onRevert(data, error, msg);
-                    });
+                    CustomRunnable customRunnable = new CustomRunnable.Builder()
+                            .runnable(new Runnable() {
+                                @Override
+                                public void run() {
+                                    onRevertListener.onRevert(data, error, msg);
+                                }
+                            }).build();
                     MainLooperExecuteUtil.getInstance().post(customRunnable);
                 }
             }

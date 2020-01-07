@@ -24,7 +24,8 @@ import com.cosmos.photonim.imbase.chat.adapter.chatextra.ChatExtraAdapter;
 import com.cosmos.photonim.imbase.chat.adapter.chatextra.ChatExtraItemData;
 import com.cosmos.photonim.imbase.chat.emoji.EmojiContainerFragment;
 import com.cosmos.photonim.imbase.chat.map.MapActivity;
-import com.cosmos.photonim.imbase.chat.media.TakePhotoActivity;
+import com.cosmos.photonim.imbase.chat.media.takephoto.TakePhotoActivity;
+import com.cosmos.photonim.imbase.chat.media.video.VideoActivity;
 import com.cosmos.photonim.imbase.utils.AtEditText;
 import com.cosmos.photonim.imbase.utils.CheckAudioPermission;
 import com.cosmos.photonim.imbase.utils.ToastUtils;
@@ -305,9 +306,9 @@ public class ChatExtraFragment extends RvBaseFragment {
                     } else if (position == 1) {
                         TakePhotoActivity.start(getActivity());
                     } else if (position == 2) {
-
+                        VideoActivity.start(getActivity());
                     } else if (position == 3) {
-
+                        ToastUtils.showText("nothing here");
                     } else if (position == 4) {
                         MapActivity.start(getActivity());
                     }

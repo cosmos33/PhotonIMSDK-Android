@@ -26,6 +26,7 @@
             android:name="com.momo.demo.main.groupinfo.GroupInfoActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".chat.map.MapActivity" />
-        <activity android:name=".chat.media.TakePhotoActivity" />
+        <activity android:name=".chat.media.takephoto.TakePhotoActivity" />
+        <activity android:name=".chat.media.video.VideoActivity" />
     </application>
 </manifest>

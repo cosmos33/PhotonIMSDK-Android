@@ -40,8 +40,7 @@ public class VoiceTextView extends AppCompatTextView {
 
     private void init() {
         handler = new VoiceHandler();
-        customRunnable = new CustomRunnable();
-        customRunnable.setRunnable(new Runnable() {
+        customRunnable = new CustomRunnable.Builder().runnable(new Runnable() {
             @Override
             public void run() {
                 setText("按住说话");
@@ -49,7 +48,7 @@ public class VoiceTextView extends AppCompatTextView {
                     onEventUpListener.onTimeout();
                 }
             }
-        });
+        }).build();
     }
 
 

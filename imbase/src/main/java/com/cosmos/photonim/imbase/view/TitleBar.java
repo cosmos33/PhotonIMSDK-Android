@@ -23,6 +23,8 @@ public class TitleBar extends FrameLayout {
     TextView tvTitle;
     @BindView(R2.id.tvLeft)
     TextView tvLeft;
+    @BindView(R2.id.tvRight)
+    TextView tvRight;
 
     public TitleBar(Context context) {
         super(context);
@@ -73,6 +75,19 @@ public class TitleBar extends FrameLayout {
         ivRight.setVisibility(View.VISIBLE);
         ivRight.setImageResource(resId);
         ivRight.setOnClickListener(onClickListener);
+        return this;
+    }
+
+    public TitleBar setRightTextEvent(String leftContent, OnClickListener onClickListener) {
+        return setRightTextEvent(leftContent, 0, 0, onClickListener);
+    }
+
+    public TitleBar setRightTextEvent(String leftContent, int colorId, int drawableId, OnClickListener onClickListener) {
+        tvRight.setVisibility(View.VISIBLE);
+        tvRight.setText(leftContent);
+        tvRight.setTextColor(colorId);
+        tvRight.setBackgroundResource(drawableId);
+        tvRight.setOnClickListener(onClickListener);
         return this;
     }
 

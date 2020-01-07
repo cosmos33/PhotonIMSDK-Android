@@ -10,6 +10,6 @@ public class RecorderFactory {
     }
 
     public static IRecorder createRecorder() {
-        return new Recorder();
+        return new CosmosRecorder();
     }
 }

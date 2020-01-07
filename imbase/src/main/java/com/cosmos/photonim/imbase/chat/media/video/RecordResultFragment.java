@@ -1,4 +1,4 @@
-package com.cosmos.photonim.imbase.chat.media;
+package com.cosmos.photonim.imbase.chat.media.video;
 
 import android.os.Bundle;
 import android.view.View;
@@ -7,23 +7,26 @@ import android.widget.ImageView;
 import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.R2;
 import com.cosmos.photonim.imbase.base.BaseFragment;
+import com.cosmos.photonim.imbase.chat.media.OnReturnFragmentListener;
 import com.cosmos.photonim.imbase.utils.ToastUtils;
 import com.cosmos.photonim.imbase.utils.image.ImageLoaderUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class TakePhotoResultFragment extends BaseFragment {
-    public static final String BUNDLE_PHOTO_PATH = "BUNDLE_PHOTO_PATH";
+public class RecordResultFragment extends BaseFragment {
+    public static final String BUNDLE_VIDEO_PATH = "BUNDLE_VIDEO_PATH";
+    public static final String BUNDLE_VIDEO_COVER_PATH = "BUNDLE_VIDEO_COVER_PATH";
+
     @BindView(R2.id.ivPhoto)
     ImageView ivPhoto;
-
-    private String photoPath;
-    private TakePhotoActivity.OnReturnFragmentListener onChangeFragmentListener;
+    private OnReturnFragmentListener onChangeFragmentListener;
+    private String videoPath;
+    private String videoCoverPath;
 
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_chat_takephotoresult;
+        return R.layout.fragment_chat_recordresult;
     }
 
     @Override
@@ -33,8 +36,14 @@ public class TakePhotoResultFragment extends BaseFragment {
             ToastUtils.showText("photo path maybe null");
             return;
         }
-        photoPath = arguments.getString(BUNDLE_PHOTO_PATH);
-        ImageLoaderUtils.getInstance().loadImage(getContext(), photoPath, R.drawable.chat_placeholder, ivPhoto);
+        videoPath = arguments.getString(BUNDLE_VIDEO_PATH);
+        videoCoverPath = arguments.getString(BUNDLE_VIDEO_COVER_PATH);
+        ImageLoaderUtils.getInstance().loadImage(getContext(), videoCoverPath, R.drawable.chat_placeholder, ivPhoto);
+    }
+
+    @OnClick(R2.id.ivPlay)
+    public void onPlayClick() {
+
     }
 
     @OnClick(R2.id.ivReturn)
@@ -48,11 +57,11 @@ public class TakePhotoResultFragment extends BaseFragment {
     @OnClick(R2.id.ivDone)
     public void onDonwClick() {
         if (onChangeFragmentListener != null) {
-            onChangeFragmentListener.onDoneClick(photoPath);
+            onChangeFragmentListener.onDoneClick(videoPath);
         }
     }
 
-    public void setOnChangeFragmentListener(TakePhotoActivity.OnReturnFragmentListener onChangeFragmentListener) {
+    public void setOnChangeFragmentListener(OnReturnFragmentListener onChangeFragmentListener) {
         this.onChangeFragmentListener = onChangeFragmentListener;
     }
 }

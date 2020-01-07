@@ -16,6 +16,8 @@ public class FileUtils {
     public static final String VOICE_PATH_SEND = IM_DEOM_ROOT + "/" + "voice_send/";
     public static final String VOICE_PATH_RECEIVE = IM_DEOM_ROOT + "/" + "voice_receive/";
     public static final String PHOTO_PATH = IM_DEOM_ROOT + "/" + "takephoto/";
+    public static final String VIDEO_PATH = IM_DEOM_ROOT + "/" + "video/";
+    public static final String VIDEO_COVER_PATH = VIDEO_PATH + "/" + "cover/";
 
     public static boolean createFile(File file) {
         if (file == null) {
@@ -37,7 +39,19 @@ public class FileUtils {
     }
 
     public static String getPhotoPath() {
-        File file = new File(Environment.getExternalStorageDirectory(), PHOTO_PATH);
+        return getPath(PHOTO_PATH);
+    }
+
+    public static String getVideoPath() {
+        return getPath(VIDEO_PATH);
+    }
+
+    public static String getVideoCoverPath() {
+        return getPath(VIDEO_COVER_PATH);
+    }
+
+    public static String getPath(String path) {
+        File file = new File(Environment.getExternalStorageDirectory(), path);
         if (!file.exists()) {
             file.mkdirs();
         }

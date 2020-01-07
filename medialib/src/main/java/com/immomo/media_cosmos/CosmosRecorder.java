@@ -6,13 +6,14 @@ import android.view.SurfaceHolder;
 import com.core.glcore.config.MRConfig;
 import com.core.glcore.config.Size;
 import com.immomo.moment.config.MRecorderActions;
+import com.immomo.moment.recorder.MomoRecorder;
 import com.mm.mediasdk.IMultiRecorder;
 import com.mm.mediasdk.MoMediaManager;
 
-public class Recorder implements IRecorder {
+public class CosmosRecorder implements IRecorder {
     private IMultiRecorder recorder;
 
-    public Recorder() {
+    public CosmosRecorder() {
         recorder = MoMediaManager.createRecorder();
     }
 
@@ -24,6 +25,9 @@ public class Recorder implements IRecorder {
         mrConfig.setEncodeSize(size);
         // 设置camera 的采集分辨率
         mrConfig.setTargetVideoSize(size);
+        mrConfig.setVideoEncodeBitRate(mediaConfig.getVideoEncodeBitRate());
+        mrConfig.setAudioChannels(mediaConfig.getAudioChannels());
+        mrConfig.setVideoFPS(mediaConfig.getVideoFPS());
         recorder.prepare(context, mrConfig);
     }
 
@@ -73,6 +77,67 @@ public class Recorder implements IRecorder {
             public void onTakePhotoComplete(int error, Exception e) {
                 if (iTakePhotoCallBack != null) {
                     iTakePhotoCallBack.onTakePhotoResult(error);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void setVideoOutPath(String path) {
+        recorder.setMediaOutPath(path);
+    }
+
+    @Override
+    public void startRecord() {
+        recorder.startRecording();
+    }
+
+    @Override
+    public void cancelRecord() {
+        recorder.cancelRecording();
+    }
+
+    @Override
+    public void pauseRecord() {
+        recorder.pauseRecording();
+    }
+
+    @Override
+    public void finishRecord(final IRecordFinishListener iRecordFinishListener) {
+        recorder.finishRecord(new MRecorderActions.OnRecordFinishedListener() {
+            @Override
+            public void onFinishingProgress(int i) {
+
+            }
+
+            @Override
+            public void onRecordFinished() {
+                if (iRecordFinishListener != null) {
+                    iRecordFinishListener.onRecordFinish(null);
+                }
+            }
+
+            @Override
+            public void onFinishError(String s) {
+                if (iRecordFinishListener != null) {
+                    iRecordFinishListener.onRecordFinish(s);
+                }
+            }
+        });
+    }
+
+    @Override
+    public boolean isRecording() {
+        return recorder.isRecording();
+    }
+
+    @Override
+    public void setErrorListener(final IRecorderErrorListener iRecorderErrorListener) {
+        recorder.setOnErrorListener(new MRecorderActions.OnErrorListener() {
+            @Override
+            public void onError(MomoRecorder momoRecorder, int i, int i1) {
+                if (iRecorderErrorListener != null) {
+                    iRecorderErrorListener.onError(i + "");
                 }
             }
         });

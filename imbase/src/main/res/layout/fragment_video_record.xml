@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/media_bg"
+    android:orientation="vertical">
+
+    <com.cosmos.photonim.imbase.view.TitleBar
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <SurfaceView
+        android:id="@+id/surfaceView"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="0dp" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_margin="8dp"
+        android:minHeight="100dp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:id="@+id/tvTime"
+            android:textColor="@color/white"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="wrap_content" />
+
+        <com.cosmos.photonim.imbase.chat.media.video.TouchTextView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:background="@drawable/media_takephoto"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:id="@+id/tvTakePhoto"
+            android:text="@string/chat_media_video_record" />
+
+        <ImageView
+            android:layout_width="@dimen/chat_media_width"
+            android:layout_height="@dimen/chat_media_width"
+            android:layout_gravity="right|center"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="48dp"
+            android:id="@+id/tvFlashing"
+            android:src="@drawable/media_flashing" />
+
+        <ImageView
+            android:id="@+id/ivSwitch"
+            android:layout_width="@dimen/chat_media_width"
+            android:layout_height="@dimen/chat_media_width"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="right|center"
+            android:src="@drawable/media_photo" />
+
+    </FrameLayout>
+</LinearLayout>

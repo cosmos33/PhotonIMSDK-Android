@@ -1,4 +1,4 @@
-package com.cosmos.photonim.imbase.chat.media;
+package com.cosmos.photonim.imbase.chat.media.takephoto;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,6 +7,8 @@ import android.support.annotation.Nullable;
 
 import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.base.BaseActivity;
+import com.cosmos.photonim.imbase.chat.media.OnChangeToResultFragmentListener;
+import com.cosmos.photonim.imbase.chat.media.OnReturnFragmentListener;
 
 public class TakePhotoActivity extends BaseActivity {
     public static final int REQUEST_CAMERA = 1000;
@@ -26,12 +28,14 @@ public class TakePhotoActivity extends BaseActivity {
     }
 
     private void init() {
-        takePhotoFragment = (TakePhotoFragment) replaceNewFragment(R.id.flContainer, "com.cosmos.photonim.imbase.chat.media.TakePhotoFragment");
+        takePhotoFragment = (TakePhotoFragment) replaceNewFragment(R.id.flContainer,
+                "com.cosmos.photonim.imbase.chat.media.takephoto.TakePhotoFragment");
         takePhotoFragment.setOnChangeFragmentListener(new OnChangeToResultFragmentListener() {
             @Override
             public void onChangeToResultFragment(Bundle args) {
                 if (takePhotoResultFragment == null) {
-                    takePhotoResultFragment = (TakePhotoResultFragment) replaceNewFragment(R.id.flContainer, "com.cosmos.photonim.imbase.chat.media.TakePhotoResultFragment", args);
+                    takePhotoResultFragment = (TakePhotoResultFragment) replaceNewFragment(R.id.flContainer,
+                            "com.cosmos.photonim.imbase.chat.media.takephoto.TakePhotoResultFragment", args);
                     takePhotoResultFragment.setOnChangeFragmentListener(new OnReturnFragmentListener() {
 
                         @Override
@@ -52,15 +56,5 @@ public class TakePhotoActivity extends BaseActivity {
                 }
             }
         });
-    }
-
-    public interface OnChangeToResultFragmentListener {
-        void onChangeToResultFragment(Bundle args);
-    }
-
-    public interface OnReturnFragmentListener {
-        void onReturnFragment(Bundle args);
-
-        void onDoneClick(String result);
     }
 }

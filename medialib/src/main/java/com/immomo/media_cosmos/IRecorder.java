@@ -21,4 +21,20 @@ public interface IRecorder {
     void release();
 
     void takePhoto(String photoSavePath, ITakePhotoCallBack iTakePhotoCallBack);
+
+
+    void setVideoOutPath(String path);
+
+    void startRecord();
+
+    void cancelRecord();
+
+    void pauseRecord();
+
+    void finishRecord(IRecordFinishListener iRecordFinishListener);
+
+    boolean isRecording();
+
+    void setErrorListener(IRecorderErrorListener iRecorderErrorListener);
+
 }

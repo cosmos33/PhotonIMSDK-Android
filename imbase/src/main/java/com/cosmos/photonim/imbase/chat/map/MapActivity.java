@@ -44,15 +44,19 @@ public class MapActivity extends IMapView {
     private void initView() {
         titleBar.setTitle(getResources().getString(R.string.map_title));
         titleBar.setLeftImageEvent(R.drawable.arrow_left, v -> MapActivity.this.finish());
-        titleBar.setRightImageEvent(R.drawable.arrow_left, v -> {
-            presenter.sendPosition(mapFragment.getLocationLatLng());
-        });
 
         mapFragment = new AMapFragment();
         if (positionArray != null && positionArray.length == 2) {
             Bundle bundle = new Bundle();
             bundle.putDoubleArray(AMapFragment.EXTRA_LATLNG, positionArray);
             mapFragment.setArguments(bundle);
+            titleBar.setRightImageEvent(R.drawable.map_relay, v -> {
+                // TODO: 2020-01-07 转发
+            });
+        } else {
+            titleBar.setRightTextEvent("发送", 0xffffffff, R.drawable.drawable_map_send, v -> {
+                presenter.sendPosition(mapFragment.getLocationLatLng());
+            });
         }
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.mapContainer, mapFragment);

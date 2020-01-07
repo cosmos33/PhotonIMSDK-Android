@@ -12,8 +12,15 @@ public class CustomRunnable {
     private long delayTime = NO_DELAY;
     private boolean canceled = false;
 
-    public CustomRunnable() {
+    private CustomRunnable() {
         generateId();
+    }
+
+    private CustomRunnable(Builder builder) {
+        repeated = builder.repeated;
+        runnable = builder.runnable;
+        delayTime = builder.delayTime;
+        canceled = builder.canceled;
     }
 
     private void generateId() {
@@ -24,18 +31,8 @@ public class CustomRunnable {
         return repeated;
     }
 
-    public CustomRunnable setRepeated(boolean repeated) {
-        this.repeated = repeated;
-        return this;
-    }
-
     public Runnable getRunnable() {
         return runnable;
-    }
-
-    public CustomRunnable setRunnable(Runnable runnable) {
-        this.runnable = runnable;
-        return this;
     }
 
     public int getId() {
@@ -58,17 +55,54 @@ public class CustomRunnable {
         return delayTime;
     }
 
-    public CustomRunnable setDelayTime(long delayTime) {
-        this.delayTime = delayTime;
-        return this;
-    }
-
     public boolean isCanceled() {
         return canceled;
     }
 
-    public CustomRunnable setCanceled(boolean canceled) {
+    public void setCanceled(boolean canceled) {
         this.canceled = canceled;
-        return this;
+    }
+
+    public void setDelayTime(int timeOut) {
+        this.delayTime = timeOut;
+    }
+
+    public void setRepeated(boolean repeated) {
+        this.repeated = repeated;
+    }
+
+
+    public static final class Builder {
+        private boolean repeated;
+        private Runnable runnable;
+        private long delayTime;
+        private boolean canceled;
+
+        public Builder() {
+        }
+
+        public Builder repeated(boolean val) {
+            repeated = val;
+            return this;
+        }
+
+        public Builder runnable(Runnable val) {
+            runnable = val;
+            return this;
+        }
+
+        public Builder delayTime(long val) {
+            delayTime = val;
+            return this;
+        }
+
+        public Builder canceled(boolean val) {
+            canceled = val;
+            return this;
+        }
+
+        public CustomRunnable build() {
+            return new CustomRunnable(this);
+        }
     }
 }

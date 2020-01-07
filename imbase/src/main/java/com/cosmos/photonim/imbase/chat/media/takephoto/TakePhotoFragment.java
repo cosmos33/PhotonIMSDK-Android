@@ -1,4 +1,4 @@
-package com.cosmos.photonim.imbase.chat.media;
+package com.cosmos.photonim.imbase.chat.media.takephoto;
 
 import android.hardware.Camera;
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import com.core.glcore.util.BitmapPrivateProtocolUtil;
 import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.R2;
 import com.cosmos.photonim.imbase.base.BaseFragment;
+import com.cosmos.photonim.imbase.chat.media.OnChangeToResultFragmentListener;
 import com.cosmos.photonim.imbase.utils.FileUtils;
 import com.cosmos.photonim.imbase.utils.ToastUtils;
 import com.cosmos.photonim.imbase.view.TitleBar;
@@ -34,7 +35,7 @@ public class TakePhotoFragment extends BaseFragment {
     private IRecorder recorder;
     private boolean flashStatus;
     private String photoPath;
-    private TakePhotoActivity.OnChangeToResultFragmentListener onChangeFragmentListener;
+    private OnChangeToResultFragmentListener onChangeFragmentListener;
 
     @Override
     public int getLayoutId() {
@@ -120,13 +121,7 @@ public class TakePhotoFragment extends BaseFragment {
     public void onTakePhoto() {
         String prefix = System.currentTimeMillis() + "";
         File file = new File(FileUtils.getPhotoPath(), String.format("%s.jpg", prefix));
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        FileUtils.createFile(file);
         recorder.takePhoto(this.photoPath = file.getAbsolutePath(), new ITakePhotoCallBack() {
             @Override
             public void onTakePhotoResult(int error) {
@@ -155,7 +150,7 @@ public class TakePhotoFragment extends BaseFragment {
         });
     }
 
-    public void setOnChangeFragmentListener(TakePhotoActivity.OnChangeToResultFragmentListener onChangeFragmentListener) {
+    public void setOnChangeFragmentListener(OnChangeToResultFragmentListener onChangeFragmentListener) {
         this.onChangeFragmentListener = onChangeFragmentListener;
     }
 
