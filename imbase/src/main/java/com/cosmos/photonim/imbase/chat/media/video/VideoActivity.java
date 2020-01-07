@@ -11,12 +11,13 @@ import com.cosmos.photonim.imbase.chat.media.OnChangeToResultFragmentListener;
 import com.cosmos.photonim.imbase.chat.media.OnReturnFragmentListener;
 
 public class VideoActivity extends BaseActivity {
+    public static final int REQUEST_VIDEO = 1002;
     private VideoRecordFragment videoRecordFragment;
     private RecordResultFragment recordResultFragment;
 
     public static void start(Activity activity) {
         Intent intent = new Intent(activity, VideoActivity.class);
-        activity.startActivity(intent);
+        activity.startActivityForResult(intent, REQUEST_VIDEO);
     }
 
     @Override
@@ -52,6 +53,7 @@ public class VideoActivity extends BaseActivity {
                         }
                     });
                 } else {
+                    recordResultFragment.setArguments(args);
                     replaceFragment(R.id.flContainer, recordResultFragment);
                 }
             }

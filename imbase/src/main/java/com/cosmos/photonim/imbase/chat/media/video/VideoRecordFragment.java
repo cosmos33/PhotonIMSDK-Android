@@ -1,5 +1,6 @@
 package com.cosmos.photonim.imbase.chat.media.video;
 
+import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -165,7 +166,7 @@ public class VideoRecordFragment extends BaseFragment {
             VideoDataRetrieverBySoft videoDataRetrieve = new VideoDataRetrieverBySoft();
 
             @Override
-            public String call() {
+            public BmpInfo call() {
                 long frames = 2;// TODO: 2020-01-07 获取帧数
                 for (int i = 0; i < frames; i++) {
                     VideoDataRetrieverBySoft.Node node = new VideoDataRetrieverBySoft.Node(i * 1000 / 15, 0);//注意此处的参数是微秒
@@ -175,8 +176,9 @@ public class VideoRecordFragment extends BaseFragment {
                 videoDataRetrieve.getImageByList(videoNodes);
                 File file = new File(FileUtils.getVideoCoverPath(), videoName);
                 FileUtils.createFile(file);
-                FileUtils.saveBitmap(file.getAbsolutePath(), videoNodes.get(0).bmp);
-                return file.getAbsolutePath();
+                Bitmap bmp = videoNodes.get(0).bmp;
+                FileUtils.saveBitmap(file.getAbsolutePath(), bmp);
+                return new BmpInfo(file.getAbsolutePath(), bmp.getWidth(), bmp.getHeight());
             }
         }, new AsycTaskUtil.OnTaskListener() {
             @Override
@@ -188,12 +190,33 @@ public class VideoRecordFragment extends BaseFragment {
                 if (onChangeFragmentListener != null) {
                     Bundle bundle = new Bundle();
                     bundle.putString(RecordResultFragment.BUNDLE_VIDEO_PATH, videoPath);
-                    bundle.putString(RecordResultFragment.BUNDLE_VIDEO_COVER_PATH, (String) result);
+                    BmpInfo bmpInfo = (BmpInfo) result;
+                    if (recorder.getRotateDegree() / 90 % 2 == 0) {
+                        bundle.putInt(RecordResultFragment.BUNDLE_VIDEO_COVER_WIDTH, bmpInfo.width);
+                        bundle.putInt(RecordResultFragment.BUNDLE_VIDEO_COVER_HEIGHT, bmpInfo.height);
+                    } else {
+                        bundle.putInt(RecordResultFragment.BUNDLE_VIDEO_COVER_WIDTH, bmpInfo.height);
+                        bundle.putInt(RecordResultFragment.BUNDLE_VIDEO_COVER_HEIGHT, bmpInfo.width);
+                    }
+                    bundle.putString(RecordResultFragment.BUNDLE_VIDEO_COVER_PATH, bmpInfo.path);
                     onChangeFragmentListener.onChangeToResultFragment(bundle);
                 }
             }
         });
     }
+
+    class BmpInfo {
+        String path;
+        int width;
+        int height;
+
+        public BmpInfo(String absolutePath, int width, int height) {
+            this.path = absolutePath;
+            this.width = width;
+            this.height = height;
+        }
+    }
+
 
     private MediaConfig getConfig() {
         return new MediaConfig.Builder()

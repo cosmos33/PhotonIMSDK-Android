@@ -94,8 +94,15 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
             case PhotonIMMessage.AUDIO:
                 sendVoice(chatData);
                 break;
+            case PhotonIMMessage.VIDEO:
+                sendVideo(chatData);
+                break;
         }
         return chatData;
+    }
+
+    private void sendVideo(ChatData chatData) {
+        // TODO: 2020-01-07
     }
 
     @Override
@@ -112,6 +119,9 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
                 break;
             case PhotonIMMessage.AUDIO:
                 sendVoice(chatData);
+                break;
+            case PhotonIMMessage.VIDEO:
+                sendVideo(chatData);
                 break;
         }
     }
@@ -131,44 +141,6 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
         return UUID.randomUUID().toString();
     }
 
-//    @Override
-//    public void reSendText(int chatType, String msgId, String content, String chatWith, String fromId, String toId, String icon) {
-//        sendTextInner(chatType, msgId, content, chatWith, fromId, toId, icon);
-//    }
-
-//    private void sendTextInner(int chatType, String msgId, String content, String chatWith, String fromId, String toId, String icon) {
-//        getiModel().sendTextMsg(chatType, msgId, content, chatWith, fromId, toId, icon, null);
-//    }
-
-//    @Override
-//    public void sendPic(int chatType, String absolutePath, String chatWith, String fromId, String toId, String icon) {
-//        sendPicInner(chatType, null, absolutePath, chatWith, fromId, toId, icon);
-//    }
-
-//    @Override
-//    public void reSendPic(int chatType, String msgId, String absolutePath, String chatWith, String fromId, String toId, String icon) {
-//        sendPicInner(chatType, msgId, absolutePath, chatWith, fromId, toId, icon);
-//    }
-
-//    private void sendPicInner(int chatType, String msgId, String absolutePath, String chatWith, String fromId, String toId, String icon) {
-//        getiModel().uploadPic(chatType, msgId, absolutePath, icon, chatWith, fromId, toId, new IGroupInfoModel.OnMsgSendListener() {
-//
-//            @Override
-//            public void onMsgSend(int code, String codeMsg, ChatData chatData) {
-//            }
-//        }, (chatData, result) -> {
-//            if (result != null && result.success()) {
-//                JsonUploadImage jsonUploadImage = (JsonUploadImage) result.get();
-//                String url = jsonUploadImage.getData().getUrl();
-//                chatData.setFileUrl(url);
-//                getiModel().sendPicMsg(chatData, null);
-//            } else {
-//                getiModel().updateStatus(chatData.getChatType(), chatData.getChatWith(), chatData.getMsgId(), PhotonIMMessage.SEND_FAILED);
-//                EventBus.getDefault().post(new ChatDataWrapper(chatData, ChatModel.MSG_ERROR_CODE_UPLOAD_PIC_FAILED, "上传图片失败"));
-//            }
-//        });
-//    }
-
     private void sendPicMsgInner(ChatData chatDataTemp) {
         getiModel().uploadPic(chatDataTemp, (chatData, result) -> {
             if (result != null && result.success()) {
@@ -182,30 +154,6 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
             }
         });
     }
-
-//    @Override
-//    public void sendVoice(int chatType, String absolutePath, long time, String chatWith, String fromId, String toId, String icon) {
-//        sendVoice(chatType, null, absolutePath, time, chatWith, fromId, toId, icon);
-//    }
-
-//    @Override
-//    public void reSendVoice(int chatType, String msgId, String absolutePath, long time, String chatWith, String fromId, String toId, String icon) {
-//        sendVoice(chatType, msgId, absolutePath, time, chatWith, fromId, toId, icon);
-//    }
-
-//    private void sendVoice(int chatType, String msgId, String absolutePath, long time, String chatWith, String fromId, String toId, String icon) {
-//        getiModel().uploadVoiceFile(chatType, msgId, absolutePath, time, icon, chatWith, fromId, toId, null, (chatData, result) -> {
-//            if (result.success()) {
-//                JsonUploadVoice jsonUploadImage = (JsonUploadVoice) result.get();
-//                String url = jsonUploadImage.getData().getUrl();
-//                chatData.setFileUrl(url);
-//                getiModel().sendVoiceFileMsg(chatData, null);
-//            } else {
-//                getiModel().updateStatus(chatData.getChatType(), chatData.getChatWith(), chatData.getMsgId(), PhotonIMMessage.SEND_FAILED);
-//                EventBus.getDefault().post(new ChatDataWrapper(chatData, ChatModel.MSG_ERROR_CODE_UPLOAD_PIC_FAILED, "上传语音失败"));
-//            }
-//        });
-//    }
 
     private void sendVoice(ChatData chatDataTemp) {
         getiModel().uploadVoiceFile(chatDataTemp, (chatData, result) -> {

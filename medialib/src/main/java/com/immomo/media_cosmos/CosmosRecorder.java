@@ -83,6 +83,11 @@ public class CosmosRecorder implements IRecorder {
     }
 
     @Override
+    public int getRotateDegree() {
+        return recorder.getRotateDegree();
+    }
+
+    @Override
     public void setVideoOutPath(String path) {
         recorder.setMediaOutPath(path);
     }

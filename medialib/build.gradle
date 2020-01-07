@@ -26,6 +26,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.cosmos.mediax:recorder:2.2.5'
+    api 'com.cosmos.mediax:playersdk:1.2.3'
     api 'com.cosmos.mediax:glcore:2.2.5-20191014172300'
 
 }

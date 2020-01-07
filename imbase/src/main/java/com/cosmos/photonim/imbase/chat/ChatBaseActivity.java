@@ -21,6 +21,8 @@ import com.cosmos.photonim.imbase.chat.ichat.IChatView;
 import com.cosmos.photonim.imbase.chat.image.ImageCheckActivity;
 import com.cosmos.photonim.imbase.chat.media.takephoto.TakePhotoActivity;
 import com.cosmos.photonim.imbase.chat.media.takephoto.TakePhotoResultFragment;
+import com.cosmos.photonim.imbase.chat.media.video.RecordResultFragment;
+import com.cosmos.photonim.imbase.chat.media.video.VideoActivity;
 import com.cosmos.photonim.imbase.utils.AtEditText;
 import com.cosmos.photonim.imbase.utils.CollectionUtils;
 import com.cosmos.photonim.imbase.utils.Constants;
@@ -654,44 +656,70 @@ public abstract class ChatBaseActivity extends IChatView {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CODE && resultCode == Activity.RESULT_OK) {
-            Uri originalUri = data.getData(); // 获得图片的uri
-            String filePath = Utils.getFilePath(this, originalUri);
-            if (new File(filePath).length() >= IMAGE_MAX_SIZE) {
-                ToastUtils.showText(this, "仅支持发送10M以内的图片");
-                return;
-            }
-            ChatData.Builder chatDataBuild = new ChatData.Builder()
-                    .icon(myIcon)
-                    .localFile(filePath)
-                    .msgType(PhotonIMMessage.IMAGE)
-                    .chatType(chatType)
-                    .chatWith(chatWith)
-                    .from(loginUserId)
-                    .to(chatWith);
-
-            chatPresenter.sendMsg(chatDataBuild);
+            sendImage(data);
         } else if (requestCode == TakePhotoActivity.REQUEST_CAMERA && resultCode == RESULT_OK) {
-            String result = data.getStringExtra(TakePhotoResultFragment.BUNDLE_PHOTO_PATH);
-            if (result == null) {
-                return;
-            }
-            if (new File(result).length() >= IMAGE_MAX_SIZE) {
-                ToastUtils.showText(this, "仅支持发送10M以内的图片");
-                return;
-            }
-            ChatData.Builder chatDataBuild = new ChatData.Builder()
-                    .icon(myIcon)
-                    .localFile(result)
-                    .msgType(PhotonIMMessage.IMAGE)
-                    .chatType(chatType)
-                    .chatWith(chatWith)
-                    .from(loginUserId)
-                    .to(chatWith);
-            chatPresenter.sendMsg(chatDataBuild);
+            sendPhoto(data);
+        } else if (requestCode == VideoActivity.REQUEST_VIDEO && resultCode == RESULT_OK) {
+            sendVideo(data);
         }
 
         super.onActivityResult(requestCode, resultCode, data);
 
+    }
+
+    private void sendVideo(Intent data) {
+        String result = data.getStringExtra(RecordResultFragment.BUNDLE_VIDEO_PATH);
+        if (result == null) {
+            return;
+        }
+        ChatData.Builder chatDataBuild = new ChatData.Builder()
+                .icon(myIcon)
+                .localFile(result)
+                .msgType(PhotonIMMessage.VIDEO)
+                .chatType(chatType)
+                .chatWith(chatWith)
+                .from(loginUserId)
+                .to(chatWith);
+        chatPresenter.sendMsg(chatDataBuild);
+    }
+
+    private void sendPhoto(Intent data) {
+        String result = data.getStringExtra(TakePhotoResultFragment.BUNDLE_PHOTO_PATH);
+        if (result == null) {
+            return;
+        }
+        if (new File(result).length() >= IMAGE_MAX_SIZE) {
+            ToastUtils.showText(this, "仅支持发送10M以内的图片");
+            return;
+        }
+        ChatData.Builder chatDataBuild = new ChatData.Builder()
+                .icon(myIcon)
+                .localFile(result)
+                .msgType(PhotonIMMessage.IMAGE)
+                .chatType(chatType)
+                .chatWith(chatWith)
+                .from(loginUserId)
+                .to(chatWith);
+        chatPresenter.sendMsg(chatDataBuild);
+    }
+
+    protected void sendImage(Intent data) {
+        Uri originalUri = data.getData(); // 获得图片的uri
+        String filePath = Utils.getFilePath(this, originalUri);
+        if (new File(filePath).length() >= IMAGE_MAX_SIZE) {
+            ToastUtils.showText(this, "仅支持发送10M以内的图片");
+            return;
+        }
+        ChatData.Builder chatDataBuild = new ChatData.Builder()
+                .icon(myIcon)
+                .localFile(filePath)
+                .msgType(PhotonIMMessage.IMAGE)
+                .chatType(chatType)
+                .chatWith(chatWith)
+                .from(loginUserId)
+                .to(chatWith);
+
+        chatPresenter.sendMsg(chatDataBuild);
     }
 
     private String getTimeContent(long curTime) {

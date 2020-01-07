@@ -22,6 +22,7 @@ public interface IRecorder {
 
     void takePhoto(String photoSavePath, ITakePhotoCallBack iTakePhotoCallBack);
 
+    int getRotateDegree();
 
     void setVideoOutPath(String path);
 

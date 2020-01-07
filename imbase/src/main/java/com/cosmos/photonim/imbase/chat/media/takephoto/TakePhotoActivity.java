@@ -52,6 +52,7 @@ public class TakePhotoActivity extends BaseActivity {
                         }
                     });
                 } else {
+                    takePhotoResultFragment.setArguments(args);
                     replaceFragment(R.id.flContainer, takePhotoResultFragment);
                 }
             }

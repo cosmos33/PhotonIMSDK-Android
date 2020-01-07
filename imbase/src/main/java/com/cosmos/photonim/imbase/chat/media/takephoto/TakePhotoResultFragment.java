@@ -29,6 +29,10 @@ public class TakePhotoResultFragment extends BaseFragment {
 
     @Override
     protected void initView(View view) {
+        initPhoto();
+    }
+
+    private void initPhoto() {
         Bundle arguments = getArguments();
         if (arguments == null) {
             ToastUtils.showText("photo path maybe null");
