@@ -50,12 +50,12 @@ public class ChatGroupActivity extends ChatBaseActivity {
                 return;
             }
             if (data.getBooleanExtra(EXTRA_ALL, false)) {
-                etInput.addAtContent(null, AT_ALL_CONTENT);
+                extraFragment.addAtContent(null, AT_ALL_CONTENT);
                 return;
             }
             ArrayList<String> resultIds = data.getStringArrayListExtra(EXTRA_RESULT_ID);
             for (int i = 0; i < resultNames.size(); i++) {
-                etInput.addAtContent(resultIds.get(i), resultNames.get(i) + " ");
+                extraFragment.addAtContent(resultIds.get(i), resultNames.get(i) + " ");
             }
         }
     }

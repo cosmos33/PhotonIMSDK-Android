@@ -1,5 +1,6 @@
 package com.cosmos.photonim.imbase.chat.map;
 
+import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +9,6 @@ import com.cosmos.maplib.AMapFragment;
 import com.cosmos.maplib.map.MapInfo;
 import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.R2;
-import com.cosmos.photonim.imbase.chat.ChatBaseActivity;
 import com.cosmos.photonim.imbase.chat.map.imap.IMapView;
 import com.cosmos.photonim.imbase.utils.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.view.TitleBar;
@@ -21,15 +21,15 @@ public class MapActivity extends IMapView {
     private AMapFragment mapFragment;
     private double[] positionArray;
 
-    public static void start(ChatBaseActivity chatBaseActivity) {
-        Intent intent = new Intent(chatBaseActivity, MapActivity.class);
-        chatBaseActivity.startActivity(intent);
+    public static void start(Activity activity) {
+        Intent intent = new Intent(activity, MapActivity.class);
+        activity.startActivity(intent);
     }
 
-    public static void start(ChatBaseActivity chatBaseActivity, double lat, double lng) {
-        Intent intent = new Intent(chatBaseActivity, MapActivity.class);
+    public static void start(Activity activity, double lat, double lng) {
+        Intent intent = new Intent(activity, MapActivity.class);
         intent.putExtra(AMapFragment.EXTRA_LATLNG, new double[]{lat, lng});
-        chatBaseActivity.startActivity(intent);
+        activity.startActivity(intent);
     }
 
     @Override

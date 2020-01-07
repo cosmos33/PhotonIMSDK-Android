@@ -4,37 +4,24 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.InputFilter;
-import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.View;
-import android.view.ViewStub;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.cosmos.photon.im.PhotonIMMessage;
 import com.cosmos.photonim.imbase.ImBaseBridge;
 import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.R2;
 import com.cosmos.photonim.imbase.chat.adapter.ChatAdapter;
-import com.cosmos.photonim.imbase.chat.emoji.EmojiContainerFragment;
 import com.cosmos.photonim.imbase.chat.ichat.IChatView;
 import com.cosmos.photonim.imbase.chat.image.ImageCheckActivity;
-import com.cosmos.photonim.imbase.chat.map.MapActivity;
 import com.cosmos.photonim.imbase.chat.media.TakePhotoActivity;
 import com.cosmos.photonim.imbase.chat.media.TakePhotoResultFragment;
 import com.cosmos.photonim.imbase.utils.AtEditText;
-import com.cosmos.photonim.imbase.utils.CheckAudioPermission;
 import com.cosmos.photonim.imbase.utils.CollectionUtils;
 import com.cosmos.photonim.imbase.utils.Constants;
 import com.cosmos.photonim.imbase.utils.LogUtils;
@@ -52,7 +39,6 @@ import com.cosmos.photonim.imbase.view.ChatPopupWindow;
 import com.cosmos.photonim.imbase.view.ChatToastUtils;
 import com.cosmos.photonim.imbase.view.TitleBar;
 import com.cosmos.photonim.imbase.view.TouchRecycleView;
-import com.cosmos.photonim.imbase.view.VoiceTextView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -69,13 +55,9 @@ import butterknife.OnClick;
 
 public abstract class ChatBaseActivity extends IChatView {
     private static final int LIMIT_LOADREMOTE = 200;
-    private static final String IMAGE_UNSPECIFIED = "image/*";
     protected static final String AT_ALL_CONTENT = "所有人 ";
-    private static final int SEND_COUNT_LIMIT = 480;
-    private static final int VOICE_MAX_LENGTH = 3 * 60 * 1000;
     private static final int IMAGE_MAX_SIZE = 10 * 1024 * 1024;
-    private static final String FILE_PROVIDER_AUTHORITY = "com.cosmos.fileprovider";
-    private final int REQUEST_IMAGE_CODE = 1001;
+    public static final int REQUEST_IMAGE_CODE = 1001;
     private static final String TAG = "ChatActivityTAG";
     private static final String EXTRA_CHATTYPE = "EXTRA_CHATTYPE";
     private static final String EXTRA_CHATWITH = "EXTRA_CHATWITH";
@@ -90,26 +72,8 @@ public abstract class ChatBaseActivity extends IChatView {
     TitleBar titleBar;
     @BindView(R2.id.recyclerView)
     RecyclerView recyclerView;
-    @BindView(R2.id.ivVoice)
-    ImageView ivVoice;
-    @BindView(R2.id.etInput)
-    AtEditText etInput;
-    @BindView(R2.id.ivEmoji)
-    ImageView ivEmoji;
-    @BindView(R2.id.ivExtra)
-    ImageView ivExtra;
-    @BindView(R2.id.tvVoice)
-    VoiceTextView tvVoice;
-    @BindView(R2.id.tvSendMsg)
-    TextView tvSendMsg;
-    @BindView(R2.id.llExtra)
-    LinearLayout llExtra;
     @BindView(R2.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
-    @BindView(R2.id.vsEmoji)
-    ViewStub vsEmoji;
-
-    private FrameLayout emojiRoot;
 
     private ChatPopupWindow chatPopupWindow;
 
@@ -123,16 +87,14 @@ public abstract class ChatBaseActivity extends IChatView {
     protected String myIcon;
     protected String singleChatUserIcon;
     private String name;
-    private File voiceFile;
     private int lastPosition;
     private boolean igoreAlert;
-    private Uri mImageUri;
-    //    private File imageFile;
-    private EmojiContainerFragment fragment;
     private boolean lastLoadHistoryFromRemote = false;
     private TestSendFragment testSendFragment;
+    public ChatExtraFragment extraFragment;
     private boolean showTest;
     private String loginUserId;
+
 
     public static void startActivity(Activity from, int chatType, String chatWith, String myIcon,
                                      String name, String otherIcon, boolean igoreAlert) {
@@ -215,44 +177,7 @@ public abstract class ChatBaseActivity extends IChatView {
         titleBar.setRightImageEvent(R.drawable.chat_more, v -> {
             onInfoClick();
         });
-        etInput.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (etInput.getText().toString().trim().length() > 0) {
-                    tvSendMsg.setVisibility(View.VISIBLE);
-                    ivExtra.setVisibility(View.GONE);
-                    llExtra.setVisibility(View.GONE);
-                } else {
-                    tvSendMsg.setVisibility(View.GONE);
-                    ivExtra.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-
-        etInput.setFilters(new InputFilter[]{new EditFilter()});
-
-        etInput.setOnFocusChangeListener((v, hasFocus) -> {
-            llExtra.setVisibility(View.GONE);
-            if (emojiRoot != null) {
-                emojiRoot.setVisibility(View.GONE);
-            }
-//            dismissExtraLayout();
-        });
-
-        etInput.setOnAtInputListener(new AtEditText.OnAtInputListener() {
-            @Override
-            public void onAtCharacterInput() {
-                ChatBaseActivity.this.onAtCharacterInput();
-            }
-        });
         swipeRefreshLayout.setOnRefreshListener(() -> {
             if (chatMsg.size() > 0) {
                 ChatData chatData = chatMsg.get(0);
@@ -266,44 +191,27 @@ public abstract class ChatBaseActivity extends IChatView {
             }
         });
 
-        tvVoice.setTimeOut(VOICE_MAX_LENGTH);
-        tvVoice.setOnEventUpListener(new VoiceTextView.OnEventUpListener() {
+        extraFragment = (ChatExtraFragment) getSupportFragmentManager().findFragmentById(R.id.extraFragment);
+        extraFragment.setOnVoiceEventListener(new ChatExtraFragment.OnVoiceEventListener() {
             @Override
-            public boolean canHandle() {
-                return CheckAudioPermission.isHasPermission(ChatBaseActivity.this);
+            public File onVoiceStart() {
+                return chatPresenter.startRecord((ChatBaseActivity.this));
             }
 
             @Override
-            public void onEventDown() {
-                ChatToastUtils.showChatVoice();
-                voiceFile = chatPresenter.startRecord(ChatBaseActivity.this);
-                setControlEnable(false);
-            }
-
-            @Override
-            public void onEventCancel() {
+            public void onVoiceCancel() {
                 chatPresenter.cancelRecord();
-                setControlEnable(true);
             }
 
             @Override
-            public void onEventUp() {
+            public void onVoiceStop() {
                 chatPresenter.stopRecord();
-                setControlEnable(true);
-            }
-
-            @Override
-            public void onTimeout() {
-                ToastUtils.showText(ChatBaseActivity.this, "超时自动发送");
-                chatPresenter.stopRecord();
-                setControlEnable(true);
             }
         });
 
         ((TouchRecycleView) recyclerView).setOnRecycleViewClickListener(() -> {
-            Utils.keyBoard(this, etInput, false);
+            Utils.keyBoard(this, extraFragment.getInput(), false);
         });
-        etInput.setFilters(new InputFilter[]{new InputFilter.LengthFilter(SEND_COUNT_LIMIT)});
 
         if (showTest) {
             testSendFragment = new TestSendFragment();
@@ -311,21 +219,6 @@ public abstract class ChatBaseActivity extends IChatView {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.add(R.id.frameLayoutTest, testSendFragment, "TestSendFragment");
             fragmentTransaction.commit();
-        }
-    }
-
-    private void setControlEnable(boolean enable) {
-        ivVoice.setEnabled(enable);
-        ivEmoji.setEnabled(enable);
-        ivExtra.setEnabled(enable);
-        tvSendMsg.setEnabled(enable);
-    }
-
-    private class EditFilter implements InputFilter {
-
-        @Override
-        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-            return null;
         }
     }
 
@@ -349,7 +242,7 @@ public abstract class ChatBaseActivity extends IChatView {
         ChatData.Builder chatDataBuilder = new ChatData.Builder()
                 .msgStatus(PhotonIMMessage.SENDING)
                 .icon(myIcon)
-                .localFile(voiceFile.getAbsolutePath())
+                .localFile(extraFragment.getVideoFilePath())
                 .msgType(PhotonIMMessage.AUDIO)
                 .chatType(chatType)
                 .voiceDuration(duration / 1000)
@@ -500,78 +393,16 @@ public abstract class ChatBaseActivity extends IChatView {
         chatAdapter.notifyItemChanged(temp.getListPostion());
     }
 
-    @OnClick(R2.id.ivVoice)
-    public void onVoiceClick() {
-        if (tvVoice.getVisibility() == View.VISIBLE) {
-            tvVoice.setVisibility(View.GONE);
-            etInput.setVisibility(View.VISIBLE);
-        } else {
-            tvVoice.setVisibility(View.VISIBLE);
-            tvVoice.setText("按住说话");
-            etInput.setVisibility(View.GONE);
-        }
-    }
-
-    @OnClick(R2.id.ivEmoji)
-    public void onEmojiClick() {
-        Utils.keyBoard(this, etInput, false);
-        llExtra.setVisibility(View.GONE);
-        if (fragment == null) {
-            vsEmoji.inflate();
-            emojiRoot = findViewById(R.id.emojiRoot);
-            fragment = (EmojiContainerFragment) getSupportFragmentManager().findFragmentById(R.id.emojiContainerFragment);
-            fragment.setOnDelListener(new EmojiContainerFragment.OnDelListener() {
-                @Override
-                public void onDelClick() {
-                    String content = etInput.getText().toString();
-                    if (TextUtils.isEmpty(content.trim())) {
-                        return;
-                    }
-                    int contentLength = etInput.getText().toString().length();
-                    etInput.setText(content.substring(0, contentLength - 1));
-                }
-            });
-
-//            fragment.setOnSendListener(new EmojiContainerFragment.OnSendListener() {
-//                @Override
-//                public void onEmojiSend() {
-//                    if (TextUtils.isEmpty(etInput.getText().toString().trim())) {
-//                        return;
-//                    }
-//                    chatPresenter.sendText(etInput.getText().toString().trim(), chatWith, MyApplication.getApplication().getUserId(), chatWith, myIcon);
-//                }
-//            });
-
-            fragment.setOnEmojiClickListener(new EmojiContainerFragment.OnEmojiClickListener() {
-                @Override
-                public void onEmojiClick(String content) {
-                    if (tvVoice.getVisibility() == View.GONE) {
-                        etInput.append(content);
-                    }
-                }
-            });
-        } else {
-            if (emojiRoot.getVisibility() == View.GONE) {
-                emojiRoot.setVisibility(View.VISIBLE);
-            } else {
-                emojiRoot.setVisibility(View.GONE);
-            }
-        }
-
-    }
-
     @OnClick(R2.id.etInput)
     public void onInputClick() {
-        if (emojiRoot != null) {
-            emojiRoot.setVisibility(View.GONE);
-        }
-        llExtra.setVisibility(View.GONE);
+        extraFragment.setEmojiRootVisibility(View.GONE);
+        extraFragment.setLLExtraVisibility(View.GONE);
     }
 
     @OnClick(R2.id.ivExtra)
     public void onExtraClick() {
-        Utils.keyBoard(this, etInput, false);
-        if (llExtra.getVisibility() == View.VISIBLE) {
+        Utils.keyBoard(this, extraFragment.getInput(), false);
+        if (extraFragment.getLLExtraVisibility() == View.VISIBLE) {
             dismissExtraLayout();
         } else {
             showExtraLayout();
@@ -579,37 +410,19 @@ public abstract class ChatBaseActivity extends IChatView {
     }
 
     private void dismissExtraLayout() {
-        llExtra.setVisibility(View.GONE);
+        extraFragment.setLLExtraVisibility(View.GONE);
     }
 
     private void showExtraLayout() {
-        llExtra.setVisibility(View.VISIBLE);
-        if (emojiRoot != null) {
-            emojiRoot.setVisibility(View.GONE);
-        }
+        extraFragment.setLLExtraVisibility(View.VISIBLE);
+        extraFragment.setEmojiRootVisibility(View.GONE);
     }
 
-    @OnClick(R2.id.llPic)
-    public void onPicClick() {
-        Intent intent = new Intent(Intent.ACTION_PICK, null);
-        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, IMAGE_UNSPECIFIED);
-        startActivityForResult(intent, REQUEST_IMAGE_CODE);
-    }
-
-    @OnClick(R2.id.llTakePic)
-    public void onTakePic() {
-        TakePhotoActivity.start(this);
-    }
-
-    @OnClick(R2.id.llPosition)
-    public void onPositionClick() {
-        MapActivity.start(this);
-    }
 
     @OnClick(R2.id.tvSendMsg)
     public void onSendMsgClick() {
         ChatData.Builder chatDataBuilder = new ChatData.Builder()
-                .content(etInput.getText().toString())
+                .content(extraFragment.getContent())
                 .icon(myIcon)
                 .msgType(PhotonIMMessage.TEXT)
                 .chatWith(chatWith)
@@ -618,12 +431,11 @@ public abstract class ChatBaseActivity extends IChatView {
                 .to(chatWith);
         getAtStatus(chatDataBuilder);
         chatPresenter.sendMsg(chatDataBuilder);
-        etInput.setText("");
-        etInput.clearAtStatus();
+        extraFragment.clearInput();
     }
 
     private void getAtStatus(ChatData.Builder chatDataBuilder) {
-        ArrayList<AtEditText.Entity> atList = etInput.getAtList();
+        ArrayList<AtEditText.Entity> atList = extraFragment.getAtList();
         if (CollectionUtils.isEmpty(atList)) {
             return;
         }
@@ -832,7 +644,7 @@ public abstract class ChatBaseActivity extends IChatView {
 
     @Override
     public void onBackPressed() {
-        if (llExtra.getVisibility() == View.VISIBLE) {
+        if (extraFragment.getLLExtraVisibility() == View.VISIBLE) {
             dismissExtraLayout();
         } else {
             super.onBackPressed();
