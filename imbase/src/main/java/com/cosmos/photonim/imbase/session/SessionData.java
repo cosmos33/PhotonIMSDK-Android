@@ -37,6 +37,10 @@ public class SessionData implements ItemData {
     private int position;
     private boolean showAtTip;
     private SpannableString atMsg;
+    private String nickName;
+    private String icon;
+
+    private SpannableString snippetContent;
 
     public SpannableString getAtMsg() {
         return atMsg;
@@ -101,6 +105,8 @@ public class SessionData implements ItemData {
         position = builder.position;
         showAtTip = builder.showAtTip;
         atMsg = builder.generateAtMsg;
+        nickName = builder.nickName;
+        icon = builder.icon;
     }
 
     public String getChatWith() {
@@ -227,6 +233,10 @@ public class SessionData implements ItemData {
         this.draft = draft;
     }
 
+    public SpannableString getSnippetContent() {
+        return snippetContent;
+    }
+
     public String getTimeContent() {
         return timeContent;
     }
@@ -240,35 +250,35 @@ public class SessionData implements ItemData {
         this.itemType = itemType;
     }
 
-    public String getIcon() {
-        if (extra == null) {
-            return null;
-        }
-//        return sessionExtra.icon;
-        return extra.get("icon");
-    }
-
-    public String getNickName() {
-        if (extra == null) {
-            return null;
-        }
-        return extra.get("nickname");
-    }
-
-    public void setIcon(String avatar) {
-        if (extra == null) {
-            extra = new HashMap<>();
-        }
-
-        extra.put("icon", avatar);
-    }
-
-    public void setNickName(String nickname) {
-        if (extra == null) {
-            extra = new HashMap<>();
-        }
-        extra.put("nickname", nickname);
-    }
+//    public String getIcon() {
+//        if (extra == null) {
+//            return null;
+//        }
+////        return sessionExtra.icon;
+//        return extra.get("icon");
+//    }
+//
+//    public String getNickName() {
+//        if (extra == null) {
+//            return null;
+//        }
+//        return extra.get("nickname");
+//    }
+//
+//    public void setIcon(String avatar) {
+//        if (extra == null) {
+//            extra = new HashMap<>();
+//        }
+//
+//        extra.put("icon", avatar);
+//    }
+//
+//    public void setNickName(String nickname) {
+//        if (extra == null) {
+//            extra = new HashMap<>();
+//        }
+//        extra.put("nickname", nickname);
+//    }
 
     public PhotonIMSession convertToPhotonIMSession() {
         PhotonIMSession photonIMSession = new PhotonIMSession();
@@ -291,20 +301,20 @@ public class SessionData implements ItemData {
         return photonIMSession;
     }
 
-    public Map<String, String> getExtra(String nickName, String icon) {
-        Map<String, String> map = new HashMap<>();
-        map.put("nickname", nickName);
-        map.put("icon", icon);
-        return map;
-    }
-
-    public void setExtra(String nickName, String icon) {
-        extra = new HashMap<>();
-        extra.put("nickname", nickName);
-        extra.put("icon", icon);
-        this.extra = extra;
-
-    }
+//    public Map<String, String> getExtra(String nickName, String icon) {
+//        Map<String, String> map = new HashMap<>();
+//        map.put("nickname", nickName);
+//        map.put("icon", icon);
+//        return map;
+//    }
+//
+//    public void setExtra(String nickName, String icon) {
+//        extra = new HashMap<>();
+//        extra.put("nickname", nickName);
+//        extra.put("icon", icon);
+//        this.extra = extra;
+//
+//    }
 
     public int getItemPosition() {
         return position;
@@ -324,6 +334,22 @@ public class SessionData implements ItemData {
 
     public void setUpdateFromInfo(boolean updateFromInfo) {
         this.updateFromInfo = updateFromInfo;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setIcon(String avatar) {
+        this.icon = avatar;
+    }
+
+    public void setNickName(String nickname) {
+        this.nickName = nickname;
     }
 
     public static final class Builder {

@@ -15,10 +15,9 @@ import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.R2;
 import com.cosmos.photonim.imbase.base.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.chat.ChatBaseActivity;
+import com.cosmos.photonim.imbase.chat.searchhistory.adapter.SearchData;
 import com.cosmos.photonim.imbase.chat.searchhistory.adapter.SessionSearchAdapter;
 import com.cosmos.photonim.imbase.chat.searchhistory.isearch.ISearchView;
-import com.cosmos.photonim.imbase.session.SessionData;
-import com.cosmos.photonim.imbase.session.SessionUpdateOtherInfoImpl;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvBaseAdapter;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvListenerImpl;
 
@@ -29,16 +28,22 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class SearchHistoryActivity extends ISearchView {
+    private static final String EXTRA_CHATWITH = "EXTRA_CHATWITH";
+    private static final String EXTRA_CHATYPE = "EXTRA_CHATYPE";
     @BindView(R2.id.etSearch)
     EditText etSearch;
     @BindView(R2.id.recyclerView)
     RecyclerView recyclerView;
 
     private SessionSearchAdapter sessionAdapter;
-    private List<SessionData> baseDataList;
+    private List<SearchData> baseDataList;
+    private String chatWith;
+    private int chatType;
 
-    public static void start(Activity activity) {
+    public static void start(Activity activity, String chatWith, int chatType) {
         Intent intent = new Intent(activity, SearchHistoryActivity.class);
+        intent.putExtra(EXTRA_CHATWITH, chatWith);
+        intent.putExtra(EXTRA_CHATYPE, chatType);
         activity.startActivity(intent);
     }
 
@@ -52,6 +57,8 @@ public class SearchHistoryActivity extends ISearchView {
 
 
     private void initView() {
+        chatWith = getIntent().getStringExtra(EXTRA_CHATWITH);
+        chatType = getIntent().getIntExtra(EXTRA_CHATYPE, -1);
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -77,7 +84,7 @@ public class SearchHistoryActivity extends ISearchView {
             clearListResult();
             return;
         }
-        presenter.search(searchContent);
+        presenter.search(searchContent, chatType, chatWith);
     }
 
     private void clearListResult() {
@@ -106,18 +113,13 @@ public class SearchHistoryActivity extends ISearchView {
     public RvBaseAdapter getAdapter() {
         if (sessionAdapter == null) {
             baseDataList = new ArrayList<>();
-            sessionAdapter = new SessionSearchAdapter(baseDataList, new SessionUpdateOtherInfoImpl(new SessionUpdateOtherInfoImpl.OnSessionUpdateCallback() {
-                @Override
-                public void onSessionUpdate(SessionData sessionData) {
-                    sessionAdapter.notifyItemChanged(sessionData.getItemPosition());
-                }
-            }));
+            sessionAdapter = new SessionSearchAdapter(baseDataList, new SeachUpdateOtherInfoImpl(sessionData -> sessionAdapter.notifyItemChanged(sessionData.position)));
             sessionAdapter.setRvListener(new RvListenerImpl() {
                 @Override
                 public void onClick(View view, Object data, int position) {
-                    SessionData sessionData = (SessionData) data;
-                    ChatBaseActivity.startActivity(SearchHistoryActivity.this, sessionData.getChatType(),
-                            sessionData.getChatWith(), null, sessionData.getNickName(), sessionData.getIcon(), false);
+                    SearchData sessionData = (SearchData) data;
+                    ChatBaseActivity.startActivity(SearchHistoryActivity.this, sessionData.chatType,
+                            sessionData.chatWith, null, sessionData.nickName, sessionData.icon, false);
                 }
             });
         }
@@ -127,5 +129,14 @@ public class SearchHistoryActivity extends ISearchView {
     @Override
     public IPresenter getIPresenter() {
         return new SearchPresenter(this);
+    }
+
+    @Override
+    public void onSearchResult(ArrayList<SearchData> searchData) {
+        baseDataList.clear();
+        if (searchData != null) {
+            baseDataList.addAll(searchData);
+        }
+        sessionAdapter.notifyDataSetChanged();
     }
 }

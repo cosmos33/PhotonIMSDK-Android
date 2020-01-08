@@ -23,7 +23,12 @@ public class SessionUpdateOtherInfoImpl implements SessionItem.UpdateOtherInfoLi
         if (persionInfoModel == null) {
             persionInfoModel = new PersionInfoModel();
         }
-        persionInfoModel.getOtherInfo(sessionData, result -> {
+        int chatType = sessionData.getChatType();
+        String chatWith = sessionData.getChatWith();
+        String nickName = sessionData.getNickName();
+        boolean updateFromInfo = sessionData.isUpdateFromInfo();
+        String lastMsgFrom = sessionData.getLastMsgFr();
+        persionInfoModel.getOtherInfo(chatType, chatWith, nickName, updateFromInfo, lastMsgFrom, result -> {
             if (result == null || !result.success()) {
                 LogUtils.log(TAG, "获取Session item info failed");
                 return;

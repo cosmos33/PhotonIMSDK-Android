@@ -1,9 +1,7 @@
 package com.cosmos.photonim.imbase.businessmodel;
 
-import com.cosmos.photon.im.PhotonIMDatabase;
 import com.cosmos.photon.im.PhotonIMMessage;
 import com.cosmos.photonim.imbase.ImBaseBridge;
-import com.cosmos.photonim.imbase.session.SessionData;
 import com.cosmos.photonim.imbase.session.SessionUpdateOtherInfoImpl;
 import com.cosmos.photonim.imbase.utils.dbhelper.DBHelperUtils;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonGroupProfile;
@@ -13,54 +11,65 @@ import com.cosmos.photonim.imbase.utils.task.TaskExecutor;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public class PersionInfoModel {
     private Set<String> othersInfoSet;
 
-    public void getOtherInfo(SessionData sessionData, SessionUpdateOtherInfoImpl.OnGetOtherInfoResultListener onGetOtherInfoListener) {
+    public void getOtherInfo(int chatType,
+                             String chatWith,
+                             SessionUpdateOtherInfoImpl.OnGetOtherInfoResultListener onGetOtherInfoListener) {
+        getOtherInfo(chatType, chatWith, null, false, null, onGetOtherInfoListener);
+    }
+
+    public void getOtherInfo(int chatType,
+                             String chatWith,
+                             String nickName,
+                             boolean updateFromInfo,
+                             String lastMsgFrom,
+                             SessionUpdateOtherInfoImpl.OnGetOtherInfoResultListener onGetOtherInfoListener) {
+
         if (othersInfoSet == null) {
             othersInfoSet = new HashSet<>();
         }
-        if (othersInfoSet.contains(sessionData.getChatWith())) {
+        if (othersInfoSet.contains(chatWith)) {
             return;
         }
-        othersInfoSet.add(sessionData.getChatWith());
-        TaskExecutor.getInstance().createAsycTask(() -> getOtherInfoInner(sessionData)
+        othersInfoSet.add(chatWith);
+        TaskExecutor.getInstance().createAsycTask(() -> getOtherInfoInner(chatType, chatWith, nickName, updateFromInfo, lastMsgFrom)
                 , result -> {
-                    othersInfoSet.remove(sessionData.getChatWith());
+                    othersInfoSet.remove(chatWith);
                     if (onGetOtherInfoListener != null) {
                         onGetOtherInfoListener.onGetOtherInfoResult((JsonResult) result);
                     }
                 });
     }
 
-    private Object getOtherInfoInner(SessionData sessionData) {
-        if (sessionData.getChatType() == PhotonIMMessage.GROUP) {
-            if (sessionData.getNickName() == null) {
-                return getGroupInfo(sessionData.getChatWith(), sessionData);
-            } else if (sessionData.isUpdateFromInfo()) {
-                return getUserinfo(sessionData.getLastMsgFr(), sessionData, false);
+    private Object getOtherInfoInner(int chatType, String chatWith, String nickName, boolean updateFromInfo, String lastMsgFrom) {
+        if (chatType == PhotonIMMessage.GROUP) {
+            if (nickName == null) {
+                return getGroupInfo(chatWith);
+            } else if (updateFromInfo) {
+                return getUserinfo(lastMsgFrom);
             }
             return null;
         } else {
-            return getUserinfo(sessionData.getChatWith(), sessionData, true);
+            return getUserinfo(chatWith);
         }
     }
 
-    private Object getGroupInfo(String otherId, SessionData sessionData) {
+    private Object getGroupInfo(String otherId) {
         JsonResult othersInfo = ImBaseBridge.getInstance().getGroupProfile(otherId);
         if (othersInfo.success()) {
             JsonGroupProfile jsonGroupProfile = (JsonGroupProfile) othersInfo.get();
             JsonGroupProfile.DataBean.ProfileBean profile = jsonGroupProfile.getData().getProfile();
-            Map<String, String> extra = sessionData.getExtra(profile.getName(), profile.getAvatar());
-            PhotonIMDatabase.getInstance().updateSessionExtra(sessionData.getChatType(), sessionData.getChatWith(), extra);
+            DBHelperUtils.getInstance().saveProfile(profile.getGid(),
+                    profile.getAvatar(), profile.getName());
         }
         return othersInfo;
     }
 
-    private Object getUserinfo(String otherId, SessionData sessionData, boolean saveSessionExtra) {
+    private Object getUserinfo(String otherId) {
         JsonResult othersInfo = ImBaseBridge.getInstance().getOthersInfo(new String[]{otherId});
         if (othersInfo.success()) {
             if (((JsonOtherInfoMulti) othersInfo.get()).getData().getLists().size() > 0) {
@@ -70,17 +79,17 @@ public class PersionInfoModel {
 
             }
         }
-        if (saveSessionExtra && othersInfo.success()) {
-            // TODO: 2019-08-09 对服务器返回的数据进行校验
-            JsonOtherInfoMulti jsonOtherInfo = (JsonOtherInfoMulti) othersInfo.get();
-            if (jsonOtherInfo.getData().getLists().size() <= 0) {
-                return othersInfo;
-            }
-            JsonOtherInfoMulti.DataBean.ListsBean listsBean = jsonOtherInfo.getData().getLists().get(0);
-            Map<String, String> extra = sessionData.getExtra(listsBean.getNickname(), listsBean.getAvatar());
-            PhotonIMDatabase.getInstance().updateSessionExtra(sessionData.getChatType(), sessionData.getChatWith(), extra);
-
-        }
+//        if (saveSessionExtra && othersInfo.success()) {
+//            // TODO: 2019-08-09 对服务器返回的数据进行校验
+//            JsonOtherInfoMulti jsonOtherInfo = (JsonOtherInfoMulti) othersInfo.get();
+//            if (jsonOtherInfo.getData().getLists().size() <= 0) {
+//                return othersInfo;
+//            }
+//            JsonOtherInfoMulti.DataBean.ListsBean listsBean = jsonOtherInfo.getData().getLists().get(0);
+//            Map<String, String> extra = sessionData.getExtra(listsBean.getNickname(), listsBean.getAvatar());
+//            PhotonIMDatabase.getInstance().updateSessionExtra(sessionData.getChatType(), sessionData.getChatWith(), extra);
+//
+//        }
         return othersInfo;
     }
 }

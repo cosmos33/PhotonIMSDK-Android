@@ -49,7 +49,7 @@ public class AtEditText extends AppCompatEditText {
     /**
      * 添加@的内容
      *
-     * @param parm 最多传4个 ,分别对应 id,name,parm1,parm2
+     * @param parm 最多传4个 ,分别对应 id,nickName,parm1,parm2
      */
     public void addAtContent(String... parm) {
         atList.add(new Entity(parm[0], parm[1]));
@@ -93,8 +93,8 @@ public class AtEditText extends AppCompatEditText {
             String tempname = "@" + atList.get(i).getName();
             if ((startIndex = sText.indexOf(tempname, endIndex)) != -1) {
                 endIndex = startIndex + tempname.length();
-                spanIndexes.add(startIndex);//name 的开始索引，键值为偶数，从0开始
-                spanIndexes.add(startIndex + tempname.length()); //name 的结束索引，键值为奇数，从1开始
+                spanIndexes.add(startIndex);//nickName 的开始索引，键值为偶数，从0开始
+                spanIndexes.add(startIndex + tempname.length()); //nickName 的结束索引，键值为奇数，从1开始
             }
         }
         return spanIndexes;
@@ -139,8 +139,8 @@ public class AtEditText extends AppCompatEditText {
                     if (startIndex > selectionStart) break; // 如果开始索引值,大于光标位置,那么退出遍历
                     endIndex = startIndex + name.length();
                     deleteNum = i;
-                    spanIndexes.add(startIndex);//name 的开始索引，键值为偶数，从0开始
-                    spanIndexes.add(startIndex + name.length()); //name 的结束索引，键值为奇数，从1开始
+                    spanIndexes.add(startIndex);//nickName 的开始索引，键值为偶数，从0开始
+                    spanIndexes.add(startIndex + name.length()); //nickName 的结束索引，键值为奇数，从1开始
                     if (endIndex > selectionStart) break; // 如果结束索引值,大于光标位置,那么退出遍历
                 }
             }
@@ -225,7 +225,7 @@ public class AtEditText extends AppCompatEditText {
         String parm2;
 
         /**
-         * @param parm 最多传4个 ,分别对应 id,name,parm1,parm2
+         * @param parm 最多传4个 ,分别对应 id,nickName,parm1,parm2
          */
         public Entity(String... parm) {
             if (parm.length >= 1)

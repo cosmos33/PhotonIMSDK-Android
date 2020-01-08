@@ -7,7 +7,7 @@ public class JsonGroupProfile implements JsonRequestResult {
      * errcode : 0
      * errmsg : success
      * timesec : 1568781980
-     * data : {"profile":{"name":"测试群组1000001","gid":"1000001","avatar":"https://img.momocdn.com/banner/87/B4/87B42F89-354B-1F5F-10A6-63C775D9602220190918.jpg"}}
+     * data : {"profile":{"nickName":"测试群组1000001","gid":"1000001","avatar":"https://img.momocdn.com/banner/87/B4/87B42F89-354B-1F5F-10A6-63C775D9602220190918.jpg"}}
      */
 
     private int ec;
@@ -72,7 +72,7 @@ public class JsonGroupProfile implements JsonRequestResult {
 
     public static class DataBean {
         /**
-         * profile : {"name":"测试群组1000001","gid":"1000001","avatar":"https://img.momocdn.com/banner/87/B4/87B42F89-354B-1F5F-10A6-63C775D9602220190918.jpg"}
+         * profile : {"nickName":"测试群组1000001","gid":"1000001","avatar":"https://img.momocdn.com/banner/87/B4/87B42F89-354B-1F5F-10A6-63C775D9602220190918.jpg"}
          */
 
         private ProfileBean profile;
@@ -87,7 +87,7 @@ public class JsonGroupProfile implements JsonRequestResult {
 
         public static class ProfileBean {
             /**
-             * name : 测试群组1000001
+             * nickName : 测试群组1000001
              * gid : 1000001
              * avatar : https://img.momocdn.com/banner/87/B4/87B42F89-354B-1F5F-10A6-63C775D9602220190918.jpg
              */

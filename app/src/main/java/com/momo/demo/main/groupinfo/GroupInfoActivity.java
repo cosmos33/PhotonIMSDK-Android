@@ -12,6 +12,7 @@ import android.text.TextUtils;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.cosmos.photon.im.PhotonIMMessage;
 import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.R2;
 import com.cosmos.photonim.imbase.base.mvpbase.IPresenter;
@@ -183,7 +184,7 @@ public class GroupInfoActivity extends IGroupInfoView {
 
     @OnClick(R2.id.flSearchContent)
     public void onSearchContentClick() {
-        SearchHistoryActivity.start(this);
+        SearchHistoryActivity.start(this, gid, PhotonIMMessage.GROUP);
     }
     private void updateSwipeLayoutStatus() {
         if (getGroupInfo && getGroupMemberInfo && getGroupStatusInfo) {

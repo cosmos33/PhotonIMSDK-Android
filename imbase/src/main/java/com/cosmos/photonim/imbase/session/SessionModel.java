@@ -140,11 +140,11 @@ public class SessionModel extends ISessionModel {
         });
     }
 
-    private Object getSessionInner(int chatType, String chatWith) {
-        PhotonIMSession session = PhotonIMDatabase.getInstance().findSession(chatType, chatWith);
-        SessionData sessionData = new SessionData(session);
-        return sessionData;
-    }
+//    private Object getSessionInner(int chatType, String chatWith) {
+//        PhotonIMSession session = PhotonIMDatabase.getInstance().findSession(chatType, chatWith);
+//        SessionData sessionData = new SessionData(session);
+//        return sessionData;
+//    }
 
 
     private Object clearSessionInner(SessionData data) {
@@ -175,9 +175,11 @@ public class SessionModel extends ISessionModel {
         String tempContent;
         boolean showAtMsg;
         String lastMsgFrName;
+        String icon;
         boolean updateFromInfo;
         for (PhotonIMSession photonIMSession : sessionList) {
             lastMsgFrName = "";
+            icon = "";
             updateFromInfo = false;
             switch (photonIMSession.lastMsgType) {
                 case PhotonIMMessage.AUDIO:
@@ -218,6 +220,7 @@ public class SessionModel extends ISessionModel {
                 Profile profile = DBHelperUtils.getInstance().findProfile(photonIMSession.lastMsgFr);
                 updateFromInfo = profile == null;
                 lastMsgFrName = profile == null ? photonIMSession.lastMsgFr : profile.getName();
+                icon = profile == null ? "" : profile.getIcon();
             }
             sessionData = new SessionData.Builder()
                     .chatType(photonIMSession.chatType)
@@ -230,6 +233,7 @@ public class SessionModel extends ISessionModel {
                     .lastMsgContent(tempContent)
                     .lastMsgFr(photonIMSession.lastMsgFr)
                     .lastMsgFrName(lastMsgFrName)
+                    .icon(icon)
                     .updateFromInfo(updateFromInfo)
                     .lastMsgStatus(photonIMSession.lastMsgStatus)
                     .lastMsgId(photonIMSession.lastMsgId)
@@ -274,11 +278,11 @@ public class SessionModel extends ISessionModel {
                 msgDataTemp = new SessionData.Builder()
                         .lastMsgContent(PhotonIMDatabase.getInstance().getSessionLastMsgId(list.getType(),
                                 list.getType() == PhotonIMMessage.SINGLE ? list.getUserId() : list.getId()))
-//                        .sticky(list.getIsTop() == 0) //不考虑置顶
+                        .sticky(list.getIsTop() == 0) //不考虑置顶
                         .chatWith(list.getType() == PhotonIMMessage.SINGLE ? list.getUserId() : list.getId())
                         .chatType(list.getType())
                         .build();
-                msgDataTemp.setExtra(list.getNickname(), list.getAvatar());
+//                msgDataTemp.setExtra(list.getNickname(), list.getAvatar());
                 photonIMSessions.add(msgDataTemp.convertToPhotonIMSession());
                 sessionData.add(msgDataTemp);
             }

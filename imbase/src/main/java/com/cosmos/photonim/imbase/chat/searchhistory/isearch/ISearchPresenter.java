@@ -4,7 +4,10 @@ package com.cosmos.photonim.imbase.chat.searchhistory.isearch;
 import android.support.v7.widget.RecyclerView;
 
 import com.cosmos.photonim.imbase.base.mvpbase.IPresenter;
+import com.cosmos.photonim.imbase.chat.searchhistory.adapter.SearchData;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvBaseAdapter;
+
+import java.util.ArrayList;
 
 public abstract class ISearchPresenter<V extends ISearchView, M extends ISearchHistoryModel> extends IPresenter<V, M> {
 
@@ -12,13 +15,18 @@ public abstract class ISearchPresenter<V extends ISearchView, M extends ISearchH
         super(iView);
     }
 
-    public abstract void search(String content);
+    public abstract void search(String content, int chatType, String chatWith);
 
     abstract public void cancel();
 
     @Override
     public V getEmptyView() {
         return (V) new ISearchView() {
+            @Override
+            public void onSearchResult(ArrayList<SearchData> searchData) {
+
+            }
+
             @Override
             public RecyclerView getRecycleView() {
                 return null;

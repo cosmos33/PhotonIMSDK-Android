@@ -16,7 +16,7 @@ public class OSUtils {
     private static final String KEY_CLIENT_ID_BASE = "ro.com.google.clientidbase";
     // 小米 : MIUI
     private static final String KEY_MIUI_VERSION = "ro.build.version.incremental"; // "7.6.15"
-    private static final String KEY_MIUI_VERSION_NANE = "ro.miui.ui.version.name"; // "V8"
+    private static final String KEY_MIUI_VERSION_NANE = "ro.miui.ui.version.nickName"; // "V8"
     private static final String KEY_MIUI_VERSION_CODE = "ro.miui.ui.version.code"; // "6"
     private static final String VALUE_MIUI_CLIENT_ID_BASE = "android-xiaomi";
     // 华为 : EMUI
@@ -38,7 +38,7 @@ public class OSUtils {
     private static final String VALUE_COLOROS_CLIENT_ID_BASE = "android-oppo";
     // vivo : FuntouchOS
     private static final String KEY_FUNTOUCHOS_BOARD_VERSION = "ro.vivo.board.version"; // "MD"
-    private static final String KEY_FUNTOUCHOS_OS_NAME = "ro.vivo.os.name"; // "Funtouch"
+    private static final String KEY_FUNTOUCHOS_OS_NAME = "ro.vivo.os.nickName"; // "Funtouch"
     private static final String KEY_FUNTOUCHOS_OS_VERSION = "ro.vivo.os.version"; // "3.0"
     private static final String KEY_FUNTOUCHOS_DISPLAY_ID = "ro.vivo.os.build.display.id"; //
     // "FuntouchOS_3.0"

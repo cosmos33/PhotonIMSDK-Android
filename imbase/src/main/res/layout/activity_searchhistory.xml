@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/activity_bg"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <LinearLayout
@@ -30,6 +30,7 @@
                 android:layout_height="40dp"
                 android:background="@drawable/selector_et_search"
                 android:ellipsize="end"
+                android:textCursorDrawable="@drawable/edit_cursor_drawable"
                 android:hint="搜索"
                 android:maxLines="1"
                 android:padding="10dp"
@@ -51,6 +52,6 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="8dp"
+        android:padding="8dp"
         android:layout_marginTop="@dimen/title_margin_top" />
 </LinearLayout>

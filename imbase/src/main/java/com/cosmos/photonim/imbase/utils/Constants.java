@@ -17,4 +17,5 @@ public class Constants {
     public static final int ITEM_TYPE_MSG_TEST = 15;
     public static final int ITEM_TYPE_LIST_DIALOG = 16;
     public static final int ITEM_TYPE_CHAT_EXTRA = 17;
+    public static final int ITEM_TYPE_SEARCH = 18;
 }

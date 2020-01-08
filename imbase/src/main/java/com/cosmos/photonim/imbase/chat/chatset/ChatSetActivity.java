@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.cosmos.photon.im.PhotonIMMessage;
 import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.R2;
 import com.cosmos.photonim.imbase.base.mvpbase.IPresenter;
@@ -77,7 +78,7 @@ public class ChatSetActivity extends IChatSetView {
 
     @OnClick(R2.id.flSearchContent)
     public void onSearchContent() {
-        SearchHistoryActivity.start(this);
+        SearchHistoryActivity.start(this, userId, PhotonIMMessage.SINGLE);
     }
     @Override
     public void onTopChangeStatusResult(boolean success) {

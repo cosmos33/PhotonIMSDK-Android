@@ -92,7 +92,7 @@
 
 
 <!--<fragment-->
-<!--android:name="com.momo.demo.sessionFragment"-->
+    <!--android:nickName="com.momo.demo.sessionFragment"-->
 <!--android:id="@+id/fragment"-->
 <!--android:layout_width="match_parent"-->
 <!--android:layout_height="0dp"-->

@@ -10,7 +10,7 @@ public class JsonGroups implements JsonRequestResult {
      * errcode : 0
      * errmsg : success
      * timesec : 1568781731
-     * data : {"lists":[{"name":"测试群组1000001","gid":"1000001","avatar":"https://img.momocdn.com/banner/87/B4/87B42F89-354B-1F5F-10A6-63C775D9602220190918.jpg"},{"name":"测试群组1000002","gid":"1000002","avatar":"https://img.momocdn.com/banner/D9/BE/D9BE4041-D931-D88C-DA98-0EBA1E220C5720190918.jpg"},{"name":"测试群组1000003","gid":"1000003","avatar":"https://img.momocdn.com/banner/B5/0F/B50F8436-1C38-6F8F-714F-F705DDCDFF5320190918.jpg"}]}
+     * data : {"lists":[{"nickName":"测试群组1000001","gid":"1000001","avatar":"https://img.momocdn.com/banner/87/B4/87B42F89-354B-1F5F-10A6-63C775D9602220190918.jpg"},{"nickName":"测试群组1000002","gid":"1000002","avatar":"https://img.momocdn.com/banner/D9/BE/D9BE4041-D931-D88C-DA98-0EBA1E220C5720190918.jpg"},{"nickName":"测试群组1000003","gid":"1000003","avatar":"https://img.momocdn.com/banner/B5/0F/B50F8436-1C38-6F8F-714F-F705DDCDFF5320190918.jpg"}]}
      */
 
     private int ec;
@@ -86,7 +86,7 @@ public class JsonGroups implements JsonRequestResult {
 
         public static class ListsBean {
             /**
-             * name : 测试群组1000001
+             * nickName : 测试群组1000001
              * gid : 1000001
              * avatar : https://img.momocdn.com/banner/87/B4/87B42F89-354B-1F5F-10A6-63C775D9602220190918.jpg
              */
@@ -122,7 +122,7 @@ public class JsonGroups implements JsonRequestResult {
             @Override
             public String toString() {
                 return "ListsBean{" +
-                        "name='" + name + '\'' +
+                        "nickName='" + name + '\'' +
                         ", gid='" + gid + '\'' +
                         ", avatar='" + avatar + '\'' +
                         '}';
