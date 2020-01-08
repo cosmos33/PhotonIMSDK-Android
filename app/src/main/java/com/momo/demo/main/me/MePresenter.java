@@ -2,10 +2,10 @@ package com.momo.demo.main.me;
 
 import com.momo.demo.main.me.ime.IMeModel;
 import com.momo.demo.main.me.ime.IMePresenter;
-import com.momo.demo.main.me.ime.IMeView;
+import com.momo.demo.main.me.ime.IMeViewView;
 
-public class MePresenter extends IMePresenter<IMeView, IMeModel> {
-    public MePresenter(IMeView iView) {
+public class MePresenter extends IMePresenter<IMeViewView, IMeModel> {
+    public MePresenter(IMeViewView iView) {
         super(iView);
     }
 

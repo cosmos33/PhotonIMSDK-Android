@@ -3,8 +3,8 @@ package com.cosmos.photonim.imbase.chat.ichat;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 
+import com.cosmos.photonim.imbase.base.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.chat.ChatData;
-import com.cosmos.photonim.imbase.utils.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvBaseAdapter;
 
 import java.io.File;

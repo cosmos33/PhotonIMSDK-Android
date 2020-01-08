@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.cosmos.photonim.imbase.utils.mvpbase.IPresenter;
+import com.cosmos.photonim.imbase.base.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvBaseAdapter;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvListenerImpl;
 import com.momo.demo.R;
@@ -37,13 +37,13 @@ public class OnlineUserFragment extends IOnlineUserView {
     @Override
     protected void initView(View view) {
         recyclerView = view.findViewById(R.id.recyclerView);
-        refreshLayout.setOnRefreshListener(() -> contactPresenter.loadContacts());
+        refreshLayout.setOnRefreshListener(() -> presenter.loadContacts());
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
-        if (isVisibleToUser && contactPresenter != null) {
-            contactPresenter.loadContacts();
+        if (isVisibleToUser && presenter != null) {
+            presenter.loadContacts();
         }
         super.setUserVisibleHint(isVisibleToUser);
     }
@@ -52,7 +52,7 @@ public class OnlineUserFragment extends IOnlineUserView {
     public void onResume() {
         super.onResume();
         // TODO: 2019-08-05 修改加载时机
-        contactPresenter.loadContacts();
+        presenter.loadContacts();
     }
 
     @Override
@@ -78,7 +78,7 @@ public class OnlineUserFragment extends IOnlineUserView {
 
     @OnClick(R.id.llNoMsg)
     public void onOnNoMsgClick() {
-        contactPresenter.loadContacts();
+        presenter.loadContacts();
     }
 
     @Override

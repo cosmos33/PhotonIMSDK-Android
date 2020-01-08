@@ -17,12 +17,12 @@ import android.widget.TextView;
 import com.cosmos.photon.im.PhotonIMClient;
 import com.cosmos.photon.push.PhotonPushManager;
 import com.cosmos.photon.push.msg.MoMessage;
+import com.cosmos.photonim.imbase.base.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.utils.LocalRestoreUtils;
 import com.cosmos.photonim.imbase.utils.ToastUtils;
 import com.cosmos.photonim.imbase.utils.event.IMStatus;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonAuth;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonLogin;
-import com.cosmos.photonim.imbase.utils.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.view.ProcessDialogFragment;
 import com.momo.demo.MyApplication;
 import com.momo.demo.R;
@@ -105,7 +105,7 @@ public class LoginActivity extends ILoginView implements MyApplication.PushToken
 
     @OnClick(R.id.tvLogin)
     public void onLoginClick() {
-        loginPresenter.onLoginClick(etUserName.getText().toString().trim(), etPwd.getText().toString().trim());
+        presenter.onLoginClick(etUserName.getText().toString().trim(), etPwd.getText().toString().trim());
     }
 
     @OnClick(R.id.tvToRegist)
@@ -140,7 +140,7 @@ public class LoginActivity extends ILoginView implements MyApplication.PushToken
     @Override
     public void onLoginResult(JsonLogin requestResult) {
         if (requestResult != null && requestResult.success()) {
-            loginPresenter.getAuth(requestResult.getData().getSessionId(), requestResult.getData().getUserId());
+            presenter.getAuth(requestResult.getData().getSessionId(), requestResult.getData().getUserId());
             LoginInfo.getInstance().setSessionId(requestResult.getData().getSessionId());
             LoginInfo.getInstance().setUserId(requestResult.getData().getUserId());
         } else {
@@ -153,7 +153,7 @@ public class LoginActivity extends ILoginView implements MyApplication.PushToken
         if (jsonAuth != null && jsonAuth.success()) {
             LocalRestoreUtils.saveAuth(jsonAuth.getData().getToken(), jsonAuth.getData().getUserId(), LoginInfo.getInstance().getSessionId());
             LoginInfo.getInstance().setTokenId(jsonAuth.getData().getToken());
-            loginPresenter.startIm();
+            presenter.startIm();
         } else {
             ToastUtils.showText(this, "认证失败");
         }

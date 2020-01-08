@@ -16,6 +16,7 @@ import com.cosmos.photon.im.PhotonIMMessage;
 import com.cosmos.photonim.imbase.ImBaseBridge;
 import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.R2;
+import com.cosmos.photonim.imbase.base.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.chat.adapter.chat.ChatAdapter;
 import com.cosmos.photonim.imbase.chat.ichat.IChatView;
 import com.cosmos.photonim.imbase.chat.image.ImageCheckActivity;
@@ -33,7 +34,6 @@ import com.cosmos.photonim.imbase.utils.Utils;
 import com.cosmos.photonim.imbase.utils.event.AlertEvent;
 import com.cosmos.photonim.imbase.utils.event.ChatDataWrapper;
 import com.cosmos.photonim.imbase.utils.event.ClearUnReadStatus;
-import com.cosmos.photonim.imbase.utils.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvBaseAdapter;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvListenerImpl;
 import com.cosmos.photonim.imbase.utils.test.TestSendManager;
@@ -163,11 +163,11 @@ public abstract class ChatBaseActivity extends IChatView {
     private void getHistory(boolean loadFromRemote, long endTimeStamp, String anchorMsgId) {
         if (loadFromRemote) {
             lastLoadHistoryFromRemote = true;
-//            chatPresenter.loadAllHistory(chatType, chatWith, PAGE_ONE, beginTimeStamp);
-            chatPresenter.loadAllHistory(chatType, chatWith, PAGE_ONE, 0, endTimeStamp);
+//            presenter.loadAllHistory(chatType, chatWith, PAGE_ONE, beginTimeStamp);
+            presenter.loadAllHistory(chatType, chatWith, PAGE_ONE, 0, endTimeStamp);
         } else {
             lastLoadHistoryFromRemote = false;
-            chatPresenter.loadLocalHistory(chatType, chatWith, anchorMsgId, true, false,
+            presenter.loadLocalHistory(chatType, chatWith, anchorMsgId, true, false,
                     PAGE_ONE, loginUserId);
         }
     }
@@ -197,17 +197,17 @@ public abstract class ChatBaseActivity extends IChatView {
         extraFragment.setOnVoiceEventListener(new ChatExtraFragment.OnVoiceEventListener() {
             @Override
             public File onVoiceStart() {
-                return chatPresenter.startRecord((ChatBaseActivity.this));
+                return presenter.startRecord((ChatBaseActivity.this));
             }
 
             @Override
             public void onVoiceCancel() {
-                chatPresenter.cancelRecord();
+                presenter.cancelRecord();
             }
 
             @Override
             public void onVoiceStop() {
-                chatPresenter.stopRecord();
+                presenter.stopRecord();
             }
         });
 
@@ -238,7 +238,7 @@ public abstract class ChatBaseActivity extends IChatView {
     public void onRecordFinish(long duration) {
         if (duration < 1000) {
             ChatToastUtils.showChatTimeWarn();
-            chatPresenter.cancelRecord();
+            presenter.cancelRecord();
             return;
         }
         ChatData.Builder chatDataBuilder = new ChatData.Builder()
@@ -252,13 +252,13 @@ public abstract class ChatBaseActivity extends IChatView {
                 .from(loginUserId)
                 .to(chatWith);
 
-        chatPresenter.sendMsg(chatDataBuilder);
+        presenter.sendMsg(chatDataBuilder);
     }
 
     @Override
     public void onRecordFailed() {
         ToastUtils.showText(this, "录制失败，请重试");
-        chatPresenter.stopRecord();
+        presenter.stopRecord();
     }
 
     @Override
@@ -296,7 +296,7 @@ public abstract class ChatBaseActivity extends IChatView {
             swipeRefreshLayout.setRefreshing(false);
         }
         if (CollectionUtils.isEmpty(chatData)) {
-//            chatPresenter.loadRemoteHistory();
+//            presenter.loadRemoteHistory();
             com.cosmos.photonim.imbase.utils.ToastUtils.showText(this, getResources().getString(R.string.chat_msg_nomore));
         } else {
             chatMsg.addAll(0, chatData);
@@ -432,7 +432,7 @@ public abstract class ChatBaseActivity extends IChatView {
                 .from(loginUserId)
                 .to(chatWith);
         getAtStatus(chatDataBuilder);
-        chatPresenter.sendMsg(chatDataBuilder);
+        presenter.sendMsg(chatDataBuilder);
         extraFragment.clearInput();
     }
 
@@ -469,10 +469,10 @@ public abstract class ChatBaseActivity extends IChatView {
             chatMsgMap = new HashMap<>();
             chatAdapter = new ChatAdapter(chatMsg, (chatData) -> {
                 // TODO: 2019-08-17 已经下载中的无需下载
-                chatPresenter.getVoiceFile(chatData);
-            }, data -> chatPresenter.sendReadMsg(data), chatData -> {
+                presenter.getVoiceFile(chatData);
+            }, data -> presenter.sendReadMsg(data), chatData -> {
                 // TODO: 2019-08-17 已经下载中的无需下载
-                chatPresenter.getInfo(chatData);
+                presenter.getInfo(chatData);
             }, isGroup());
             chatAdapter.setRvListener(new RvListenerImpl() {
                 @Override
@@ -480,15 +480,15 @@ public abstract class ChatBaseActivity extends IChatView {
                     ChatData chatData = (ChatData) data;
                     int viewId = view.getId();
                     if (viewId == R.id.llVoice) {
-                        chatPresenter.cancelPlay();
+                        presenter.cancelPlay();
                         if (chatData.getFrom().equals(loginUserId)) {
-                            chatPresenter.play(ChatBaseActivity.this, ((ChatData) data).getLocalFile());
+                            presenter.play(ChatBaseActivity.this, ((ChatData) data).getLocalFile());
                         } else {
                             if (TextUtils.isEmpty(((ChatData) data).getLocalFile())) {
                                 ToastUtils.showText(ChatBaseActivity.this, "请稍后");
                                 return;
                             }
-                            chatPresenter.play(ChatBaseActivity.this, ((ChatData) data).getLocalFile());
+                            presenter.play(ChatBaseActivity.this, ((ChatData) data).getLocalFile());
                         }
                     } else if (viewId == R.id.ivWarn) {
                         chatMsg.remove(chatData.getListPostion());
@@ -529,8 +529,8 @@ public abstract class ChatBaseActivity extends IChatView {
     }
 
     private void resendMsg(ChatData chatData) {
-        chatPresenter.removeChat(chatData.getChatType(), chatData.getChatWith(), chatData.getMsgId());
-        chatPresenter.reSendMsg(chatData);
+        presenter.removeChat(chatData.getChatType(), chatData.getChatWith(), chatData.getMsgId());
+        presenter.reSendMsg(chatData);
     }
 
     private void showPopupMenu(ChatData data, View view) {
@@ -555,12 +555,12 @@ public abstract class ChatBaseActivity extends IChatView {
 
             @Override
             public void onRevertClick() {
-                chatPresenter.revertMsg((ChatData) data);
+                presenter.revertMsg((ChatData) data);
             }
 
             @Override
             public void onDeleteClick() {
-                chatPresenter.deleteMsg(data);
+                presenter.deleteMsg(data);
             }
         });
         chatPopupWindow.show(((TouchRecycleView) recyclerView).getLastPoint(), recyclerView);
@@ -639,8 +639,8 @@ public abstract class ChatBaseActivity extends IChatView {
         TestSendManager.getInstance().unBind();
         EventBus.getDefault().post(new ClearUnReadStatus(chatType, chatWith));
         EventBus.getDefault().unregister(this);
-        chatPresenter.cancelPlay();
-        chatPresenter.destoryVoiceHelper();
+        presenter.cancelPlay();
+        presenter.destoryVoiceHelper();
         super.onDestroy();
     }
 
@@ -680,7 +680,7 @@ public abstract class ChatBaseActivity extends IChatView {
                 .chatWith(chatWith)
                 .from(loginUserId)
                 .to(chatWith);
-        chatPresenter.sendMsg(chatDataBuild);
+        presenter.sendMsg(chatDataBuild);
     }
 
     private void sendPhoto(Intent data) {
@@ -700,7 +700,7 @@ public abstract class ChatBaseActivity extends IChatView {
                 .chatWith(chatWith)
                 .from(loginUserId)
                 .to(chatWith);
-        chatPresenter.sendMsg(chatDataBuild);
+        presenter.sendMsg(chatDataBuild);
     }
 
     protected void sendImage(Intent data) {
@@ -719,7 +719,7 @@ public abstract class ChatBaseActivity extends IChatView {
                 .from(loginUserId)
                 .to(chatWith);
 
-        chatPresenter.sendMsg(chatDataBuild);
+        presenter.sendMsg(chatDataBuild);
     }
 
     private String getTimeContent(long curTime) {

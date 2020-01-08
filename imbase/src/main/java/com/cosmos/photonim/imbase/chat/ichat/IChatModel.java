@@ -1,8 +1,8 @@
 package com.cosmos.photonim.imbase.chat.ichat;
 
+import com.cosmos.photonim.imbase.base.mvpbase.IModel;
 import com.cosmos.photonim.imbase.chat.ChatData;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;
-import com.cosmos.photonim.imbase.utils.mvpbase.IModel;
 
 import java.util.List;
 import java.util.Map;

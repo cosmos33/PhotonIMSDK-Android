@@ -4,8 +4,8 @@ import android.content.Intent;
 
 import com.cosmos.photon.im.PhotonIMMessage;
 import com.cosmos.photonim.imbase.ImBaseBridge;
+import com.cosmos.photonim.imbase.base.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.utils.CollectionUtils;
-import com.cosmos.photonim.imbase.utils.mvpbase.IPresenter;
 
 import java.util.ArrayList;
 

@@ -1,8 +1,8 @@
 package com.momo.demo.login.ilogin;
 
+import com.cosmos.photonim.imbase.base.mvpbase.IModel;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonAuth;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonLogin;
-import com.cosmos.photonim.imbase.utils.mvpbase.IModel;
 
 public abstract class ILoginModel implements IModel {
     abstract public void login(String userName, String pwd, OnLoginListener onLoginListener);

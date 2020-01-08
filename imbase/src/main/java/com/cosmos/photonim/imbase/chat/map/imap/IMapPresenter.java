@@ -2,7 +2,7 @@ package com.cosmos.photonim.imbase.chat.map.imap;
 
 
 import com.cosmos.maplib.map.MyLatLng;
-import com.cosmos.photonim.imbase.utils.mvpbase.IPresenter;
+import com.cosmos.photonim.imbase.base.mvpbase.IPresenter;
 
 public abstract class IMapPresenter<V extends IMapView, M extends IMapModel> extends IPresenter<V, M> {
 

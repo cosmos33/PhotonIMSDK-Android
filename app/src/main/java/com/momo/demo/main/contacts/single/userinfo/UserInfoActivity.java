@@ -9,9 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cosmos.photon.im.PhotonIMMessage;
+import com.cosmos.photonim.imbase.base.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.chat.ChatBaseActivity;
 import com.cosmos.photonim.imbase.utils.image.ImageLoaderUtils;
-import com.cosmos.photonim.imbase.utils.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.view.TitleBar;
 import com.momo.demo.R;
 import com.momo.demo.login.LoginInfo;

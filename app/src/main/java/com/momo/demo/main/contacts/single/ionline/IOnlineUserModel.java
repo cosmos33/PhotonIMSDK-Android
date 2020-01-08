@@ -1,6 +1,6 @@
 package com.momo.demo.main.contacts.single.ionline;
 
-import com.cosmos.photonim.imbase.utils.mvpbase.IModel;
+import com.cosmos.photonim.imbase.base.mvpbase.IModel;
 import com.momo.demo.main.contacts.single.OnlineUserData;
 
 import java.util.List;

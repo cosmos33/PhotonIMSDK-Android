@@ -29,7 +29,7 @@ import com.cosmos.photonim.imbase.view.TitleBar;
 import com.momo.demo.MyApplication;
 import com.momo.demo.R;
 import com.momo.demo.main.contacts.ContactsFragment;
-import com.momo.demo.main.me.MeFragment;
+import com.momo.demo.main.me.MeFragmentView;
 import com.momo.demo.main.sessiontest.SessionTestViewFragment;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -160,7 +160,7 @@ public class MainActivity extends BaseActivity {
         ArrayList<Fragment> fragments = new ArrayList<>(3);
         fragments.add(new SessionFragment());
         fragments.add(new ContactsFragment());
-        fragments.add(new MeFragment());
+        fragments.add(new MeFragmentView());
         fragments.add(new SessionTestViewFragment());
         baseFragmentPagerAdapter = new BaseFragmentPagerAdapter(getSupportFragmentManager(), fragments);
     }

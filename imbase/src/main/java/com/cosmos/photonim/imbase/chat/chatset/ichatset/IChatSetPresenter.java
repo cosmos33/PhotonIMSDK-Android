@@ -1,8 +1,8 @@
 package com.cosmos.photonim.imbase.chat.chatset.ichatset;
 
 
+import com.cosmos.photonim.imbase.base.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;
-import com.cosmos.photonim.imbase.utils.mvpbase.IPresenter;
 
 public abstract class IChatSetPresenter<V extends IChatSetView, M extends IChatSetModel> extends IPresenter<V, M> {
 

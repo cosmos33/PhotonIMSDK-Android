@@ -9,8 +9,8 @@ import com.cosmos.maplib.AMapFragment;
 import com.cosmos.maplib.map.MapInfo;
 import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.R2;
+import com.cosmos.photonim.imbase.base.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.chat.map.imap.IMapView;
-import com.cosmos.photonim.imbase.utils.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.view.TitleBar;
 
 import butterknife.BindView;

@@ -13,12 +13,12 @@ import android.widget.EditText;
 
 import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.R2;
+import com.cosmos.photonim.imbase.base.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.chat.ChatBaseActivity;
 import com.cosmos.photonim.imbase.chat.searchhistory.adapter.SessionSearchAdapter;
 import com.cosmos.photonim.imbase.chat.searchhistory.isearch.ISearchView;
 import com.cosmos.photonim.imbase.session.SessionData;
 import com.cosmos.photonim.imbase.session.SessionUpdateOtherInfoImpl;
-import com.cosmos.photonim.imbase.utils.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvBaseAdapter;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvListenerImpl;
 

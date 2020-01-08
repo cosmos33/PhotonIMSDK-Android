@@ -1,6 +1,6 @@
 package com.momo.demo.main.contacts.single.userinfo.iuserinfo;
 
-import com.cosmos.photonim.imbase.utils.mvpbase.IPresenter;
+import com.cosmos.photonim.imbase.base.mvpbase.IPresenter;
 
 public abstract class IUserInfoPresenter<V extends IUserInfoView, M extends IUserInfoModel> extends IPresenter<V, M> {
     public IUserInfoPresenter(V iView) {

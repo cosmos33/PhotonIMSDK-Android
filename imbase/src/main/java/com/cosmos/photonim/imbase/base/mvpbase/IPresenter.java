@@ -1,4 +1,4 @@
-package com.cosmos.photonim.imbase.utils.mvpbase;
+package com.cosmos.photonim.imbase.base.mvpbase;
 
 import com.cosmos.photonim.imbase.utils.LogUtils;
 

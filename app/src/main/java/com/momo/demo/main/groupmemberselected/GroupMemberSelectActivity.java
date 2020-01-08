@@ -12,10 +12,10 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.cosmos.photonim.imbase.base.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.chat.ChatGroupActivity;
 import com.cosmos.photonim.imbase.utils.Constants;
 import com.cosmos.photonim.imbase.utils.LogUtils;
-import com.cosmos.photonim.imbase.utils.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvBaseAdapter;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvListenerImpl;
 import com.cosmos.photonim.imbase.view.TitleBar;
@@ -72,14 +72,14 @@ public class GroupMemberSelectActivity extends IGroupMemeberView {
         titleBar.setTitle("选择提醒的人");
 
         if (!TextUtils.isEmpty(gId)) {
-            iGroupPresenter.getGroupMembers(gId);
+            presenter.getGroupMembers(gId);
         } else {
             LogUtils.log(TAG, "gid is null");
         }
         refreshLayout.setOnRefreshListener(() -> {
             tvSelectCount.setText(getString(R.string.forward_selectcount, 0));
             selectedData.clear();
-            iGroupPresenter.getGroupMembers(gId);
+            presenter.getGroupMembers(gId);
         });
     }
 

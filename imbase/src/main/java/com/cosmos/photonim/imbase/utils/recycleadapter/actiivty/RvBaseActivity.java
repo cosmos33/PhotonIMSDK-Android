@@ -6,7 +6,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.cosmos.photonim.imbase.base.BaseActivity;
+import com.cosmos.photonim.imbase.base.mvpbase.IBaseActivityView;
 import com.cosmos.photonim.imbase.utils.recycleadapter.CreateRvHelper;
 import com.cosmos.photonim.imbase.utils.recycleadapter.ICreateRv;
 
@@ -14,7 +14,7 @@ import com.cosmos.photonim.imbase.utils.recycleadapter.ICreateRv;
 /**
  * Created by fanqiang on 2019/4/17.
  */
-public abstract class RvBaseActivity extends BaseActivity implements ICreateRv {
+public abstract class RvBaseActivity<P> extends IBaseActivityView<P> implements ICreateRv {
     private CreateRvHelper createRvHelper;
 
     @Override

@@ -1,6 +1,6 @@
 package com.momo.demo.main.groupmember.igroupmember;
 
-import com.cosmos.photonim.imbase.utils.mvpbase.IModel;
+import com.cosmos.photonim.imbase.base.mvpbase.IModel;
 import com.momo.demo.main.groupmemberselected.GroupMembersData;
 
 import java.util.List;

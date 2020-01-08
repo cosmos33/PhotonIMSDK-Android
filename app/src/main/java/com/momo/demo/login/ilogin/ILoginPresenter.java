@@ -1,8 +1,8 @@
 package com.momo.demo.login.ilogin;
 
+import com.cosmos.photonim.imbase.base.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonAuth;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonLogin;
-import com.cosmos.photonim.imbase.utils.mvpbase.IPresenter;
 
 public abstract class ILoginPresenter<V extends ILoginView, M extends ILoginModel> extends IPresenter<V, M> {
     public ILoginPresenter(V iView) {

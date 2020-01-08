@@ -13,12 +13,12 @@ import android.widget.TextView;
 
 import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.R2;
+import com.cosmos.photonim.imbase.base.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.chat.ChatData;
 import com.cosmos.photonim.imbase.utils.LogUtils;
 import com.cosmos.photonim.imbase.utils.ToastUtils;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonOtherInfoMulti;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;
-import com.cosmos.photonim.imbase.utils.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvBaseAdapter;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvListenerImpl;
 import com.cosmos.photonim.imbase.view.TitleBar;
@@ -76,7 +76,7 @@ public class ForwardActivity extends IForwardView {
         chatData = getIntent().getParcelableExtra(EXTRA_CHATDATA);
         setContentView(R.layout.activity_forward);
         forSessionTest = getIntent().getBooleanExtra(EXTRA_FOR_SESSIONTEST, false);
-        iForwardPresenter.loadContacts();
+        presenter.loadContacts();
         initView();
     }
 
@@ -87,7 +87,7 @@ public class ForwardActivity extends IForwardView {
         refreshLayout.setOnRefreshListener(() -> {
             tvSelectCount.setText(getString(R.string.forward_selectcount, 0));
             selectedData.clear();
-            iForwardPresenter.loadContacts();
+            presenter.loadContacts();
         });
     }
 
@@ -107,7 +107,7 @@ public class ForwardActivity extends IForwardView {
             }
             EventBus.getDefault().post(sessionTestEvent);
         } else {
-            iForwardPresenter.sendMsgToMulti(chatData, selectedData);
+            presenter.sendMsgToMulti(chatData, selectedData);
         }
         this.finish();
     }
@@ -165,7 +165,7 @@ public class ForwardActivity extends IForwardView {
             forwardAdapter = new ForwardAdapter(onlineUserData, chatData != null ? chatData.getChatWith() : "", new ForwardItem.UpdateOtherInfoListener() {
                 @Override
                 public void onUpdateOtherInfo(ForwardData forwardData) {
-                    iForwardPresenter.getOthersInfo(forwardData.getUserId(), forwardData);
+                    presenter.getOthersInfo(forwardData.getUserId(), forwardData);
                 }
             });
             forwardAdapter.setRvListener(new RvListenerImpl() {

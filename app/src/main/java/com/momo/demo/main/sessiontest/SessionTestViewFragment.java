@@ -11,6 +11,7 @@ import com.cosmos.photon.im.PhotonIMMessage;
 import com.cosmos.photonim.imbase.ImBaseBridge;
 import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.R2;
+import com.cosmos.photonim.imbase.base.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.chat.ChatBaseActivity;
 import com.cosmos.photonim.imbase.utils.CollectionUtils;
 import com.cosmos.photonim.imbase.utils.LogUtils;
@@ -20,7 +21,6 @@ import com.cosmos.photonim.imbase.utils.http.jsons.JsonGroupProfile;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonOtherInfoMulti;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonRequestResult;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;
-import com.cosmos.photonim.imbase.utils.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvBaseAdapter;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvListenerImpl;
 import com.cosmos.photonim.imbase.utils.test.TestSendBean;
@@ -70,7 +70,7 @@ public class SessionTestViewFragment extends ISessionTestView implements Session
     @Override
     protected void initView(View view) {
         recyclerView = view.findViewById(R.id.recyclerView);
-        iSessionPresenterTest.loadHistoryData(LoginInfo.getInstance().getSessionId(), LoginInfo.getInstance().getUserId());
+        presenter.loadHistoryData(LoginInfo.getInstance().getSessionId(), LoginInfo.getInstance().getUserId());
         initTestTool();
     }
 
@@ -99,8 +99,8 @@ public class SessionTestViewFragment extends ISessionTestView implements Session
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         this.isVisibleToUser = isVisibleToUser;
-//        if (isVisibleToUser && iSessionPresenterTestTest != null) {
-//            iSessionPresenterTestTest.loadHistoryData(LoginInfo.getInstance().getSessenId(), LoginInfo.getInstance().getUserId());
+//        if (isVisibleToUser && presenterTest != null) {
+//            presenterTest.loadHistoryData(LoginInfo.getInstance().getSessenId(), LoginInfo.getInstance().getUserId());
 //        }
         super.setUserVisibleHint(isVisibleToUser);
     }
@@ -118,7 +118,7 @@ public class SessionTestViewFragment extends ISessionTestView implements Session
 //        }
         switch (onDBChanged.event) {
             case 0://新增
-                iSessionPresenterTest.loadHistoryData(LoginInfo.getInstance().getSessionId(), LoginInfo.getInstance().getUserId());
+                presenter.loadHistoryData(LoginInfo.getInstance().getSessionId(), LoginInfo.getInstance().getUserId());
                 break;
             case 1://修改
             case 2://删除
@@ -128,7 +128,7 @@ public class SessionTestViewFragment extends ISessionTestView implements Session
                 // TODO: 2019-12-02 maybe use map
                 for (SessionTestData sessionTestData : baseDataList) {
                     if (onDBChanged.chatWith.equals(sessionTestData.getChatWith()) && onDBChanged.chatType == sessionTestData.getChatType()) {
-                        iSessionPresenterTest.loadHistoryData(LoginInfo.getInstance().getSessionId(), LoginInfo.getInstance().getUserId());
+                        presenter.loadHistoryData(LoginInfo.getInstance().getSessionId(), LoginInfo.getInstance().getUserId());
                         return;
                     }
                 }
@@ -176,7 +176,7 @@ public class SessionTestViewFragment extends ISessionTestView implements Session
                         return;
                     }
                     if (sessionTestData.isShowAtTip()) {
-                        iSessionPresenterTest.updateSessionAtType(sessionTestData);
+                        presenter.updateSessionAtType(sessionTestData);
                     }
                     ChatBaseActivity.startActivity(SessionTestViewFragment.this.getActivity(), sessionTestData.getChatType(),
                             sessionTestData.getChatWith(), null, sessionTestData.getNickName(), sessionTestData.getIcon(), false, true);
@@ -187,7 +187,7 @@ public class SessionTestViewFragment extends ISessionTestView implements Session
                     sessionDialogFragment = ListDialogFragment.getInstance(new ListDialogFragment.OnHandleListener() {
                         @Override
                         public void onItemClick(int p) {
-                            iSessionPresenterTest.deleteSession(baseDataList.get(position));
+                            presenter.deleteSession(baseDataList.get(position));
                             onDeleteSession(baseDataList.get(position));
                         }
                     }, listItem);
@@ -372,7 +372,7 @@ public class SessionTestViewFragment extends ISessionTestView implements Session
 
     @Override
     public void onUpdateOtherInfo(SessionTestData sessionTestData) {
-        iSessionPresenterTest.getOthersInfo(sessionTestData);
+        presenter.getOthersInfo(sessionTestData);
     }
 
     @OnClick(R2.id.tvAddTest)
@@ -382,7 +382,7 @@ public class SessionTestViewFragment extends ISessionTestView implements Session
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onAddTestEvent(SessionTestEvent event) {
-        iSessionPresenterTest.addSessioTest(event);
+        presenter.addSessioTest(event);
     }
 
     @OnClick(R2.id.tvLog)

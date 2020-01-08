@@ -8,21 +8,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cosmos.photonim.imbase.ImBaseBridge;
+import com.cosmos.photonim.imbase.base.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.utils.ToastUtils;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonMyInfo;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonSetNickName;
 import com.cosmos.photonim.imbase.utils.image.ImageLoaderUtils;
-import com.cosmos.photonim.imbase.utils.mvpbase.IPresenter;
 import com.momo.demo.R;
 import com.momo.demo.login.LoginActivity;
 import com.momo.demo.login.LoginInfo;
-import com.momo.demo.main.me.ime.IMeView;
+import com.momo.demo.main.me.ime.IMeViewView;
 import com.momo.demo.view.ChangeNickNameDialog;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class MeFragment extends IMeView {
+public class MeFragmentView extends IMeViewView {
     @BindView(R.id.ivIcon)
     ImageView ivIcon;
     @BindView(R.id.tvNickName)
@@ -44,9 +44,9 @@ public class MeFragment extends IMeView {
 
     @Override
     protected void initView(View view) {
-        registPresenter.getMyInfo();
+        presenter.getMyInfo();
         tvAccount.setText(LoginInfo.getInstance().getUserId());
-        swipeRefreshLayout.setOnRefreshListener(() -> registPresenter.getMyInfo());
+        swipeRefreshLayout.setOnRefreshListener(() -> presenter.getMyInfo());
     }
 
     @OnClick(R.id.flNickName)
@@ -63,10 +63,10 @@ public class MeFragment extends IMeView {
             public void onComplete(String nickName) {
                 if (TextUtils.isEmpty(nickName.trim())) {
                     ToastUtils.showText(getContext(), "昵称不能为空");
-                } else if (MeFragment.this.nickName != null && MeFragment.this.nickName.equals(nickName.trim())) {
+                } else if (MeFragmentView.this.nickName != null && MeFragmentView.this.nickName.equals(nickName.trim())) {
                     ToastUtils.showText(getContext(), "昵称未改变");
                 } else {
-                    registPresenter.changeNickName(nickName);
+                    presenter.changeNickName(nickName);
                 }
             }
         }, nickName);
@@ -75,7 +75,7 @@ public class MeFragment extends IMeView {
 
     @OnClick(R.id.tvLogout)
     public void onLogoutClick() {
-        registPresenter.logOut();
+        presenter.logOut();
         Intent intent = new Intent(getActivity(), LoginActivity.class);
         startActivity(intent);
         getActivity().finish();
@@ -89,7 +89,7 @@ public class MeFragment extends IMeView {
     @Override
     public void onChangeNickName(JsonSetNickName jsonResult) {
         if (jsonResult.success()) {
-            registPresenter.getMyInfo();
+            presenter.getMyInfo();
             ToastUtils.showText(getContext(), "修改成功");
             if (dialog != null) {
                 dialog.dismiss();

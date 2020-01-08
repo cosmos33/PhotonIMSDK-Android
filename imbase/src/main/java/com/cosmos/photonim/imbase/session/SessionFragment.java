@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 
 import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.R2;
+import com.cosmos.photonim.imbase.base.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.chat.ChatBaseActivity;
 import com.cosmos.photonim.imbase.session.isession.ISessionView;
 import com.cosmos.photonim.imbase.utils.CollectionUtils;
@@ -15,7 +16,6 @@ import com.cosmos.photonim.imbase.utils.LocalRestoreUtils;
 import com.cosmos.photonim.imbase.utils.event.AllUnReadCount;
 import com.cosmos.photonim.imbase.utils.event.ClearUnReadStatus;
 import com.cosmos.photonim.imbase.utils.event.OnDBChanged;
-import com.cosmos.photonim.imbase.utils.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvBaseAdapter;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvListenerImpl;
 import com.cosmos.photonim.imbase.view.ProcessDialogFragment;
@@ -54,20 +54,20 @@ public class SessionFragment extends ISessionView {
     protected void initView(View view) {
         isFirstLoad = LocalRestoreUtils.getFirstLoadSession();
         recyclerView = view.findViewById(R.id.recyclerView);
-        iSessionPresenter.loadHistoryData();
-        iSessionPresenter.getAllUnReadCount();
+        presenter.loadHistoryData();
+        presenter.getAllUnReadCount();
         itemContent = new ArrayList<>();
         itemContent.add("删除会话");
         itemContent.add("清空会话");
         // 删除demo层的重发机制，防止和sdk内部重发逻辑混淆
-//        iSessionPresenter.resendSendingStatusMsgs();
+//        presenter.resendSendingStatusMsgs();
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         this.isVisibleToUser = isVisibleToUser;
-//        if (isVisibleToUser && iSessionPresenter != null) {
-//            iSessionPresenter.loadHistoryData(LoginInfo.getInstance().getSessenId(), LoginInfo.getInstance().getUserId());
+//        if (isVisibleToUser && presenter != null) {
+//            presenter.loadHistoryData(LoginInfo.getInstance().getSessenId(), LoginInfo.getInstance().getUserId());
 //        }
         super.setUserVisibleHint(isVisibleToUser);
     }
@@ -109,7 +109,7 @@ public class SessionFragment extends ISessionView {
 //            }
 //            sessionData = new SessionData(msg);
 //            sessionData.setLastMsgContent(content);
-//            iSessionPresenter.saveSession(sessionData);
+//            presenter.saveSession(sessionData);
 //            baseDataList.add(sessionData);
 ////            baseDataMap.put(msg.chatWith, sessionData);
 //            sessionAdapter.notifyItemInserted(baseDataList.size() - 1);
@@ -143,11 +143,11 @@ public class SessionFragment extends ISessionView {
             case 0://新增
             case 1://修改
             case 2://删除
-//                iSessionPresenter.getSessionUnRead(onDBChanged.chatType,onDBChanged.chatWith);
-                iSessionPresenter.loadHistoryData();
+//                presenter.getSessionUnRead(onDBChanged.chatType,onDBChanged.chatWith);
+                presenter.loadHistoryData();
                 break;
         }
-        iSessionPresenter.getAllUnReadCount();
+        presenter.getAllUnReadCount();
     }
 
     @Subscribe
@@ -157,11 +157,11 @@ public class SessionFragment extends ISessionView {
 //            LogUtils.log(TAG, "未找到要更新的item");
 //            return;
 //        }
-//        iSessionPresenter.updateUnRead(event.chatWith);
+//        presenter.updateUnRead(event.chatWith);
 //        baseDataList.get(itemPosition).setUnreadCount(0);
 //        sessionAdapter.notifyItemChanged(itemPosition);
 
-        iSessionPresenter.clearSesionUnReadCount(event.chatType, event.chatWith);
+        presenter.clearSesionUnReadCount(event.chatType, event.chatWith);
     }
 
     private int getItemPosition(String chatWith) {
@@ -202,7 +202,7 @@ public class SessionFragment extends ISessionView {
                 public void onClick(View view, Object data, int position) {
                     SessionData sessionData = (SessionData) data;
                     if (sessionData.isShowAtTip()) {
-                        iSessionPresenter.updateSessionAtType(sessionData);
+                        presenter.updateSessionAtType(sessionData);
                     }
                     ChatBaseActivity.startActivity(SessionFragment.this.getActivity(), sessionData.getChatType(),
                             sessionData.getChatWith(), null, sessionData.getNickName(), sessionData.getIcon(), false);
@@ -218,10 +218,10 @@ public class SessionFragment extends ISessionView {
                         public void onItemClick(int positon) {
                             switch (positon) {
                                 case 0:
-                                    iSessionPresenter.deleteSession((SessionData) data);
+                                    presenter.deleteSession((SessionData) data);
                                     break;
                                 case 1:
-                                    iSessionPresenter.clearSession((SessionData) data);
+                                    presenter.clearSession((SessionData) data);
                                     break;
                             }
 
@@ -258,7 +258,7 @@ public class SessionFragment extends ISessionView {
     public void onLoadHistory(List<SessionData> sessionData) {
         if (CollectionUtils.isEmpty(sessionData)) {
             if (isFirstLoad) {
-                iSessionPresenter.loadHistoryFromRemote();
+                presenter.loadHistoryFromRemote();
                 isFirstLoad = false;
             }
             recyclerView.setVisibility(View.GONE);

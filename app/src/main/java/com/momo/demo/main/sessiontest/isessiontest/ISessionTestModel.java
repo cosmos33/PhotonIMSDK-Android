@@ -1,7 +1,7 @@
 package com.momo.demo.main.sessiontest.isessiontest;
 
+import com.cosmos.photonim.imbase.base.mvpbase.IModel;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;
-import com.cosmos.photonim.imbase.utils.mvpbase.IModel;
 import com.momo.demo.event.SessionTestEvent;
 import com.momo.demo.main.sessiontest.SessionTestData;
 

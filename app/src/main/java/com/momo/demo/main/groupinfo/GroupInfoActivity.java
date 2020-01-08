@@ -14,13 +14,13 @@ import android.widget.TextView;
 
 import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.R2;
+import com.cosmos.photonim.imbase.base.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.chat.searchhistory.SearchHistoryActivity;
 import com.cosmos.photonim.imbase.utils.CollectionUtils;
 import com.cosmos.photonim.imbase.utils.ToastUtils;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonGetGroupIgnoreInfo;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonGroupProfile;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;
-import com.cosmos.photonim.imbase.utils.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvBaseAdapter;
 import com.cosmos.photonim.imbase.view.TitleBar;
 import com.momo.demo.main.groupinfo.adapter.GroupInfoMemberAdapter;
@@ -75,9 +75,9 @@ public class GroupInfoActivity extends IGroupInfoView {
     }
 
     private void getGroupInfo() {
-        iGroupInfoPresenter.getGroupInfo(gid);
-        iGroupInfoPresenter.getGroupMembers(gid);
-        iGroupInfoPresenter.getGroupIgnoreStatus(gid);
+        presenter.getGroupInfo(gid);
+        presenter.getGroupMembers(gid);
+        presenter.getGroupIgnoreStatus(gid);
     }
 
     private void initView() {
@@ -173,7 +173,7 @@ public class GroupInfoActivity extends IGroupInfoView {
 
     @OnClick(R2.id.sIgnore)
     public void onIgoreClick() {
-        iGroupInfoPresenter.changeGroupIgnoreStatus(gid, sIgnore.isChecked());
+        presenter.changeGroupIgnoreStatus(gid, sIgnore.isChecked());
     }
 
     @OnClick(R2.id.flMemberRoot)

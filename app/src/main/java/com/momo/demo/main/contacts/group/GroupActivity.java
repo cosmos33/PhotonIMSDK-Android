@@ -10,9 +10,9 @@ import android.widget.LinearLayout;
 
 import com.cosmos.photon.im.PhotonIMMessage;
 import com.cosmos.photonim.imbase.ImBaseBridge;
+import com.cosmos.photonim.imbase.base.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.chat.ChatBaseActivity;
 import com.cosmos.photonim.imbase.utils.ToastUtils;
-import com.cosmos.photonim.imbase.utils.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvBaseAdapter;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvListenerImpl;
 import com.cosmos.photonim.imbase.view.TitleBar;
@@ -50,10 +50,10 @@ public class GroupActivity extends IGroupView {
     }
 
     private void initView() {
-        contactPresenter.loadGroups();
+        presenter.loadGroups();
         titleBar.setTitle("附近的群组");
         titleBar.setLeftImageEvent(R.drawable.arrow_left, v -> GroupActivity.this.finish());
-        refreshLayout.setOnRefreshListener(() -> contactPresenter.loadGroups());
+        refreshLayout.setOnRefreshListener(() -> presenter.loadGroups());
     }
 
     @Override
@@ -115,7 +115,7 @@ public class GroupActivity extends IGroupView {
                 public void onClick(View view, Object data, int position) {
                     switch (view.getId()) {
                         case R.id.tvJoin:
-                            contactPresenter.joinGroup((GroupData) data);
+                            presenter.joinGroup((GroupData) data);
                             break;
                         case R.id.item_contact_llRoot:
                             GroupData gData = (GroupData) data;

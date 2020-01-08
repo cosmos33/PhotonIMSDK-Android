@@ -10,8 +10,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.cosmos.photonim.imbase.base.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.utils.LogUtils;
-import com.cosmos.photonim.imbase.utils.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvBaseAdapter;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvListenerImpl;
 import com.cosmos.photonim.imbase.view.TitleBar;
@@ -62,12 +62,12 @@ public class GroupMemberActivity extends IGroupMemeberView {
         titleBar.setTitle("组成员");
 
         if (!TextUtils.isEmpty(gId)) {
-            iGroupPresenter.getGroupMembers(gId, true, false);
+            presenter.getGroupMembers(gId, true, false);
         } else {
             LogUtils.log(TAG, "gid is null");
         }
         refreshLayout.setOnRefreshListener(() -> {
-            iGroupPresenter.getGroupMembers(gId, true, false);
+            presenter.getGroupMembers(gId, true, false);
         });
     }
 

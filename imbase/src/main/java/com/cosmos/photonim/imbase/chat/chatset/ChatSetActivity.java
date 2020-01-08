@@ -10,13 +10,13 @@ import android.widget.TextView;
 
 import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.R2;
+import com.cosmos.photonim.imbase.base.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.chat.chatset.ichatset.IChatSetView;
 import com.cosmos.photonim.imbase.chat.searchhistory.SearchHistoryActivity;
 import com.cosmos.photonim.imbase.utils.ToastUtils;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonGetIgnoreInfo;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;
 import com.cosmos.photonim.imbase.utils.image.ImageLoaderUtils;
-import com.cosmos.photonim.imbase.utils.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.view.TitleBar;
 
 import butterknife.BindView;
