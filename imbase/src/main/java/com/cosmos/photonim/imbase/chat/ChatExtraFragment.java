@@ -31,7 +31,7 @@ import com.cosmos.photonim.imbase.utils.CheckAudioPermission;
 import com.cosmos.photonim.imbase.utils.ToastUtils;
 import com.cosmos.photonim.imbase.utils.Utils;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvBaseAdapter;
-import com.cosmos.photonim.imbase.utils.recycleadapter.RvListener;
+import com.cosmos.photonim.imbase.utils.recycleadapter.RvListenerImpl;
 import com.cosmos.photonim.imbase.view.ChatToastUtils;
 import com.cosmos.photonim.imbase.view.VoiceTextView;
 
@@ -296,7 +296,7 @@ public class ChatExtraFragment extends RvBaseFragment {
             chatExtraItemData.add(new ChatExtraItemData(R.drawable.chat_file, "文件"));
             chatExtraItemData.add(new ChatExtraItemData(R.drawable.chat_position, "位置"));
             chatExtraAdapter = new ChatExtraAdapter(chatExtraItemData);
-            chatExtraAdapter.setRvListener(new RvListener() {
+            chatExtraAdapter.setRvListener(new RvListenerImpl() {
                 @Override
                 public void onClick(View view, Object data, int position) {
                     if (position == 0) {
@@ -312,11 +312,6 @@ public class ChatExtraFragment extends RvBaseFragment {
                     } else if (position == 4) {
                         MapActivity.start(getActivity());
                     }
-                }
-
-                @Override
-                public void onLongClick(View view, Object data, int position) {
-
                 }
             });
         }

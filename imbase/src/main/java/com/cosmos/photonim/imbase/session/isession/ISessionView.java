@@ -7,7 +7,6 @@ import android.view.View;
 
 import com.cosmos.photonim.imbase.base.RvBaseFragment;
 import com.cosmos.photonim.imbase.session.SessionData;
-import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;
 import com.cosmos.photonim.imbase.utils.mvpbase.IView;
 
 import java.util.List;
@@ -29,8 +28,6 @@ public abstract class ISessionView extends RvBaseFragment implements IView {
     }
 
     abstract public void onLoadHistory(List<SessionData> sessionData);
-
-    public abstract void onGetOtherInfoResult(JsonResult result, SessionData sessionData);
 
     public abstract void onDeleteSession(SessionData data);
 

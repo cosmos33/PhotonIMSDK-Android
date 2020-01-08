@@ -9,7 +9,7 @@ import android.view.View;
 
 import com.cosmos.photonim.imbase.base.RvBaseFragment;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvBaseAdapter;
-import com.cosmos.photonim.imbase.utils.recycleadapter.RvListener;
+import com.cosmos.photonim.imbase.utils.recycleadapter.RvListenerImpl;
 import com.momo.demo.R;
 import com.momo.demo.main.contacts.group.GroupActivity;
 import com.momo.demo.main.contacts.single.OnLineUserActivity;
@@ -51,7 +51,7 @@ public class ContactsFragment extends RvBaseFragment {
             baseDataList.add(new ContactsData("", "附近在线的人"));
             baseDataList.add(new ContactsData("", "附近的群组"));
             adapter = new ContactsAdapter(baseDataList);
-            adapter.setRvListener(new RvListener() {
+            adapter.setRvListener(new RvListenerImpl() {
                 @Override
                 public void onClick(View view, Object data, int position) {
                     switch (view.getId()) {
@@ -65,11 +65,6 @@ public class ContactsFragment extends RvBaseFragment {
                             }
                             break;
                     }
-                }
-
-                @Override
-                public void onLongClick(View view, Object data, int position) {
-
                 }
             });
         }

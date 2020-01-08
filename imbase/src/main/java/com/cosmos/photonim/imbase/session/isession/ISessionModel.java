@@ -1,15 +1,12 @@
 package com.cosmos.photonim.imbase.session.isession;
 
 import com.cosmos.photonim.imbase.session.SessionData;
-import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;
 import com.cosmos.photonim.imbase.utils.mvpbase.IModel;
 
 import java.util.List;
 
 public abstract class ISessionModel implements IModel {
     abstract public void loadLocalHostoryMsg(OnLoadHistoryListener onLoadHistoryListener);
-
-    public abstract void getOtherInfo(SessionData sessionData, OnGetOtherInfoListener onGetOtherInfoListener);
 
     public abstract void saveSession(SessionData sessionData);
 
@@ -36,10 +33,6 @@ public abstract class ISessionModel implements IModel {
 
     public interface OnLoadHistoryFromRemoteListener {
         void onLoadHistoryFromRemote(List<SessionData> sessionData);
-    }
-
-    public interface OnGetOtherInfoListener {
-        void onGetOtherInfo(JsonResult result);
     }
 
     public interface OnDeleteSessionListener {

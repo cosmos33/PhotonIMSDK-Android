@@ -191,13 +191,13 @@ public class VideoRecordFragment extends BaseFragment {
                     Bundle bundle = new Bundle();
                     bundle.putString(RecordResultFragment.BUNDLE_VIDEO_PATH, videoPath);
                     BmpInfo bmpInfo = (BmpInfo) result;
-                    if (recorder.getRotateDegree() / 90 % 2 == 0) {
+//                    if (recorder.getRotateDegree() / 90 % 2 == 0) {
                         bundle.putInt(RecordResultFragment.BUNDLE_VIDEO_COVER_WIDTH, bmpInfo.width);
                         bundle.putInt(RecordResultFragment.BUNDLE_VIDEO_COVER_HEIGHT, bmpInfo.height);
-                    } else {
-                        bundle.putInt(RecordResultFragment.BUNDLE_VIDEO_COVER_WIDTH, bmpInfo.height);
-                        bundle.putInt(RecordResultFragment.BUNDLE_VIDEO_COVER_HEIGHT, bmpInfo.width);
-                    }
+//                    } else {
+//                        bundle.putInt(RecordResultFragment.BUNDLE_VIDEO_COVER_WIDTH, bmpInfo.height);
+//                        bundle.putInt(RecordResultFragment.BUNDLE_VIDEO_COVER_HEIGHT, bmpInfo.width);
+//                    }
                     bundle.putString(RecordResultFragment.BUNDLE_VIDEO_COVER_PATH, bmpInfo.path);
                     onChangeFragmentListener.onChangeToResultFragment(bundle);
                 }
@@ -221,8 +221,8 @@ public class VideoRecordFragment extends BaseFragment {
     private MediaConfig getConfig() {
         return new MediaConfig.Builder()
                 .cameraId(Camera.CameraInfo.CAMERA_FACING_FRONT)
-                .encodeSize(new Size(1280, 720))
-                .targetVideoSize(new Size(1280, 720))
+                .encodeSize(new Size(720, 1280))
+                .targetVideoSize(new Size(720, 1280))
                 .videoEncodeBitRate(8 << 20)
                 .audioChannels(1)
                 .videoFPS(20)

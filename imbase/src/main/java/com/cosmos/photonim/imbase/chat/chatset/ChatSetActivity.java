@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.R2;
 import com.cosmos.photonim.imbase.chat.chatset.ichatset.IChatSetView;
+import com.cosmos.photonim.imbase.chat.searchhistory.SearchHistoryActivity;
 import com.cosmos.photonim.imbase.utils.ToastUtils;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonGetIgnoreInfo;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;
@@ -74,6 +75,10 @@ public class ChatSetActivity extends IChatSetView {
         presenter.changeIgnoreStatus(userId, sBan.isChecked());
     }
 
+    @OnClick(R2.id.flSearchContent)
+    public void onSearchContent() {
+        SearchHistoryActivity.start(this);
+    }
     @Override
     public void onTopChangeStatusResult(boolean success) {
 

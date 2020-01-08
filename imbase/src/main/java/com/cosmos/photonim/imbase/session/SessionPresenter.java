@@ -1,15 +1,14 @@
 package com.cosmos.photonim.imbase.session;
 
+import com.cosmos.photonim.imbase.businessmodel.PersionInfoModel;
 import com.cosmos.photonim.imbase.session.isession.ISessionModel;
 import com.cosmos.photonim.imbase.session.isession.ISessionPresenter;
 import com.cosmos.photonim.imbase.session.isession.ISessionView;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class SessionPresenter extends ISessionPresenter<ISessionView, ISessionModel> {
-    private Set<String> othersInfoSet;
+    private PersionInfoModel persionInfoModel;
     public SessionPresenter(ISessionView iView) {
         super(iView);
     }
@@ -18,21 +17,6 @@ public class SessionPresenter extends ISessionPresenter<ISessionView, ISessionMo
     public void loadHistoryData() {
         getiModel().loadLocalHostoryMsg(messageData -> {
             getIView().onLoadHistory(messageData);
-        });
-    }
-
-    @Override
-    public void getOthersInfo(SessionData sessionData) {
-        if (othersInfoSet == null) {
-            othersInfoSet = new HashSet<>();
-        }
-        if (othersInfoSet.contains(sessionData.getChatWith())) {
-            return;
-        }
-        othersInfoSet.add(sessionData.getChatWith());
-        getiModel().getOtherInfo(sessionData, result -> {
-            othersInfoSet.remove(sessionData.getChatWith());
-            getIView().onGetOtherInfoResult(result, sessionData);
         });
     }
 

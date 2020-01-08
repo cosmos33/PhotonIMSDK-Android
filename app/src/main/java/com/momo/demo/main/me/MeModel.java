@@ -26,7 +26,6 @@ public class MeModel extends IMeModel {
                 listener.onChangeNickName((JsonSetNickName) jsonResult.get());
             }
         });
-
     }
 
     @Override

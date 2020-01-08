@@ -107,5 +107,6 @@ public class AsycTaskUtil {
 
     public interface OnTaskListener {
         void onTaskFinished(Object result);
+//        void onTaskCanceled(Object result);
     }
 }

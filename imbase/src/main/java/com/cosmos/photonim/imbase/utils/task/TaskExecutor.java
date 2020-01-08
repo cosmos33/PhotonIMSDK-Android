@@ -25,4 +25,11 @@ public class TaskExecutor {
     public void createAsycTaskChat(Callable runnable) {
         AsycTaskUtil.getInstance().createAsycTask(runnable, null, ExecutorUtil.getChatExecutor(), Process.THREAD_PRIORITY_BACKGROUND);
     }
+
+    public void cancel(Callable callable) {
+        if (callable == null) {
+            return;
+        }
+        AsycTaskUtil.getInstance().cancelTask(callable);
+    }
 }

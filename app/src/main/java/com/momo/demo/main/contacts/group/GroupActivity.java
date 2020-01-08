@@ -14,7 +14,7 @@ import com.cosmos.photonim.imbase.chat.ChatBaseActivity;
 import com.cosmos.photonim.imbase.utils.ToastUtils;
 import com.cosmos.photonim.imbase.utils.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvBaseAdapter;
-import com.cosmos.photonim.imbase.utils.recycleadapter.RvListener;
+import com.cosmos.photonim.imbase.utils.recycleadapter.RvListenerImpl;
 import com.cosmos.photonim.imbase.view.TitleBar;
 import com.momo.demo.R;
 import com.momo.demo.main.contacts.group.igroup.IGroupView;
@@ -110,7 +110,7 @@ public class GroupActivity extends IGroupView {
         if (adapter == null) {
             groupData = new ArrayList<>();
             adapter = new GroupAdapter(groupData);
-            adapter.setRvListener(new RvListener() {
+            adapter.setRvListener(new RvListenerImpl() {
                 @Override
                 public void onClick(View view, Object data, int position) {
                     switch (view.getId()) {

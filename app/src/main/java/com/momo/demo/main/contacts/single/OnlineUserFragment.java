@@ -7,7 +7,7 @@ import android.widget.LinearLayout;
 
 import com.cosmos.photonim.imbase.utils.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvBaseAdapter;
-import com.cosmos.photonim.imbase.utils.recycleadapter.RvListener;
+import com.cosmos.photonim.imbase.utils.recycleadapter.RvListenerImpl;
 import com.momo.demo.R;
 import com.momo.demo.main.contacts.single.ionline.IOnlineUserView;
 import com.momo.demo.main.contacts.single.userinfo.UserInfoActivity;
@@ -18,7 +18,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class OnlineUserFragment extends IOnlineUserView implements RvListener {
+public class OnlineUserFragment extends IOnlineUserView {
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.llNoMsg)
@@ -96,20 +96,15 @@ public class OnlineUserFragment extends IOnlineUserView implements RvListener {
         if (adapter == null) {
             baseDataList = new ArrayList<>();
             adapter = new OnlineUserAdapter(baseDataList);
-            adapter.setRvListener(this);
+            adapter.setRvListener(new RvListenerImpl() {
+                @Override
+                public void onClick(View view, Object data, int position) {
+                    OnlineUserData onlineUserData = (OnlineUserData) data;
+                    UserInfoActivity.startActivity(getActivity(), onlineUserData.getUserId(), onlineUserData.getIcon(), onlineUserData.getNickName());
+                }
+            });
         }
         return adapter;
-    }
-
-    @Override
-    public void onClick(View view, Object data, int position) {
-        OnlineUserData onlineUserData = (OnlineUserData) data;
-        UserInfoActivity.startActivity(getActivity(), onlineUserData.getUserId(), onlineUserData.getIcon(), onlineUserData.getNickName());
-    }
-
-    @Override
-    public void onLongClick(View view, Object data, int position) {
-
     }
 
 }

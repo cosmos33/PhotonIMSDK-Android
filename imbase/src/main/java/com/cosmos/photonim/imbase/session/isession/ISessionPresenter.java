@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.cosmos.photonim.imbase.session.SessionData;
-import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;
 import com.cosmos.photonim.imbase.utils.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvBaseAdapter;
 
@@ -19,8 +18,6 @@ public abstract class ISessionPresenter<V extends ISessionView, M extends ISessi
     public abstract void loadHistoryData();
 
     public abstract void loadHistoryFromRemote();
-
-    public abstract void getOthersInfo(SessionData sessionData);
 
     public abstract void saveSession(SessionData sessionData);
 
@@ -55,11 +52,6 @@ public abstract class ISessionPresenter<V extends ISessionView, M extends ISessi
 
             @Override
             public void onLoadHistory(List<SessionData> sessionData) {
-
-            }
-
-            @Override
-            public void onGetOtherInfoResult(JsonResult result, SessionData sessionData) {
 
             }
 

@@ -28,5 +28,6 @@
         <activity android:name=".chat.map.MapActivity" />
         <activity android:name=".chat.media.takephoto.TakePhotoActivity" />
         <activity android:name=".chat.media.video.VideoActivity" />
+        <activity android:name=".chat.searchhistory.SearchHistoryActivity" />
     </application>
 </manifest>

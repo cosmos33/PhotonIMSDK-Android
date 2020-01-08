@@ -6,21 +6,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.cosmos.photon.im.PhotonIMMessage;
 import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.R2;
 import com.cosmos.photonim.imbase.chat.ChatBaseActivity;
 import com.cosmos.photonim.imbase.session.isession.ISessionView;
 import com.cosmos.photonim.imbase.utils.CollectionUtils;
 import com.cosmos.photonim.imbase.utils.LocalRestoreUtils;
-import com.cosmos.photonim.imbase.utils.LogUtils;
 import com.cosmos.photonim.imbase.utils.event.AllUnReadCount;
 import com.cosmos.photonim.imbase.utils.event.ClearUnReadStatus;
 import com.cosmos.photonim.imbase.utils.event.OnDBChanged;
-import com.cosmos.photonim.imbase.utils.http.jsons.JsonGroupProfile;
-import com.cosmos.photonim.imbase.utils.http.jsons.JsonOtherInfoMulti;
-import com.cosmos.photonim.imbase.utils.http.jsons.JsonRequestResult;
-import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;
 import com.cosmos.photonim.imbase.utils.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvBaseAdapter;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvListenerImpl;
@@ -36,7 +30,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class SessionFragment extends ISessionView implements SessionItem.UpdateOtherInfoListener {
+public class SessionFragment extends ISessionView {
     private static final String TAG = "SessionFragment";
     RecyclerView recyclerView;
     @BindView(R2.id.llNoMsg)
@@ -197,7 +191,12 @@ public class SessionFragment extends ISessionView implements SessionItem.UpdateO
         if (sessionAdapter == null) {
             baseDataList = new ArrayList<>();
 //            baseDataMap = new HashMap<>();
-            sessionAdapter = new SessionAdapter(baseDataList, this);
+            sessionAdapter = new SessionAdapter(baseDataList, new SessionUpdateOtherInfoImpl(new SessionUpdateOtherInfoImpl.OnSessionUpdateCallback() {
+                @Override
+                public void onSessionUpdate(SessionData sessionData) {
+                    sessionAdapter.notifyItemChanged(sessionData.getItemPosition());
+                }
+            }));
             sessionAdapter.setRvListener(new RvListenerImpl() {
                 @Override
                 public void onClick(View view, Object data, int position) {
@@ -293,41 +292,6 @@ public class SessionFragment extends ISessionView implements SessionItem.UpdateO
     }
 
     @Override
-    public void onGetOtherInfoResult(JsonResult result, SessionData sessionData) {
-        if (result == null || !result.success()) {
-            LogUtils.log(TAG, "获取Session item info failed");
-            return;
-        }
-        if (sessionData.getChatType() == PhotonIMMessage.SINGLE) {
-            JsonOtherInfoMulti jsonRequestResult = (JsonOtherInfoMulti) result.get();
-            if (CollectionUtils.isEmpty(jsonRequestResult.getData().getLists())) {
-                return;
-            }
-            JsonOtherInfoMulti.DataBean.ListsBean listsBean = jsonRequestResult.getData().getLists().get(0);
-
-            sessionData.setIcon(listsBean.getAvatar());
-            sessionData.setNickName(listsBean.getNickname());
-        } else {
-            JsonRequestResult jr = result.get();
-            if (jr instanceof JsonOtherInfoMulti) {
-                JsonOtherInfoMulti jsonRequestResult = (JsonOtherInfoMulti) result.get();
-                if (jsonRequestResult.getData().getLists().size() == 0) {
-                    return;
-                }
-                sessionData.setLastMsgFrName(jsonRequestResult.getData().getLists().get(0).getNickname());
-                sessionData.setUpdateFromInfo(false);
-            } else {
-                JsonGroupProfile jsonGroupProfile = (JsonGroupProfile) result.get();
-                JsonGroupProfile.DataBean.ProfileBean profile = jsonGroupProfile.getData().getProfile();
-                sessionData.setIcon(profile.getAvatar());
-                sessionData.setNickName(profile.getName());
-            }
-        }
-
-        sessionAdapter.notifyItemChanged(sessionData.getItemPosition());
-    }
-
-    @Override
     public void onDeleteSession(SessionData data) {
         if (sessionDialogFragment != null) {
             sessionDialogFragment.dismiss();
@@ -360,10 +324,5 @@ public class SessionFragment extends ISessionView implements SessionItem.UpdateO
     @Override
     public void onGetAllUnReadCount(int result) {
         EventBus.getDefault().post(new AllUnReadCount(result));
-    }
-
-    @Override
-    public void onUpdateOtherInfo(SessionData sessionData) {
-        iSessionPresenter.getOthersInfo(sessionData);
     }
 }

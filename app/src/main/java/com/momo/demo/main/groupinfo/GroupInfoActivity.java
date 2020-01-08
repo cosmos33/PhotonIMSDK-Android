@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.R2;
+import com.cosmos.photonim.imbase.chat.searchhistory.SearchHistoryActivity;
 import com.cosmos.photonim.imbase.utils.CollectionUtils;
 import com.cosmos.photonim.imbase.utils.ToastUtils;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonGetGroupIgnoreInfo;
@@ -180,6 +181,10 @@ public class GroupInfoActivity extends IGroupInfoView {
         GroupMemberActivity.start(this, gid);
     }
 
+    @OnClick(R2.id.flSearchContent)
+    public void onSearchContentClick() {
+        SearchHistoryActivity.start(this);
+    }
     private void updateSwipeLayoutStatus() {
         if (getGroupInfo && getGroupMemberInfo && getGroupStatusInfo) {
             if (swipeRefreshLayout.isRefreshing()) {

@@ -16,7 +16,7 @@ import com.cosmos.photonim.imbase.R2;
 import com.cosmos.photonim.imbase.utils.recycleadapter.CreateRvHelper;
 import com.cosmos.photonim.imbase.utils.recycleadapter.ICreateRv;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvBaseAdapter;
-import com.cosmos.photonim.imbase.utils.recycleadapter.RvListener;
+import com.cosmos.photonim.imbase.utils.recycleadapter.RvListenerImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,17 +62,12 @@ public class ListDialogFragment extends DialogFragment implements ICreateRv {
                 listitemdata.add(new Listitemdata(item));
             }
             listDialogAdapter = new ListDialogAdapter(listitemdata);
-            listDialogAdapter.setRvListener(new RvListener() {
+            listDialogAdapter.setRvListener(new RvListenerImpl() {
                 @Override
                 public void onClick(View view, Object data, int position) {
                     if (onHandleListener != null) {
                         onHandleListener.onItemClick(position);
                     }
-                }
-
-                @Override
-                public void onLongClick(View view, Object data, int position) {
-
                 }
             });
 

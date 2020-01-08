@@ -73,15 +73,7 @@ public class SessionItem extends ItemTypeAbstract {
 //        } else {
         rvViewHolder.getView(R.id.ivTop).setVisibility(View.GONE);
 //        }
-        if (sessionData.isShowAtTip()) {
-            ((TextView) rvViewHolder.getView(R.id.tvMsgContent)).setText(sessionData.getAtMsg());
-        } else {
-            if (TextUtils.isEmpty(sessionData.getLastMsgFrName())) {
-                ((TextView) rvViewHolder.getView(R.id.tvMsgContent)).setText(sessionData.getLastMsgContent());
-            } else {
-                ((TextView) rvViewHolder.getView(R.id.tvMsgContent)).setText(String.format("%s:%s", sessionData.getLastMsgFrName(), sessionData.getLastMsgContent()));
-            }
-        }
+        ((TextView) rvViewHolder.getView(R.id.tvMsgContent)).setText(getMsgContent(sessionData));
         if (sessionData.getUnreadCount() > 0) {
             TextView tvTemp = (TextView) rvViewHolder.getView(R.id.tvUnRead);
             tvTemp.setVisibility(View.VISIBLE);
@@ -102,6 +94,18 @@ public class SessionItem extends ItemTypeAbstract {
             }
         }
 
+    }
+
+    protected CharSequence getMsgContent(SessionData sessionData) {
+        if (sessionData.isShowAtTip()) {
+            return sessionData.getAtMsg();
+        } else {
+            if (TextUtils.isEmpty(sessionData.getLastMsgFrName())) {
+                return sessionData.getLastMsgContent();
+            } else {
+                return String.format("%s:%s", sessionData.getLastMsgFrName(), sessionData.getLastMsgContent());
+            }
+        }
     }
 
     private boolean shouldUpdateFromName(boolean isSendFromMe) {
