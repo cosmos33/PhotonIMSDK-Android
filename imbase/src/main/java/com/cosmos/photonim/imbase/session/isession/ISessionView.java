@@ -7,7 +7,7 @@ import android.view.View;
 
 import com.cosmos.photonim.imbase.base.IRvBaseFragmentView;
 import com.cosmos.photonim.imbase.base.mvpbase.IView;
-import com.cosmos.photonim.imbase.session.SessionData;
+import com.cosmos.photonim.imbase.session.adapter.SessionData;
 
 import java.util.List;
 

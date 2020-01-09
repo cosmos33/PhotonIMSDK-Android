@@ -1,6 +1,7 @@
 package com.cosmos.photonim.imbase.session;
 
 import com.cosmos.photonim.imbase.businessmodel.PersionInfoModel;
+import com.cosmos.photonim.imbase.session.adapter.SessionData;
 import com.cosmos.photonim.imbase.session.isession.ISessionModel;
 import com.cosmos.photonim.imbase.session.isession.ISessionPresenter;
 import com.cosmos.photonim.imbase.session.isession.ISessionView;

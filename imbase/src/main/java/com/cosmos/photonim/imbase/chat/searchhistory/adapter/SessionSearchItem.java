@@ -47,7 +47,7 @@ public class SessionSearchItem extends ItemTypeAbstract {
         if (!TextUtils.isEmpty(searchData.nickName)) {
             ((TextView) rvViewHolder.getView(R.id.tvNickName)).setText(searchData.nickName);
         } else {
-            ((TextView) rvViewHolder.getView(R.id.tvNickName)).setText(searchData.nickName);
+            ((TextView) rvViewHolder.getView(R.id.tvNickName)).setText("");
         }
 
         if (TextUtils.isEmpty(searchData.timeContent)) {

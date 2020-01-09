@@ -78,9 +78,9 @@ public class SearchHistoryActivity extends ISearchView {
     }
 
     private void search() {
+        presenter.cancel();
         String searchContent = etSearch.getText().toString();
         if (TextUtils.isEmpty(searchContent)) {
-            presenter.cancel();
             clearListResult();
             return;
         }

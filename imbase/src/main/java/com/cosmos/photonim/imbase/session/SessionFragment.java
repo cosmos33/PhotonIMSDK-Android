@@ -10,6 +10,8 @@ import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.R2;
 import com.cosmos.photonim.imbase.base.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.chat.ChatBaseActivity;
+import com.cosmos.photonim.imbase.session.adapter.SessionAdapter;
+import com.cosmos.photonim.imbase.session.adapter.SessionData;
 import com.cosmos.photonim.imbase.session.isession.ISessionView;
 import com.cosmos.photonim.imbase.utils.CollectionUtils;
 import com.cosmos.photonim.imbase.utils.LocalRestoreUtils;

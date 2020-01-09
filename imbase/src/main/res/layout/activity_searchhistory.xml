@@ -52,6 +52,6 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="8dp"
-        android:layout_marginTop="@dimen/title_margin_top" />
+        android:background="@color/white"
+        android:layout_margin="@dimen/title_margin_top" />
 </LinearLayout>

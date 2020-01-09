@@ -1,7 +1,7 @@
 package com.cosmos.photonim.imbase.session.isession;
 
 import com.cosmos.photonim.imbase.base.mvpbase.IModel;
-import com.cosmos.photonim.imbase.session.SessionData;
+import com.cosmos.photonim.imbase.session.adapter.SessionData;
 
 import java.util.List;
 

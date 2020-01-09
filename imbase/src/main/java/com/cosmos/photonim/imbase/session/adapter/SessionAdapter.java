@@ -1,4 +1,4 @@
-package com.cosmos.photonim.imbase.session;
+package com.cosmos.photonim.imbase.session.adapter;
 
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvBaseAdapter;
 

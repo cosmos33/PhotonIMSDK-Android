@@ -1,4 +1,4 @@
-package com.cosmos.photonim.imbase.session;
+package com.cosmos.photonim.imbase.session.adapter;
 
 import android.text.SpannableString;
 
@@ -491,6 +491,11 @@ public class SessionData implements ItemData {
             return this;
         }
 
+        public Builder nickName(String val) {
+            nickName = val;
+            return this;
+        }
+
         public Builder itemType(int val) {
             itemType = val;
             return this;
@@ -521,33 +526,5 @@ public class SessionData implements ItemData {
         }
 
     }
-
-    public class SessionExtra {
-
-        /**
-         * icon :
-         * nickname :
-         */
-
-        public String icon;
-        public String nickname;
-
-        public String getIcon() {
-            return icon;
-        }
-
-        public void setIcon(String icon) {
-            this.icon = icon;
-        }
-
-        public String getNickname() {
-            return nickname;
-        }
-
-        public void setNickname(String nickname) {
-            this.nickname = nickname;
-        }
-    }
-
 
 }

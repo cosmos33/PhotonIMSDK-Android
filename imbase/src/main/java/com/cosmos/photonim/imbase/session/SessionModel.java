@@ -9,6 +9,7 @@ import com.cosmos.photon.im.PhotonIMSession;
 import com.cosmos.photonim.imbase.ImBaseBridge;
 import com.cosmos.photonim.imbase.chat.ChatData;
 import com.cosmos.photonim.imbase.chat.ChatModel;
+import com.cosmos.photonim.imbase.session.adapter.SessionData;
 import com.cosmos.photonim.imbase.session.isession.ISessionModel;
 import com.cosmos.photonim.imbase.utils.CollectionUtils;
 import com.cosmos.photonim.imbase.utils.Utils;
@@ -176,6 +177,7 @@ public class SessionModel extends ISessionModel {
         boolean showAtMsg;
         String lastMsgFrName;
         String icon;
+        String nickName;
         boolean updateFromInfo;
         for (PhotonIMSession photonIMSession : sessionList) {
             lastMsgFrName = "";
@@ -221,6 +223,11 @@ public class SessionModel extends ISessionModel {
                 updateFromInfo = profile == null;
                 lastMsgFrName = profile == null ? photonIMSession.lastMsgFr : profile.getName();
                 icon = profile == null ? "" : profile.getIcon();
+                nickName = profile == null ? "" : profile.getName();
+            } else {
+                Profile profile = DBHelperUtils.getInstance().findProfile(photonIMSession.chatWith);
+                icon = profile == null ? "" : profile.getIcon();
+                nickName = profile == null ? "" : profile.getName();
             }
             sessionData = new SessionData.Builder()
                     .chatType(photonIMSession.chatType)
@@ -234,6 +241,7 @@ public class SessionModel extends ISessionModel {
                     .lastMsgFr(photonIMSession.lastMsgFr)
                     .lastMsgFrName(lastMsgFrName)
                     .icon(icon)
+                    .nickName(nickName)
                     .updateFromInfo(updateFromInfo)
                     .lastMsgStatus(photonIMSession.lastMsgStatus)
                     .lastMsgId(photonIMSession.lastMsgId)

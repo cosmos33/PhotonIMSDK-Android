@@ -2,6 +2,8 @@ package com.cosmos.photonim.imbase.session;
 
 import com.cosmos.photon.im.PhotonIMMessage;
 import com.cosmos.photonim.imbase.businessmodel.PersionInfoModel;
+import com.cosmos.photonim.imbase.session.adapter.SessionData;
+import com.cosmos.photonim.imbase.session.adapter.SessionItem;
 import com.cosmos.photonim.imbase.utils.CollectionUtils;
 import com.cosmos.photonim.imbase.utils.LogUtils;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonGroupProfile;
