@@ -21,6 +21,8 @@ public abstract class IChatPresenter<V extends IChatView, M extends IChatModel> 
                                           boolean beforeAuthor, boolean asc,
                                           int size, String myId);
 
+    public abstract void loadAfterSearchMsgId(int chatType, String chatWith, String searchMsgId, boolean beforeAuthor, boolean asc, int size);
+
     public abstract void loadAllHistory(int chatType, String chatWith, int size, long beginTimeStamp);
 
     public abstract void loadAllHistory(int chatType, String chatWith, int size, long beginTimeStamp, long endTimeStamp);
@@ -66,7 +68,7 @@ public abstract class IChatPresenter<V extends IChatView, M extends IChatModel> 
     public V getEmptyView() {
         return (V) new IChatView() {
             @Override
-            public void onloadHistoryResult(List<ChatData> chatData, Map<String, ChatData> chatDataMap) {
+            public void onloadHistoryResult(List<ChatData> chatData, Map<String, ChatData> chatDataMap, boolean search) {
 
             }
 

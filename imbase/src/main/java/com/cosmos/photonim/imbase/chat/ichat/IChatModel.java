@@ -12,6 +12,7 @@ public abstract class IChatModel implements IModel {
                                           boolean beforeAuthor, boolean asc,
                                           int size, String myId, OnLoadHistoryListener listener);
 
+    public abstract void loadAfterSearchMsgId(int chatType, String chatWith, String anchorMsgId, boolean beforeAuthor, boolean asc, int size, OnLoadHistoryListener listener);
     public abstract void loadAllHistory(int chatType, String chatWith, int size, long beginTimeStamp, OnLoadHistoryListener listener);
 
     public abstract void loadAllHistory(int chatType, String chatWith, int size, long beginTimeStamp, long endTimeStamp, OnLoadHistoryListener listener);

@@ -68,6 +68,7 @@ public abstract class ChatBaseActivity extends IChatView {
     private static final String EXTRA_NAME = "EXTRA_NAME";
     private static final String EXTRA_OTHERICON = "EXTRA_OTHERICON";
     private static final String EXTRA_SHOWTEST = "EXTRA_SHOWTEST";
+    private static final String EXTRA_SEARCHID = "EXTRA_SEARCHID";
     private static final int PAGE_ONE = 50;
 
     @BindView(R2.id.titleBar)
@@ -95,9 +96,14 @@ public abstract class ChatBaseActivity extends IChatView {
     private TestSendFragment testSendFragment;
     public ChatExtraFragment extraFragment;
     private boolean showTest;
+    private String searchMsgId;
     private String loginUserId;
 
 
+    public static void startActivity(Activity from, int chatType, String chatWith, String myIcon,
+                                     String name, String otherIcon, boolean igoreAlert, String searchId) {
+        startActivity(from, chatType, chatWith, myIcon, name, otherIcon, igoreAlert, false, searchId);
+    }
     public static void startActivity(Activity from, int chatType, String chatWith, String myIcon,
                                      String name, String otherIcon, boolean igoreAlert) {
         startActivity(from, chatType, chatWith, myIcon, name, otherIcon, igoreAlert, false);
@@ -105,6 +111,10 @@ public abstract class ChatBaseActivity extends IChatView {
 
     public static void startActivity(Activity from, int chatType, String chatWith, String myIcon,
                                      String name, String otherIcon, boolean igoreAlert, boolean showTest) {
+        startActivity(from, chatType, chatWith, myIcon, name, otherIcon, igoreAlert, showTest, null);
+    }
+    public static void startActivity(Activity from, int chatType, String chatWith, String myIcon,
+                                     String name, String otherIcon, boolean igoreAlert, boolean showTest, String searchMsgId) {
         Intent intent;
         if (chatType == PhotonIMMessage.SINGLE) {
             intent = new Intent(from, ChatSingleActivity.class);
@@ -118,6 +128,7 @@ public abstract class ChatBaseActivity extends IChatView {
         intent.putExtra(EXTRA_OTHERICON, otherIcon);
         intent.putExtra(EXTRA_IGOREALERT, igoreAlert);
         intent.putExtra(EXTRA_SHOWTEST, showTest);
+        intent.putExtra(EXTRA_SEARCHID, searchMsgId);
         from.startActivity(intent);
     }
 
@@ -132,10 +143,15 @@ public abstract class ChatBaseActivity extends IChatView {
         name = getIntent().getStringExtra(EXTRA_NAME);
         igoreAlert = getIntent().getBooleanExtra(EXTRA_IGOREALERT, false);
         showTest = getIntent().getBooleanExtra(EXTRA_SHOWTEST, false);
+        searchMsgId = getIntent().getStringExtra(EXTRA_SEARCHID);
 
         loginUserId = ImBaseBridge.getInstance().getUserId();
 
-        getHistory(false, 0L, "");
+        if (searchMsgId == null) {
+            getHistory(false, 0L, "");
+        } else {
+            getHistory();
+        }
         initView();
     }
 
@@ -160,6 +176,9 @@ public abstract class ChatBaseActivity extends IChatView {
         super.onWindowFocusChanged(hasFocus);
     }
 
+    private void getHistory() {
+        presenter.loadAfterSearchMsgId(chatType, chatWith, searchMsgId, false, false, Integer.MAX_VALUE);
+    }
     private void getHistory(boolean loadFromRemote, long endTimeStamp, String anchorMsgId) {
         if (loadFromRemote) {
             lastLoadHistoryFromRemote = true;
@@ -282,7 +301,7 @@ public abstract class ChatBaseActivity extends IChatView {
     }
 
     @Override
-    public void onloadHistoryResult(List<ChatData> chatData, Map<String, ChatData> chatDataMap) {
+    public void onloadHistoryResult(List<ChatData> chatData, Map<String, ChatData> chatDataMap, boolean search) {
         if (lastLoadHistoryFromRemote) {//服务器没有历史消息了需要加载本地
             if (chatMsg.size() > 0) {
                 ChatData chatDataTemp = chatMsg.get(0);
@@ -302,9 +321,11 @@ public abstract class ChatBaseActivity extends IChatView {
             chatMsg.addAll(0, chatData);
             chatMsgMap = (HashMap<String, ChatData>) chatDataMap;
             chatAdapter.notifyItemRangeInserted(0, chatData.size());
-            if (firstLoad) {
-                firstLoad = false;
-                recyclerView.scrollToPosition(chatData.size() - 1);
+            if (!search) {
+                if (firstLoad) {
+                    firstLoad = false;
+                    recyclerView.scrollToPosition(chatData.size() - 1);
+                }
             }
         }
     }

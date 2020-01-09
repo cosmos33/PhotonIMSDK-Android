@@ -9,7 +9,7 @@ import java.util.Map;
 
 public abstract class IChatView extends RvBaseActivity<IChatPresenter> implements IView {
 
-    public abstract void onloadHistoryResult(List<ChatData> chatData, Map<String, ChatData> chatDataMap);
+    public abstract void onloadHistoryResult(List<ChatData> chatData, Map<String, ChatData> chatDataMap, boolean search);
 
     public abstract void onRevertResult(ChatData data1, int error, String msg);
 

@@ -115,6 +115,26 @@ public class ChatModel extends IChatModel {
     }
 
     @Override
+    public void loadAfterSearchMsgId(int chatType, String chatWith, String anchorMsgId, boolean beforeAuthor, boolean asc, int size, OnLoadHistoryListener listener) {
+        TaskExecutor.getInstance().createAsycTask(() -> getAfterSearchMsgId(chatType, chatWith, anchorMsgId, beforeAuthor, asc, size),
+                result -> {
+                    Map map = (Map) result;
+                    if (map == null) {
+                        listener.onLoadHistory(null, null);
+                        return;
+                    }
+                    listener.onLoadHistory((List<ChatData>) (map.get("list")), (Map<String, ChatData>) (map.get("map")));
+                });
+    }
+
+    private Object getAfterSearchMsgId(int chatType, String chatWith, String anchorMsgId, boolean beforeAuthor, boolean asc, int size) {
+        PhotonIMMessage message = PhotonIMDatabase.getInstance().findMessage(chatType, chatWith, anchorMsgId);
+        ArrayList<PhotonIMMessage> result = PhotonIMDatabase.getInstance().findMessageListByIdRange(chatType, chatWith, anchorMsgId, beforeAuthor, asc, size);
+        result.add(0, message);
+        return convertMap(result);
+    }
+
+    @Override
     public void loadAllHistory(int chatType, String chatWith, int size, long beginTimeStamp, OnLoadHistoryListener listener) {
         TaskExecutor.getInstance().createAsycTask(() -> getAllHistory(chatType, chatWith, size, beginTimeStamp),
                 result -> {

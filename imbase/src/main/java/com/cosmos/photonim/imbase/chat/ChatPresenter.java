@@ -42,7 +42,15 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
                                  int size, String myId) {
         getiModel().loadLocalHistory(chatType, chatWith, anchorMsgId, beforeAuthor, asc, size, myId,
                 (chatData, chatDataMap) -> {
-                    getIView().onloadHistoryResult(chatData, chatDataMap);
+                    getIView().onloadHistoryResult(chatData, chatDataMap, false);
+                });
+    }
+
+    @Override
+    public void loadAfterSearchMsgId(int chatType, String chatWith, String searchMsgId, boolean beforeAuthor, boolean asc, int size) {
+        getiModel().loadAfterSearchMsgId(chatType, chatWith, searchMsgId, beforeAuthor, asc, size,
+                (chatData, chatDataMap) -> {
+                    getIView().onloadHistoryResult(chatData, chatDataMap, true);
                 });
     }
 
@@ -50,7 +58,7 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
     public void loadAllHistory(int chatType, String chatWith, int size, long beginTimeStamp) {
         getiModel().loadAllHistory(chatType, chatWith, size, beginTimeStamp,
                 (chatData, chatDataMap) -> {
-                    getIView().onloadHistoryResult(chatData, chatDataMap);
+                    getIView().onloadHistoryResult(chatData, chatDataMap, false);
                 });
     }
 
@@ -58,7 +66,7 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
     public void loadAllHistory(int chatType, String chatWith, int size, long beginTimeStamp, long endTimeStamp) {
         getiModel().loadAllHistory(chatType, chatWith, size, beginTimeStamp, endTimeStamp,
                 (chatData, chatDataMap) -> {
-                    getIView().onloadHistoryResult(chatData, chatDataMap);
+                    getIView().onloadHistoryResult(chatData, chatDataMap, false);
                 });
     }
 

@@ -119,7 +119,7 @@ public class SearchHistoryActivity extends ISearchView {
                 public void onClick(View view, Object data, int position) {
                     SearchData sessionData = (SearchData) data;
                     ChatBaseActivity.startActivity(SearchHistoryActivity.this, sessionData.chatType,
-                            sessionData.chatWith, null, sessionData.nickName, sessionData.icon, false);
+                            sessionData.chatWith, null, sessionData.nickName, sessionData.icon, false, sessionData.id);
                 }
             });
         }
