@@ -228,4 +228,29 @@ public class EmojiUtils {
         LogUtils.log(TAG, String.format("generateEmojiSpan time:%d", System.currentTimeMillis() - time));
         return contentShow;
     }
+
+    public static SpannableString generateEmojiSpan(SpannableString content) {
+        if (TextUtils.isEmpty(content)) {
+            return null;
+        }
+        long time = System.currentTimeMillis();
+        Pattern pattern = Pattern.compile(EmojiUtils.EMOJI_MATCH);
+        Matcher matcher = pattern.matcher(content);
+        Map<String, String> emojiMap = EmojiUtils.getInstance().getEmojiMap();
+        int start;
+        int end;
+        String resId;
+        ImageSpan imageSpan;
+        while (matcher.find()) {
+            start = matcher.start();
+            end = matcher.end();
+            resId = emojiMap.get(matcher.group());
+            if (resId != null) {
+                imageSpan = new ImageSpan(ImBaseBridge.getInstance().getApplication(), Utils.getDrawableByName(resId));
+                content.setSpan(imageSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
+        }
+        LogUtils.log(TAG, String.format("generateEmojiSpan time:%d", System.currentTimeMillis() - time));
+        return content;
+    }
 }

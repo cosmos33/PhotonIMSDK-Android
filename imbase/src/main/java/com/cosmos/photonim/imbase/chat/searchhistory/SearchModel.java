@@ -14,6 +14,9 @@ import java.util.concurrent.Callable;
 public class SearchModel extends ISearchHistoryModel {
     private static final String MATCH_PREFIX = "[(*..";
     private static final String MATCH_POSTFIX = "..*)]";
+
+    private static final String MATCH_PREFIX_PATTERN = "\\[\\(\\*\\.\\.";
+    private static final String MATCH_POSTFIX_PATTERN = "\\.\\.\\*\\)\\]";
     private static final int MATCH_MAXLENGTH = 50;
     private Callable callable;
 
@@ -30,7 +33,7 @@ public class SearchModel extends ISearchHistoryModel {
                 }
                 ArrayList<SearchData> searchData = new ArrayList<>(photonIMMessages.size());
                 for (PhotonIMMessage photonIMMessage : photonIMMessages) {
-                    searchData.add(new SearchData(photonIMMessage));
+                    searchData.add(new SearchData(photonIMMessage, MATCH_PREFIX_PATTERN, MATCH_POSTFIX_PATTERN, MATCH_PREFIX, MATCH_POSTFIX));
                 }
                 return searchData;
             }
