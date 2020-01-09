@@ -48,7 +48,6 @@
     <string name="me_nickname_notset">未设置</string>
     <string name="chat_revoke_failed">消息不可撤回</string>
     <string name="chat_send_failed_frequency">消息发送频率过高</string>
-    <string name="chat_send_status_sending">发送中</string>
     <string name="chat_pic">图片</string>
     <string name="userinfo_get_failed">获取他人信息失败</string>
     <string name="chat_msg_nomore">已经加载全部</string>

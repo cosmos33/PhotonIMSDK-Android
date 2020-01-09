@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.cosmos.maplib.map.MyLocation;
 import com.cosmos.photon.im.PhotonIMMessage;
 import com.cosmos.photonim.imbase.ImBaseBridge;
 import com.cosmos.photonim.imbase.R;
@@ -20,10 +21,9 @@ import com.cosmos.photonim.imbase.base.mvpbase.IPresenter;
 import com.cosmos.photonim.imbase.chat.adapter.chat.ChatAdapter;
 import com.cosmos.photonim.imbase.chat.ichat.IChatView;
 import com.cosmos.photonim.imbase.chat.image.ImageCheckActivity;
-import com.cosmos.photonim.imbase.chat.media.takephoto.TakePhotoActivity;
+import com.cosmos.photonim.imbase.chat.map.MapActivity;
 import com.cosmos.photonim.imbase.chat.media.takephoto.TakePhotoResultFragment;
 import com.cosmos.photonim.imbase.chat.media.video.RecordResultFragment;
-import com.cosmos.photonim.imbase.chat.media.video.VideoActivity;
 import com.cosmos.photonim.imbase.utils.AtEditText;
 import com.cosmos.photonim.imbase.utils.CollectionUtils;
 import com.cosmos.photonim.imbase.utils.Constants;
@@ -59,7 +59,6 @@ public abstract class ChatBaseActivity extends IChatView {
     private static final int LIMIT_LOADREMOTE = 200;
     protected static final String AT_ALL_CONTENT = "所有人 ";
     private static final int IMAGE_MAX_SIZE = 10 * 1024 * 1024;
-    public static final int REQUEST_IMAGE_CODE = 1001;
     private static final String TAG = "ChatActivityTAG";
     private static final String EXTRA_CHATTYPE = "EXTRA_CHATTYPE";
     private static final String EXTRA_CHATWITH = "EXTRA_CHATWITH";
@@ -533,6 +532,9 @@ public abstract class ChatBaseActivity extends IChatView {
                             }
                         }
                         ImageCheckActivity.startActivity(ChatBaseActivity.this, urls, currentPosition);
+                    } else if (viewId == R.id.llLocation) {
+
+                        MapActivity.start(ChatBaseActivity.this, chatData.getLocation().lat, chatData.getLocation().lng);
                     }
                 }
 
@@ -589,7 +591,7 @@ public abstract class ChatBaseActivity extends IChatView {
 
     // TODO: 2019-08-18 移到presenter
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void OnReceiveMsg(PhotonIMMessage msg) {
+    public void onReceiveMsg(PhotonIMMessage msg) {
         if (!msg.chatWith.equals(chatWith)) {
             return;
         }
@@ -676,16 +678,37 @@ public abstract class ChatBaseActivity extends IChatView {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CODE && resultCode == Activity.RESULT_OK) {
+        if (requestCode == Constants.REQUEST_IMAGE_CODE && resultCode == Activity.RESULT_OK) {
             sendImage(data);
-        } else if (requestCode == TakePhotoActivity.REQUEST_CAMERA && resultCode == RESULT_OK) {
+        } else if (requestCode == Constants.REQUEST_CAMERA && resultCode == RESULT_OK) {
             sendPhoto(data);
-        } else if (requestCode == VideoActivity.REQUEST_VIDEO && resultCode == RESULT_OK) {
+        } else if (requestCode == Constants.REQUEST_VIDEO && resultCode == RESULT_OK) {
             sendVideo(data);
+        } else if (requestCode == Constants.REQUEST_MAP && resultCode == RESULT_OK) {
+            sendMap(data);
         }
 
         super.onActivityResult(requestCode, resultCode, data);
 
+    }
+
+    private void sendMap(Intent data) {
+        MyLocation result = (MyLocation) data.getSerializableExtra(MapActivity.MAP_LOCATION);
+        if (result == null) {
+            return;
+        }
+        ChatData.Builder chatDataBuild = new ChatData.Builder()
+                .icon(myIcon)
+                .msgType(PhotonIMMessage.LOCATION)
+                .chatType(chatType)
+                .chatWith(chatWith)
+                .from(loginUserId)
+                .to(chatWith)
+                .lat(result.lat)
+                .lng(result.lng)
+                .address(result.address)
+                .address(result.detailedAddress);
+        presenter.sendMsg(chatDataBuild);
     }
 
     private void sendVideo(Intent data) {

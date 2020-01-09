@@ -27,4 +27,6 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     api 'com.amap.api:3dmap:5.1.0'
     api 'com.amap.api:location:3.3.0'
+    api 'com.amap.api:search:7.1.0'
+
 }

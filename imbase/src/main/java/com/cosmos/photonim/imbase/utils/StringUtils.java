@@ -51,4 +51,8 @@ public class StringUtils {
             this.end = end;
         }
     }
+
+    public static String getTextContent(String content) {
+        return content == null ? "" : content;
+    }
 }

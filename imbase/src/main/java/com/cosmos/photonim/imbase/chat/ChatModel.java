@@ -3,6 +3,7 @@ package com.cosmos.photonim.imbase.chat;
 import com.cosmos.photon.im.PhotonIMClient;
 import com.cosmos.photon.im.PhotonIMDatabase;
 import com.cosmos.photon.im.PhotonIMMessage;
+import com.cosmos.photon.im.messagebody.PhotonIMLocationBody;
 import com.cosmos.photonim.imbase.ImBaseBridge;
 import com.cosmos.photonim.imbase.chat.ichat.IChatModel;
 import com.cosmos.photonim.imbase.utils.Constants;
@@ -65,7 +66,7 @@ public class ChatModel extends IChatModel {
         Map<String, Object> r = new HashMap<>(2);
         List<ChatData> result = new ArrayList<>(photonIMMessages.size());
         Map<String, ChatData> resultMap = new HashMap<>(photonIMMessages.size());
-        ChatData chatData;
+        ChatData.Builder chatDataBuilder;
         ChatData preData = null;
         Profile profileTemp;
         String iconTemp;
@@ -79,11 +80,12 @@ public class ChatModel extends IChatModel {
                 iconTemp = profileTemp != null ? profileTemp.getIcon() : null;
                 nameTemp = profileTemp != null ? profileTemp.getName() : null;
             }
+
             msgStatus = photonIMMessage.status;
 //            if (photonIMMessage.status == PhotonIMMessage.SENDING) {//从数据库读取的消息状态如果是发送中，转换为发送失败
 //                msgStatus = PhotonIMMessage.SEND_FAILED;
 //            }
-            chatData = new ChatData.Builder()
+            chatDataBuilder = new ChatData.Builder()
                     .msgType(photonIMMessage.messageType)
                     .chatWith(photonIMMessage.chatWith)
                     .localFile(photonIMMessage.localFile)
@@ -103,8 +105,15 @@ public class ChatModel extends IChatModel {
                     .msgId(photonIMMessage.id)
                     .msgStatus(msgStatus)
                     .itemType(getItemType(photonIMMessage, ImBaseBridge.getInstance().getUserId()))
-                    .voiceDuration(photonIMMessage.mediaTime)
-                    .build();
+                    .voiceDuration(photonIMMessage.mediaTime);
+            if (photonIMMessage.messageType == PhotonIMMessage.LOCATION) {
+                PhotonIMLocationBody body = (PhotonIMLocationBody) photonIMMessage.body;
+                chatDataBuilder.lat(body.lat);
+                chatDataBuilder.lng(body.lng);
+                chatDataBuilder.address(body.address);
+                chatDataBuilder.detailAddress(body.address);
+            }
+            ChatData chatData = chatDataBuilder.build();
             result.add(chatData);
             resultMap.put(photonIMMessage.id, chatData);
             preData = chatData;

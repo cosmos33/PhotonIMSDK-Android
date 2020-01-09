@@ -94,6 +94,7 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
                 .msgStatus((PhotonIMMessage.SENDING)).build();
         switch (chatDataBuilder.getMsgType()) {
             case PhotonIMMessage.TEXT:
+            case PhotonIMMessage.LOCATION:
                 getiModel().sendTextMsg(chatData);
                 break;
             case PhotonIMMessage.IMAGE:

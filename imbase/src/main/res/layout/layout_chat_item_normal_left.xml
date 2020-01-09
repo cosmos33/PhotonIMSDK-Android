@@ -75,6 +75,25 @@
                     android:gravity="center_vertical"
                     apps:text="30" />
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llLocation"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:visibility="gone"
+                android:background="@drawable/chat_content_location"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tvLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <ImageView
+                    android:src="@drawable/location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

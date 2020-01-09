@@ -9,15 +9,16 @@ import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.base.BaseActivity;
 import com.cosmos.photonim.imbase.chat.media.OnChangeToResultFragmentListener;
 import com.cosmos.photonim.imbase.chat.media.OnReturnFragmentListener;
+import com.cosmos.photonim.imbase.utils.Constants;
 
 public class TakePhotoActivity extends BaseActivity {
-    public static final int REQUEST_CAMERA = 1000;
+
     private TakePhotoFragment takePhotoFragment;
     private TakePhotoResultFragment takePhotoResultFragment;
 
     public static void start(Activity activity) {
         Intent intent = new Intent(activity, TakePhotoActivity.class);
-        activity.startActivityForResult(intent, REQUEST_CAMERA);
+        activity.startActivityForResult(intent, Constants.REQUEST_CAMERA);
     }
 
     @Override

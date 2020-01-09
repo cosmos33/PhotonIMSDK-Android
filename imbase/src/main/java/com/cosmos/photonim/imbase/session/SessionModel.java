@@ -76,7 +76,7 @@ public class SessionModel extends ISessionModel {
     public void updateSessionUnreadCount(int chatType, String chatWith, int unReadCount) {
         TaskExecutor.getInstance().createAsycTask(() -> {
             if (chatType == PhotonIMMessage.GROUP) {
-                PhotonIMDatabase.getInstance().updateSessionAtType(chatType, chatWith, PhotonIMMessage.SESSION_NO_AT);
+                PhotonIMDatabase.getInstance().updateSessionAtType(chatType, chatWith, PhotonIMSession.SESSION_NO_AT);
             }
             PhotonIMDatabase.getInstance().updateSessionUnreadCount(chatType, chatWith, unReadCount);
             return null;
@@ -136,7 +136,7 @@ public class SessionModel extends ISessionModel {
     @Override
     public void updateSessionAtType(SessionData sessionData) {
         TaskExecutor.getInstance().createAsycTask(() -> {
-            PhotonIMDatabase.getInstance().updateSessionAtType(sessionData.getChatType(), sessionData.getChatWith(), PhotonIMMessage.SESSION_NO_AT);
+            PhotonIMDatabase.getInstance().updateSessionAtType(sessionData.getChatType(), sessionData.getChatWith(), PhotonIMSession.SESSION_NO_AT);
             return null;
         });
     }
@@ -264,7 +264,7 @@ public class SessionModel extends ISessionModel {
     }
 
     private static boolean isAtMeMsg(PhotonIMSession photonIMSession) {
-        return photonIMSession.atType == PhotonIMMessage.SESSION_AT_ME || photonIMSession.atType == PhotonIMMessage.SESSION_AT_ALL;
+        return photonIMSession.atType == PhotonIMSession.SESSION_AT_ME || photonIMSession.atType == PhotonIMSession.SESSION_AT_ALL;
 //        return true;
     }
 

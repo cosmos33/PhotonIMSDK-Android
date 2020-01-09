@@ -7,9 +7,11 @@ import android.text.TextUtils;
 
 import com.cosmos.photon.im.PhotonIMMessage;
 import com.cosmos.photon.im.PhotonIMSession;
+import com.cosmos.photon.im.messagebody.PhotonIMLocationBody;
 import com.cosmos.photonim.imbase.chat.emoji.EmojiUtils;
 import com.cosmos.photonim.imbase.utils.AtSpan;
 import com.cosmos.photonim.imbase.utils.Constants;
+import com.cosmos.photonim.imbase.utils.StringUtils;
 import com.cosmos.photonim.imbase.utils.recycleadapter.ItemData;
 
 import java.io.Serializable;
@@ -44,6 +46,8 @@ public class ChatData implements ItemData, Parcelable {
     private List<String> msgAtList;
     private boolean remainHistory;
     private boolean testSend;
+    private Location location;
+
 //    private MsgExtra extra;
 
 
@@ -74,6 +78,7 @@ public class ChatData implements ItemData, Parcelable {
         this.msgAtList = builder.msgAtList;
         this.remainHistory = builder.remainHistory;
         this.testSend = builder.testSend;
+        this.location = builder.location;
     }
 
     public void setNotic(String notic) {
@@ -233,6 +238,10 @@ public class ChatData implements ItemData, Parcelable {
         return testSend;
     }
 
+    public Location getLocation() {
+        return location;
+    }
+
     //    public String getExtra() {
 //        if (extra == null) {
 //            return null;
@@ -252,12 +261,20 @@ public class ChatData implements ItemData, Parcelable {
         photonIMMessage.chatType = chatType;
         photonIMMessage.content = content;
         photonIMMessage.mediaTime = mediaTime;
-        photonIMMessage.fileUrl = fileUrl == null ? "" : fileUrl;
-        photonIMMessage.thumbUrl = fileUrl == null ? "" : fileUrl;
+        photonIMMessage.fileUrl = StringUtils.getTextContent(fileUrl);
+        photonIMMessage.thumbUrl = StringUtils.getTextContent(fileUrl);
         photonIMMessage.localFile = localFile;
         photonIMMessage.whRatio =1.333;
         photonIMMessage.msgAtList = msgAtList;
         photonIMMessage.atType = atType;
+        if (msgType == PhotonIMMessage.LOCATION) {
+            PhotonIMLocationBody body = new PhotonIMLocationBody();
+            body.lat = location.lat;
+            body.lng = location.lng;
+            body.address = location.address;
+            body.detailedAddress = location.detailedAddress;
+            photonIMMessage.body = body;
+        }
 //        getMsgAtStatus(photonIMMessage);
 //        photonIMMessage.extra = getExtra();
         return photonIMMessage;
@@ -345,6 +362,7 @@ public class ChatData implements ItemData, Parcelable {
         private List<String> msgAtList;
         private boolean remainHistory;
         private boolean testSend;
+        private Location location;
 //        private MsgExtra extra;
 
         public Builder() {
@@ -478,6 +496,37 @@ public class ChatData implements ItemData, Parcelable {
             return this;
         }
 
+        public Builder lat(double lat) {
+            if (this.location == null) {
+                location = new Location();
+            }
+            location.lat = lat;
+            return this;
+        }
+
+        public Builder lng(double lng) {
+            if (this.location == null) {
+                location = new Location();
+            }
+            location.lng = lng;
+            return this;
+        }
+
+        public Builder address(String address) {
+            if (this.location == null) {
+                location = new Location();
+            }
+            location.address = address;
+            return this;
+        }
+
+        public Builder detailAddress(String detailAddress) {
+            if (this.location == null) {
+                location = new Location();
+            }
+            location.detailedAddress = detailAddress;
+            return this;
+        }
         //        public Builder extra(String extra) {
 //            this.extra = new Gson().fromJson(extra, MsgExtra.class);
 //            return this;
@@ -493,18 +542,18 @@ public class ChatData implements ItemData, Parcelable {
 //        }
     }
 
-    public static class MsgExtra implements Serializable {
-
-        public String icon;
-
-        public String getIcon() {
-            return icon;
-        }
-
-        public void setIcon(String icon) {
-            this.icon = icon;
-        }
-    }
+//    public static class MsgExtra implements Serializable {
+//
+//        public String icon;
+//
+//        public String getIcon() {
+//            return icon;
+//        }
+//
+//        public void setIcon(String icon) {
+//            this.icon = icon;
+//        }
+//    }
 
 
     @Override
@@ -570,4 +619,13 @@ public class ChatData implements ItemData, Parcelable {
             return new ChatData[size];
         }
     };
+
+    public static class Location {
+        public int coordinateSystem;  //坐标系
+        public double lng;   // 经度
+        public double lat;   // 纬度
+        public String address = ""; // 坐标地址名称
+        public String detailedAddress = ""; //坐标详细地址名称
+    }
+
 }

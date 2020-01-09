@@ -15,7 +15,7 @@ import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.cosmos.maplib.map.IMapFragment;
 import com.cosmos.maplib.map.MapInfo;
-import com.cosmos.maplib.map.MyLatLng;
+import com.cosmos.maplib.map.MyLocation;
 
 public class AMapFragment extends MapFragment implements IMapFragment {
     public static final String EXTRA_LATLNG = "EXTRA_LATLNG";
@@ -34,6 +34,7 @@ public class AMapFragment extends MapFragment implements IMapFragment {
         if (getArguments() != null) {
             positionArray = getArguments().getDoubleArray(EXTRA_LATLNG);
         }
+        GeocodeHelper.getInstance().init(getActivity());
     }
 
     @Override
@@ -118,10 +119,16 @@ public class AMapFragment extends MapFragment implements IMapFragment {
     }
 
     @Override
-    public MyLatLng getLocationLatLng() {
+    public void getLocationLatLng(GeocodeHelper.GeocodeListener geocodeListener) {
         if (locationMarker == null) {
-            return null;
+            if (geocodeListener != null) {
+                geocodeListener.onGeocodeResult(false, null);
+            }
+            return;
         }
-        return new MyLatLng(locationMarker.getPosition().latitude, locationMarker.getPosition().longitude);
+        MyLocation myLocation = new MyLocation();
+        myLocation.lat = locationMarker.getPosition().latitude;
+        myLocation.lng = locationMarker.getPosition().longitude;
+        GeocodeHelper.getInstance().search(myLocation, geocodeListener);
     }
 }

@@ -131,7 +131,7 @@ public class SessionTestModel extends ISessionTestModel {
     public void updateSessionUnreadCount(int chatType, String chatWith, int unReadCount) {
         TaskExecutor.getInstance().createAsycTask(() -> {
             if (chatType == PhotonIMMessage.GROUP) {
-                PhotonIMDatabase.getInstance().updateSessionAtType(chatType, chatWith, PhotonIMMessage.SESSION_NO_AT);
+                PhotonIMDatabase.getInstance().updateSessionAtType(chatType, chatWith, PhotonIMSession.SESSION_NO_AT);
             }
             PhotonIMDatabase.getInstance().updateSessionUnreadCount(chatType, chatWith, unReadCount);
             return null;
@@ -192,7 +192,7 @@ public class SessionTestModel extends ISessionTestModel {
     @Override
     public void updateSessionAtType(SessionTestData sessionTestData) {
         TaskExecutor.getInstance().createAsycTask(() -> {
-            PhotonIMDatabase.getInstance().updateSessionAtType(sessionTestData.getChatType(), sessionTestData.getChatWith(), PhotonIMMessage.SESSION_NO_AT);
+            PhotonIMDatabase.getInstance().updateSessionAtType(sessionTestData.getChatType(), sessionTestData.getChatWith(), PhotonIMSession.SESSION_NO_AT);
             return null;
         });
     }

@@ -6,24 +6,30 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.cosmos.maplib.AMapFragment;
+import com.cosmos.maplib.GeocodeHelper;
 import com.cosmos.maplib.map.MapInfo;
+import com.cosmos.maplib.map.MyLocation;
 import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.R2;
-import com.cosmos.photonim.imbase.base.mvpbase.IPresenter;
-import com.cosmos.photonim.imbase.chat.map.imap.IMapView;
+import com.cosmos.photonim.imbase.base.BaseActivity;
+import com.cosmos.photonim.imbase.utils.Constants;
+import com.cosmos.photonim.imbase.utils.ToastUtils;
+import com.cosmos.photonim.imbase.view.ProcessDialogFragment;
 import com.cosmos.photonim.imbase.view.TitleBar;
 
 import butterknife.BindView;
 
-public class MapActivity extends IMapView {
+public class MapActivity extends BaseActivity {
+    public static final String MAP_LOCATION = "MAP_LOCATION";
     @BindView(R2.id.titleBar)
     TitleBar titleBar;
     private AMapFragment mapFragment;
     private double[] positionArray;
+    private ProcessDialogFragment dialogFragment;
 
     public static void start(Activity activity) {
         Intent intent = new Intent(activity, MapActivity.class);
-        activity.startActivity(intent);
+        activity.startActivityForResult(intent, Constants.REQUEST_MAP);
     }
 
     public static void start(Activity activity, double lat, double lng) {
@@ -55,7 +61,23 @@ public class MapActivity extends IMapView {
             });
         } else {
             titleBar.setRightTextEvent("发送", 0xffffffff, R.drawable.drawable_map_send, v -> {
-                presenter.sendPosition(mapFragment.getLocationLatLng());
+
+                mapFragment.getLocationLatLng(new GeocodeHelper.GeocodeListener() {
+                    @Override
+                    public void onGeocodeResult(boolean success, MyLocation myLocation) {
+                        dialogFragment.dismiss();
+                        if (!success) {
+                            ToastUtils.showText("定位失败");
+                            return;
+                        }
+                        Intent intent = new Intent();
+                        intent.putExtra(MAP_LOCATION, myLocation);
+                        setResult(Activity.RESULT_OK, intent);
+                        MapActivity.this.finish();
+                    }
+                });
+                dialogFragment = new ProcessDialogFragment();
+                dialogFragment.show(getSupportFragmentManager(), "");
             });
         }
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
@@ -65,8 +87,4 @@ public class MapActivity extends IMapView {
         mapFragment.setMapInfo(mapInfo);
     }
 
-    @Override
-    public IPresenter getIPresenter() {
-        return new MapPresenter(this);
-    }
 }

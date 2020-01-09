@@ -9,15 +9,15 @@ import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.base.BaseActivity;
 import com.cosmos.photonim.imbase.chat.media.OnChangeToResultFragmentListener;
 import com.cosmos.photonim.imbase.chat.media.OnReturnFragmentListener;
+import com.cosmos.photonim.imbase.utils.Constants;
 
 public class VideoActivity extends BaseActivity {
-    public static final int REQUEST_VIDEO = 1002;
     private VideoRecordFragment videoRecordFragment;
     private RecordResultFragment recordResultFragment;
 
     public static void start(Activity activity) {
         Intent intent = new Intent(activity, VideoActivity.class);
-        activity.startActivityForResult(intent, REQUEST_VIDEO);
+        activity.startActivityForResult(intent, Constants.REQUEST_VIDEO);
     }
 
     @Override

@@ -18,4 +18,9 @@ public class Constants {
     public static final int ITEM_TYPE_LIST_DIALOG = 16;
     public static final int ITEM_TYPE_CHAT_EXTRA = 17;
     public static final int ITEM_TYPE_SEARCH = 18;
+
+    public static final int REQUEST_CAMERA = 1000;
+    public static final int REQUEST_IMAGE_CODE = 1001;
+    public static final int REQUEST_VIDEO = 1002;
+    public static final int REQUEST_MAP = 1003;
 }

@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.cosmos.photon.im.PhotonIMMessage;
 import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.chat.ChatData;
+import com.cosmos.photonim.imbase.utils.StringUtils;
 import com.cosmos.photonim.imbase.utils.image.ImageLoaderUtils;
 import com.cosmos.photonim.imbase.utils.recycleadapter.ItemData;
 import com.cosmos.photonim.imbase.utils.recycleadapter.ItemTypeAbstract;
@@ -38,6 +39,7 @@ public abstract class ChatItemTypeAbstract extends ItemTypeAbstract {
         View view = rvViewHolder.getView(R.id.tvSysInfo);
         view.setVisibility(View.GONE);
         rvViewHolder.getView(R.id.llMsgRoot).setVisibility(View.VISIBLE);
+        // TODO: 2020-01-09 各种类型分开
         switch (chatData.getMsgType()) {
             case PhotonIMMessage.TEXT:
                 TextView content = (TextView) rvViewHolder.getView(R.id.tvContent);
@@ -66,6 +68,17 @@ public abstract class ChatItemTypeAbstract extends ItemTypeAbstract {
                 }
                 rvViewHolder.getView(R.id.tvContent).setVisibility(View.GONE);
                 rvViewHolder.getView(R.id.llVoice).setVisibility(View.GONE);
+                ImageLoaderUtils.getInstance().loadImage(view.getContext(), chatData.getIcon(), R.drawable.head_placeholder, (ImageView) rvViewHolder.getView(R.id.ivIcon));
+                break;
+            case PhotonIMMessage.LOCATION:
+                rvViewHolder.getView(R.id.tvContent).setVisibility(View.GONE);
+                rvViewHolder.getView(R.id.ivPic).setVisibility(View.GONE);
+                rvViewHolder.getView(R.id.llVoice).setVisibility(View.GONE);
+                View locationContainer = rvViewHolder.getView(R.id.llLocation);
+                locationContainer.setVisibility(View.VISIBLE);
+                TextView tvLocation = (TextView) rvViewHolder.getView(R.id.tvLocation);
+                tvLocation.setText(String.format("%s\n%s", StringUtils.getTextContent(chatData.getLocation().address),
+                        StringUtils.getTextContent(chatData.getLocation().detailedAddress)));
                 ImageLoaderUtils.getInstance().loadImage(view.getContext(), chatData.getIcon(), R.drawable.head_placeholder, (ImageView) rvViewHolder.getView(R.id.ivIcon));
                 break;
 
