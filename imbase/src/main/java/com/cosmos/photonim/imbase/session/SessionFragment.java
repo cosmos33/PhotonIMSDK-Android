@@ -13,9 +13,6 @@ import com.cosmos.photonim.imbase.chat.ChatBaseActivity;
 import com.cosmos.photonim.imbase.session.adapter.SessionAdapter;
 import com.cosmos.photonim.imbase.session.adapter.SessionData;
 import com.cosmos.photonim.imbase.session.isession.ISessionView;
-import com.cosmos.photonim.imbase.utils.CollectionUtils;
-import com.cosmos.photonim.imbase.utils.LocalRestoreUtils;
-import com.cosmos.photonim.imbase.utils.event.AllUnReadCount;
 import com.cosmos.photonim.imbase.utils.event.ClearUnReadStatus;
 import com.cosmos.photonim.imbase.utils.event.OnDBChanged;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvBaseAdapter;
@@ -38,13 +35,11 @@ public class SessionFragment extends ISessionView {
     @BindView(R2.id.llNoMsg)
     LinearLayout llNoMsg;
 
-    private List<SessionData> baseDataList;
     //    private Map<String, SessionData> baseDataMap;//key 为chatWith
     private SessionAdapter sessionAdapter;
     private ProcessDialogFragment processDialogFragment;
     private ListDialogFragment sessionDialogFragment;
     private boolean isVisibleToUser;
-    private boolean isFirstLoad;
     private List<String> itemContent;
 
     @Override
@@ -54,7 +49,6 @@ public class SessionFragment extends ISessionView {
 
     @Override
     protected void initView(View view) {
-        isFirstLoad = LocalRestoreUtils.getFirstLoadSession();
         recyclerView = view.findViewById(R.id.recyclerView);
         presenter.loadHistoryData();
         presenter.getAllUnReadCount();
@@ -128,14 +122,6 @@ public class SessionFragment extends ISessionView {
 //        }
 //    }
 
-    private SessionData getSessionData(String chatWith) {
-        for (SessionData sessionData : baseDataList) {
-            if (sessionData.getChatWith().equals(chatWith))
-                return sessionData;
-        }
-        return null;
-    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onOnDBChanged(OnDBChanged onDBChanged) {
 //        if (!isVisibleToUser) {
@@ -166,17 +152,6 @@ public class SessionFragment extends ISessionView {
         presenter.clearSesionUnReadCount(event.chatType, event.chatWith);
     }
 
-    private int getItemPosition(String chatWith) {
-        int size = baseDataList.size();
-        for (int i = 0; i < size; i++) {
-            if (chatWith.equals(baseDataList.get(i).getChatWith())) {
-                return i;
-            }
-
-        }
-        return -1;
-    }
-
     @Override
     public void onDestroy() {
         EventBus.getDefault().unregister(this);
@@ -191,9 +166,8 @@ public class SessionFragment extends ISessionView {
     @Override
     public RvBaseAdapter getAdapter() {
         if (sessionAdapter == null) {
-            baseDataList = new ArrayList<>();
 //            baseDataMap = new HashMap<>();
-            sessionAdapter = new SessionAdapter(baseDataList, new SessionUpdateOtherInfoImpl(new SessionUpdateOtherInfoImpl.OnSessionUpdateCallback() {
+            sessionAdapter = new SessionAdapter(presenter.initData(), new SessionUpdateOtherInfoImpl(new SessionUpdateOtherInfoImpl.OnSessionUpdateCallback() {
                 @Override
                 public void onSessionUpdate(SessionData sessionData) {
                     sessionAdapter.notifyItemChanged(sessionData.getItemPosition());
@@ -237,70 +211,24 @@ public class SessionFragment extends ISessionView {
         return sessionAdapter;
     }
 
-//    @Override
-//    public void showDialog() {
-//        processDialogFragment = ProcessDialogFragment.getInstance();
-//        processDialogFragment.show(getFragmentManager(), "");
-//    }
-//
-//    @Override
-//    public void hideDialog() {
-//        if (processDialogFragment != null) {
-//            processDialogFragment.dismiss();
-//            processDialogFragment = null;
-//        }
-//    }
-
     @Override
     public IPresenter getIPresenter() {
         return new SessionPresenter(this);
     }
 
     @Override
-    public void onLoadHistory(List<SessionData> sessionData) {
-        if (CollectionUtils.isEmpty(sessionData)) {
-            if (isFirstLoad) {
-                presenter.loadHistoryFromRemote();
-                isFirstLoad = false;
-            }
-            recyclerView.setVisibility(View.GONE);
-            llNoMsg.setVisibility(View.VISIBLE);
-            return;
-        }
-        isFirstLoad = false;
-        recyclerView.setVisibility(View.VISIBLE);
-        llNoMsg.setVisibility(View.GONE);
-        baseDataList.clear();
-//        baseDataMap.clear();
-        if (sessionData != null) {
-            baseDataList.addAll(sessionData);
-        }
+    public void notifyItemInserted(int position) {
+        sessionAdapter.notifyItemInserted(position);
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
         sessionAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void onLoadHistoryFromRemote(List<SessionData> sessionData) {
-        if (CollectionUtils.isEmpty(sessionData)) {
-            llNoMsg.setVisibility(View.VISIBLE);
-            recyclerView.setVisibility(View.GONE);
-            return;
-        }
-        recyclerView.setVisibility(View.VISIBLE);
-        llNoMsg.setVisibility(View.GONE);
-        baseDataList.clear();
-//        baseDataMap.clear();
-        baseDataList.addAll(sessionData);
-        sessionAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onDeleteSession(SessionData data) {
-        if (sessionDialogFragment != null) {
-            sessionDialogFragment.dismiss();
-        }
-        baseDataList.remove(data);
-        sessionAdapter.notifyDataSetChanged();
-        if (baseDataList.size() == 0) {
+    public void setNoMsgViewVisibility(boolean visibility) {
+        if (visibility) {
             recyclerView.setVisibility(View.GONE);
             llNoMsg.setVisibility(View.VISIBLE);
         } else {
@@ -310,21 +238,9 @@ public class SessionFragment extends ISessionView {
     }
 
     @Override
-    public void onClearSession(SessionData data) {
+    public void dismissSessionDialog() {
         if (sessionDialogFragment != null) {
             sessionDialogFragment.dismiss();
         }
-    }
-
-    @Override
-    public void onNewSession(SessionData sessionData) {
-        // TODO: 2019-08-12 置顶
-        baseDataList.add(0, sessionData);
-        sessionAdapter.notifyItemInserted(0);
-    }
-
-    @Override
-    public void onGetAllUnReadCount(int result) {
-        EventBus.getDefault().post(new AllUnReadCount(result));
     }
 }

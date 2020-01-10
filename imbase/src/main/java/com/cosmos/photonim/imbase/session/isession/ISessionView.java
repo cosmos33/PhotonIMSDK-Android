@@ -7,9 +7,6 @@ import android.view.View;
 
 import com.cosmos.photonim.imbase.base.IRvBaseFragmentView;
 import com.cosmos.photonim.imbase.base.mvp.base.IView;
-import com.cosmos.photonim.imbase.session.adapter.SessionData;
-
-import java.util.List;
 
 public abstract class ISessionView extends IRvBaseFragmentView<ISessionPresenter> implements IView {
     @Override
@@ -18,15 +15,11 @@ public abstract class ISessionView extends IRvBaseFragmentView<ISessionPresenter
         initRv();
     }
 
-    abstract public void onLoadHistory(List<SessionData> sessionData);
+    public abstract void notifyItemInserted(int position);
 
-    public abstract void onDeleteSession(SessionData data);
+    public abstract void notifyDataSetChanged();
 
-    public abstract void onClearSession(SessionData data);
+    public abstract void setNoMsgViewVisibility(boolean b);
 
-    public abstract void onNewSession(SessionData sessionData);
-
-    public abstract void onGetAllUnReadCount(int result);
-
-    public abstract void onLoadHistoryFromRemote(List<SessionData> sessionData);
+    public abstract void dismissSessionDialog();
 }

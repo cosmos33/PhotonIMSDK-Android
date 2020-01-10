@@ -5,19 +5,29 @@ import com.cosmos.photonim.imbase.session.adapter.SessionData;
 import com.cosmos.photonim.imbase.session.isession.ISessionModel;
 import com.cosmos.photonim.imbase.session.isession.ISessionPresenter;
 import com.cosmos.photonim.imbase.session.isession.ISessionView;
+import com.cosmos.photonim.imbase.utils.CollectionUtils;
+import com.cosmos.photonim.imbase.utils.LocalRestoreUtils;
+import com.cosmos.photonim.imbase.utils.event.AllUnReadCount;
 
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class SessionPresenter extends ISessionPresenter<ISessionView, ISessionModel> {
     private PersionInfoModel persionInfoModel;
+    private boolean isFirstLoad;
+    private List<SessionData> baseDataList;
+
     public SessionPresenter(ISessionView iView) {
         super(iView);
+        isFirstLoad = LocalRestoreUtils.getFirstLoadSession();
     }
 
     @Override
     public void loadHistoryData() {
         getiModel().loadLocalHostoryMsg(messageData -> {
-            getIView().onLoadHistory(messageData);
+            onLoadHistory(messageData);
         });
     }
 
@@ -29,21 +39,21 @@ public class SessionPresenter extends ISessionPresenter<ISessionView, ISessionMo
     @Override
     public void upDateSessions() {
         getiModel().loadLocalHostoryMsg(messageData -> {
-            getIView().onLoadHistory(messageData);
+            onLoadHistory(messageData);
         });
     }
 
     @Override
     public void deleteSession(SessionData data) {
         getiModel().deleteSession(data, () -> {
-            getIView().onDeleteSession(data);
+            onDeleteSession(data);
         });
     }
 
     @Override
     public void clearSession(SessionData data) {
         getiModel().clearSession(data, () -> {
-            getIView().onClearSession(data);
+            onClearSession(data);
         });
     }
 
@@ -57,7 +67,7 @@ public class SessionPresenter extends ISessionPresenter<ISessionView, ISessionMo
         getiModel().getNewSession(chatType, chatWith, new ISessionModel.OnGetSessionListener() {
             @Override
             public void onGetSession(SessionData sessionData) {
-                getIView().onNewSession(sessionData);
+                onNewSession(sessionData);
             }
         });
     }
@@ -72,7 +82,7 @@ public class SessionPresenter extends ISessionPresenter<ISessionView, ISessionMo
         getiModel().getAllUnReadCount(new ISessionModel.OnGetAllUnReadCount() {
             @Override
             public void onGetAllUnReadCount(int result) {
-                getIView().onGetAllUnReadCount(result);
+                EventBus.getDefault().post(new AllUnReadCount(result));
             }
         });
     }
@@ -92,12 +102,70 @@ public class SessionPresenter extends ISessionPresenter<ISessionView, ISessionMo
         getiModel().updateSessionAtType(sessionData);
     }
 
+    public void onLoadHistory(List<SessionData> sessionData) {
+        if (CollectionUtils.isEmpty(sessionData)) {
+            if (isFirstLoad) {
+                loadHistoryFromRemote();
+                isFirstLoad = false;
+            }
+            getIView().setNoMsgViewVisibility(true);
+            return;
+        }
+        isFirstLoad = false;
+        getIView().setNoMsgViewVisibility(false);
+        baseDataList.clear();
+//        baseDataMap.clear();
+        if (sessionData != null) {
+            baseDataList.addAll(sessionData);
+        }
+        getIView().notifyDataSetChanged();
+    }
+
+    public void onLoadHistoryFromRemote(List<SessionData> sessionData) {
+        if (CollectionUtils.isEmpty(sessionData)) {
+            getIView().setNoMsgViewVisibility(true);
+            return;
+        }
+        getIView().setNoMsgViewVisibility(false);
+        baseDataList.clear();
+//        baseDataMap.clear();
+        baseDataList.addAll(sessionData);
+        getIView().notifyDataSetChanged();
+    }
+
+    public void onDeleteSession(SessionData data) {
+        getIView().dismissSessionDialog();
+        baseDataList.remove(data);
+        getIView().notifyDataSetChanged();
+        if (baseDataList.size() == 0) {
+            getIView().setNoMsgViewVisibility(true);
+        } else {
+            getIView().setNoMsgViewVisibility(false);
+        }
+    }
+
+    public void onClearSession(SessionData data) {
+        getIView().dismissSessionDialog();
+    }
+
+    public void onNewSession(SessionData sessionData) {
+        // TODO: 2019-08-12 置顶
+        baseDataList.add(0, sessionData);
+        getIView().notifyItemInserted(0);
+    }
+
+    @Override
+    public ArrayList<SessionData> initData() {
+        baseDataList = new ArrayList<>();
+        return (ArrayList<SessionData>) baseDataList;
+    }
+
     @Override
     public void loadHistoryFromRemote() {
         getiModel().loadHistoryFromRemote(new ISessionModel.OnLoadHistoryFromRemoteListener() {
             @Override
             public void onLoadHistoryFromRemote(List<SessionData> sessionData) {
-                getIView().onLoadHistoryFromRemote(sessionData);
+                onLoadHistoryFromRemote(sessionData);
             }
         });
     }

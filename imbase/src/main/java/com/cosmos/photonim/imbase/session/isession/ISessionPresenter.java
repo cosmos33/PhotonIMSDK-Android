@@ -8,7 +8,7 @@ import com.cosmos.photonim.imbase.base.mvp.base.IPresenter;
 import com.cosmos.photonim.imbase.session.adapter.SessionData;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvBaseAdapter;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public abstract class ISessionPresenter<V extends ISessionView, M extends ISessionModel> extends IPresenter<V, M> {
     public ISessionPresenter(V iView) {
@@ -41,42 +41,32 @@ public abstract class ISessionPresenter<V extends ISessionView, M extends ISessi
     public V getEmptyView() {
         return (V) new ISessionView() {
             @Override
+            public void notifyItemInserted(int position) {
+
+            }
+
+            @Override
+            public void notifyDataSetChanged() {
+
+            }
+
+            @Override
+            public void setNoMsgViewVisibility(boolean b) {
+
+            }
+
+            @Override
+            public void dismissSessionDialog() {
+
+            }
+
+            @Override
             public int getLayoutId() {
                 return 0;
             }
 
             @Override
             protected void initView(View view) {
-
-            }
-
-            @Override
-            public void onLoadHistory(List<SessionData> sessionData) {
-
-            }
-
-            @Override
-            public void onDeleteSession(SessionData data) {
-
-            }
-
-            @Override
-            public void onClearSession(SessionData data) {
-
-            }
-
-            @Override
-            public void onNewSession(SessionData sessionData) {
-
-            }
-
-            @Override
-            public void onGetAllUnReadCount(int result) {
-
-            }
-
-            @Override
-            public void onLoadHistoryFromRemote(List<SessionData> sessionData) {
 
             }
 
@@ -100,4 +90,7 @@ public abstract class ISessionPresenter<V extends ISessionView, M extends ISessi
     public abstract void resendSendingStatusMsgs();
 
     public abstract void updateSessionAtType(SessionData sessionData);
+
+    public abstract ArrayList<SessionData> initData();
+
 }
