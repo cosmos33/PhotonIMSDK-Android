@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import com.cosmos.photonim.imbase.base.BaseActivity;
 import com.cosmos.photonim.imbase.base.mvp.base.IPresenter;
 import com.cosmos.photonim.imbase.base.mvp.base.IView;
+import com.cosmos.photonim.imbase.utils.ToastUtils;
 
 public abstract class IBaseActivityView<P extends IPresenter> extends BaseActivity implements IView {
     protected P presenter;
@@ -17,5 +18,10 @@ public abstract class IBaseActivityView<P extends IPresenter> extends BaseActivi
         if (presenter == null) {
             throw new IllegalStateException("chatPresenter is null");
         }
+    }
+
+    @Override
+    public void toast(String content) {
+        ToastUtils.showText(content);
     }
 }

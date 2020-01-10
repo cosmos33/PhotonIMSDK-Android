@@ -18,11 +18,8 @@ import com.cosmos.photon.im.PhotonIMClient;
 import com.cosmos.photon.push.PhotonPushManager;
 import com.cosmos.photon.push.msg.MoMessage;
 import com.cosmos.photonim.imbase.base.mvp.base.IPresenter;
-import com.cosmos.photonim.imbase.utils.LocalRestoreUtils;
 import com.cosmos.photonim.imbase.utils.ToastUtils;
 import com.cosmos.photonim.imbase.utils.event.IMStatus;
-import com.cosmos.photonim.imbase.utils.http.jsons.JsonAuth;
-import com.cosmos.photonim.imbase.utils.http.jsons.JsonLogin;
 import com.cosmos.photonim.imbase.view.ProcessDialogFragment;
 import com.momo.demo.MyApplication;
 import com.momo.demo.R;
@@ -137,28 +134,6 @@ public class LoginActivity extends ILoginView implements MyApplication.PushToken
         }
     }
 
-    @Override
-    public void onLoginResult(JsonLogin requestResult) {
-        if (requestResult != null && requestResult.success()) {
-            presenter.getAuth(requestResult.getData().getSessionId(), requestResult.getData().getUserId());
-            LoginInfo.getInstance().setSessionId(requestResult.getData().getSessionId());
-            LoginInfo.getInstance().setUserId(requestResult.getData().getUserId());
-        } else {
-            ToastUtils.showText(this, "登录失败");
-        }
-    }
-
-    @Override
-    public void onAuthResult(JsonAuth jsonAuth) {
-        if (jsonAuth != null && jsonAuth.success()) {
-            LocalRestoreUtils.saveAuth(jsonAuth.getData().getToken(), jsonAuth.getData().getUserId(), LoginInfo.getInstance().getSessionId());
-            LoginInfo.getInstance().setTokenId(jsonAuth.getData().getToken());
-            presenter.startIm();
-        } else {
-            ToastUtils.showText(this, "认证失败");
-        }
-    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onAuthSuccess(IMStatus imStatus) {
         hideDialog();
@@ -174,7 +149,6 @@ public class LoginActivity extends ILoginView implements MyApplication.PushToken
                 break;
         }
     }
-
     @Override
     public IPresenter getIPresenter() {
         return new LoginPresenter(this);

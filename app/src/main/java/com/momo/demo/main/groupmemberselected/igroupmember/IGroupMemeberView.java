@@ -1,12 +1,11 @@
 package com.momo.demo.main.groupmemberselected.igroupmember;
 
-import com.cosmos.photonim.imbase.base.mvp.base.IView;
 import com.cosmos.photonim.imbase.utils.recycleadapter.actiivty.RvBaseActivity;
 import com.momo.demo.main.groupmemberselected.GroupMembersData;
 
 import java.util.List;
 
-public abstract class IGroupMemeberView extends RvBaseActivity<IGroupMemberPresenter> implements IView {
+public abstract class IGroupMemeberView extends RvBaseActivity<IGroupMemberPresenter> {
 
     public abstract void onGetGroupMembersResult(List<GroupMembersData> result);
 

@@ -1,14 +1,13 @@
 package com.cosmos.photonim.imbase.chat.ichat;
 
 import com.cosmos.photon.im.PhotonIMMessage;
-import com.cosmos.photonim.imbase.base.mvp.base.IView;
 import com.cosmos.photonim.imbase.chat.ChatData;
 import com.cosmos.photonim.imbase.utils.AtEditText;
 import com.cosmos.photonim.imbase.utils.recycleadapter.actiivty.RvBaseActivity;
 
 import java.util.ArrayList;
 
-public abstract class IChatView extends RvBaseActivity<IChatPresenter> implements IView {
+public abstract class IChatView extends RvBaseActivity<IChatPresenter> {
 
     public abstract void onRevertResult(ChatData data1, int error, String msg);
 

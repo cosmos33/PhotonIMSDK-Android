@@ -3,7 +3,10 @@ package com.momo.demo.login;
 import android.os.Process;
 
 import com.cosmos.photonim.imbase.ImBaseBridge;
+import com.cosmos.photonim.imbase.utils.LocalRestoreUtils;
 import com.cosmos.photonim.imbase.utils.LogUtils;
+import com.cosmos.photonim.imbase.utils.http.jsons.JsonAuth;
+import com.cosmos.photonim.imbase.utils.http.jsons.JsonLogin;
 import com.cosmos.photonim.imbase.utils.task.AsycTaskUtil;
 import com.cosmos.photonim.imbase.utils.task.ExecutorUtil;
 import com.momo.demo.login.ilogin.ILoginModel;
@@ -31,14 +34,14 @@ public class LoginPresenter extends ILoginPresenter<ILoginView, ILoginModel> {
             if (result == null || !result.success()) {
                 getIView().hideDialog();
             }
-            getIView().onLoginResult(result);
+            onLoginResult(result);
         });
     }
 
     @Override
     public void getAuth(String sessionId, String userId) {
         getiModel().getAuth(sessionId, userId, result -> {
-            getIView().onAuthResult(result);
+            onAuthResult(result);
         });
     }
 
@@ -59,5 +62,27 @@ public class LoginPresenter extends ILoginPresenter<ILoginView, ILoginModel> {
             }
         }, ExecutorUtil.getDefaultExecutor(), Process.THREAD_PRIORITY_FOREGROUND);
     }
+
+    public void onLoginResult(JsonLogin requestResult) {
+        if (requestResult != null && requestResult.success()) {
+            getAuth(requestResult.getData().getSessionId(), requestResult.getData().getUserId());
+            LoginInfo.getInstance().setSessionId(requestResult.getData().getSessionId());
+            LoginInfo.getInstance().setUserId(requestResult.getData().getUserId());
+        } else {
+            getIView().toast("登录失败");
+        }
+    }
+
+    public void onAuthResult(JsonAuth jsonAuth) {
+        if (jsonAuth != null && jsonAuth.success()) {
+            LocalRestoreUtils.saveAuth(jsonAuth.getData().getToken(), jsonAuth.getData().getUserId(), LoginInfo.getInstance().getSessionId());
+            LoginInfo.getInstance().setTokenId(jsonAuth.getData().getToken());
+            startIm();
+        } else {
+            getIView().toast("认证失败");
+        }
+    }
+
+
 
 }
