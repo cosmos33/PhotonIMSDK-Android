@@ -31,6 +31,7 @@ public class SessionModel extends ISessionModel {
         TaskExecutor.getInstance().createAsycTask(() -> getLocalHistoryMsg(),
                 result -> onLoadHistoryListener.onLoadHistory((List<SessionData>) result));
     }
+
     @Override
     public void saveSession(SessionData sessionData) {
         TaskExecutor.getInstance().createAsycTask((Callable) () -> saveSessionInner(sessionData));
@@ -120,7 +121,7 @@ public class SessionModel extends ISessionModel {
                         .build();
                 PhotonIMClient.getInstance().sendMessage(photonIMMessage, new PhotonIMClient.PhotonIMSendCallback() {
                     @Override
-                    public void onSent(int code, String msg,long retTime) {
+                    public void onSent(int code, String msg, long retTime) {
                         EventBus.getDefault().post(new ChatDataWrapper(chatData, code, msg));
                     }
                 });
@@ -210,7 +211,14 @@ public class SessionModel extends ISessionModel {
                     break;
                 case PhotonIMMessage.RAW:
                     // FIXME 默认自定义消息根据lastMsgContent进行填充，待修改
-                    tempContent = "[自定义消息]"+photonIMSession.lastMsgContent;
+                    tempContent = "[自定义消息]" + photonIMSession.lastMsgContent;
+                    break;
+                case PhotonIMMessage.LOCATION:
+                    if (!TextUtils.isEmpty(photonIMSession.lastMsgContent)) {
+                        tempContent = photonIMSession.lastMsgContent;
+                    } else {
+                        tempContent = "[位置]";
+                    }
                     break;
                 default:
                     tempContent = "[未知消息]";

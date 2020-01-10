@@ -1,7 +1,7 @@
 package com.momo.demo.main.forward;
 
 import com.cosmos.photon.im.PhotonIMMessage;
-import com.cosmos.photonim.imbase.base.mvpbase.IModel;
+import com.cosmos.photonim.imbase.base.mvp.base.IModel;
 import com.cosmos.photonim.imbase.session.SessionModel;
 import com.cosmos.photonim.imbase.session.adapter.SessionData;
 import com.cosmos.photonim.imbase.utils.CollectionUtils;

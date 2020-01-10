@@ -1,6 +1,6 @@
 package com.momo.demo.login.ilogin;
 
-import com.cosmos.photonim.imbase.base.mvpbase.IPresenter;
+import com.cosmos.photonim.imbase.base.mvp.base.IPresenter;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonAuth;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonLogin;
 

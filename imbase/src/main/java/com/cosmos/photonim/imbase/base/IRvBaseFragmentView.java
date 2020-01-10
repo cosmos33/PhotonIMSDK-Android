@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.cosmos.photonim.imbase.base.mvpbase.IBaseFragmentView;
+import com.cosmos.photonim.imbase.base.mvp.IBaseFragmentView;
 import com.cosmos.photonim.imbase.utils.recycleadapter.CreateRvHelper;
 import com.cosmos.photonim.imbase.utils.recycleadapter.ICreateRv;
 

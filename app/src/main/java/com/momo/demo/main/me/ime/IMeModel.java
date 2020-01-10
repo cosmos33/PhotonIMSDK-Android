@@ -1,6 +1,6 @@
 package com.momo.demo.main.me.ime;
 
-import com.cosmos.photonim.imbase.base.mvpbase.IModel;
+import com.cosmos.photonim.imbase.base.mvp.base.IModel;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonMyInfo;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonSetNickName;
 

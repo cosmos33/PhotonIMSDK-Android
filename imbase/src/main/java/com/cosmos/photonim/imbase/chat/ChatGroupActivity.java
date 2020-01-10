@@ -4,7 +4,7 @@ import android.content.Intent;
 
 import com.cosmos.photon.im.PhotonIMMessage;
 import com.cosmos.photonim.imbase.ImBaseBridge;
-import com.cosmos.photonim.imbase.base.mvpbase.IPresenter;
+import com.cosmos.photonim.imbase.base.mvp.base.IPresenter;
 import com.cosmos.photonim.imbase.utils.CollectionUtils;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class ChatGroupActivity extends ChatBaseActivity {
     }
 
     @Override
-    protected boolean isGroup() {
+    public boolean isGroup() {
         return true;
     }
 
@@ -36,7 +36,7 @@ public class ChatGroupActivity extends ChatBaseActivity {
     }
 
     @Override
-    protected String getChatIcon(PhotonIMMessage msg) {
+    public String getChatIcon(PhotonIMMessage msg) {
         return null;
     }
 
@@ -50,7 +50,7 @@ public class ChatGroupActivity extends ChatBaseActivity {
                 return;
             }
             if (data.getBooleanExtra(EXTRA_ALL, false)) {
-                extraFragment.addAtContent(null, AT_ALL_CONTENT);
+                extraFragment.addAtContent(null, ChatPresenter.AT_ALL_CONTENT);
                 return;
             }
             ArrayList<String> resultIds = data.getStringArrayListExtra(EXTRA_RESULT_ID);

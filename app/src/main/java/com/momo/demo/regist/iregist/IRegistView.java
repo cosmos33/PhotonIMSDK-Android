@@ -1,6 +1,6 @@
 package com.momo.demo.regist.iregist;
 
-import com.cosmos.photonim.imbase.base.mvpbase.IBaseActivityView;
+import com.cosmos.photonim.imbase.base.mvp.IBaseActivityView;
 
 public abstract class IRegistView extends IBaseActivityView<IRegistPresenter> implements IRegistModel.IRegistListener {
 

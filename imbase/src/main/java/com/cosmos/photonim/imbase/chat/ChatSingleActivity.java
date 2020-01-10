@@ -12,12 +12,12 @@ public class ChatSingleActivity extends ChatBaseActivity {
     }
 
     @Override
-    protected String getChatIcon(PhotonIMMessage msg) {
-        return msg.from.equals(ImBaseBridge.getInstance().getUserId()) ? myIcon : singleChatUserIcon;
+    public String getChatIcon(PhotonIMMessage msg) {
+        return msg.from.equals(ImBaseBridge.getInstance().getUserId()) ? ImBaseBridge.getInstance().getMyIcon() : singleChatUserIcon;
     }
 
     @Override
-    protected boolean isGroup() {
+    public boolean isGroup() {
         return false;
     }
 }

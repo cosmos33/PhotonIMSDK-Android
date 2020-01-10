@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.cosmos.photon.im.PhotonIMClient;
 import com.cosmos.photon.push.PhotonPushManager;
 import com.cosmos.photon.push.msg.MoMessage;
-import com.cosmos.photonim.imbase.base.mvpbase.IPresenter;
+import com.cosmos.photonim.imbase.base.mvp.base.IPresenter;
 import com.cosmos.photonim.imbase.utils.LocalRestoreUtils;
 import com.cosmos.photonim.imbase.utils.ToastUtils;
 import com.cosmos.photonim.imbase.utils.event.IMStatus;

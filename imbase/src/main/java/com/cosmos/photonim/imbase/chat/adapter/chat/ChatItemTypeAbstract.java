@@ -39,7 +39,6 @@ public abstract class ChatItemTypeAbstract extends ItemTypeAbstract {
         View view = rvViewHolder.getView(R.id.tvSysInfo);
         view.setVisibility(View.GONE);
         rvViewHolder.getView(R.id.llMsgRoot).setVisibility(View.VISIBLE);
-        // TODO: 2020-01-09 各种类型分开
         switch (chatData.getMsgType()) {
             case PhotonIMMessage.TEXT:
                 TextView content = (TextView) rvViewHolder.getView(R.id.tvContent);

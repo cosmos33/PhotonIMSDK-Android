@@ -1,6 +1,6 @@
 package com.cosmos.photonim.imbase.chat.chatset.ichatset;
 
-import com.cosmos.photonim.imbase.base.mvpbase.IBaseActivityView;
+import com.cosmos.photonim.imbase.base.mvp.IBaseActivityView;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;
 
 public abstract class IChatSetView extends IBaseActivityView<IChatSetPresenter> {

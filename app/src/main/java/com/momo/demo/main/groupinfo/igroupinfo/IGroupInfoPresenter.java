@@ -3,7 +3,7 @@ package com.momo.demo.main.groupinfo.igroupinfo;
 
 import android.support.v7.widget.RecyclerView;
 
-import com.cosmos.photonim.imbase.base.mvpbase.IPresenter;
+import com.cosmos.photonim.imbase.base.mvp.base.IPresenter;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvBaseAdapter;
 import com.momo.demo.main.groupmemberselected.GroupMembersData;

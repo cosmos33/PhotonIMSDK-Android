@@ -3,7 +3,7 @@ package com.momo.demo.main.forward.iforward;
 
 import android.support.v7.widget.RecyclerView;
 
-import com.cosmos.photonim.imbase.base.mvpbase.IPresenter;
+import com.cosmos.photonim.imbase.base.mvp.base.IPresenter;
 import com.cosmos.photonim.imbase.chat.ChatData;
 import com.cosmos.photonim.imbase.chat.ichat.IChatModel;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;

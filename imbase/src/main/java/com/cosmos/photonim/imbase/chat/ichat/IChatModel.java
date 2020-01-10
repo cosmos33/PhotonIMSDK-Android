@@ -1,6 +1,6 @@
 package com.cosmos.photonim.imbase.chat.ichat;
 
-import com.cosmos.photonim.imbase.base.mvpbase.IModel;
+import com.cosmos.photonim.imbase.base.mvp.base.IModel;
 import com.cosmos.photonim.imbase.chat.ChatData;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;
 

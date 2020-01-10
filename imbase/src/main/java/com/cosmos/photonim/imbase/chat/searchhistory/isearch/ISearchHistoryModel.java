@@ -1,6 +1,6 @@
 package com.cosmos.photonim.imbase.chat.searchhistory.isearch;
 
-import com.cosmos.photonim.imbase.base.mvpbase.IModel;
+import com.cosmos.photonim.imbase.base.mvp.base.IModel;
 import com.cosmos.photonim.imbase.chat.searchhistory.adapter.SearchData;
 
 import java.util.ArrayList;

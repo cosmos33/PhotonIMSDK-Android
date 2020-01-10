@@ -1,6 +1,6 @@
 package com.momo.demo.main.contacts.group.igroup;
 
-import com.cosmos.photonim.imbase.base.mvpbase.IView;
+import com.cosmos.photonim.imbase.base.mvp.base.IView;
 import com.cosmos.photonim.imbase.utils.recycleadapter.actiivty.RvBaseActivity;
 import com.momo.demo.main.contacts.group.GroupData;
 

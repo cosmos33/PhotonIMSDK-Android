@@ -1,4 +1,4 @@
-package com.cosmos.photonim.imbase.base.mvpbase;
+package com.cosmos.photonim.imbase.base.mvp.base;
 
 public interface IView<P extends IPresenter> {
     P getIPresenter();

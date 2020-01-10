@@ -4,7 +4,7 @@ package com.momo.demo.main.contacts.single.ionline;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.cosmos.photonim.imbase.base.mvpbase.IPresenter;
+import com.cosmos.photonim.imbase.base.mvp.base.IPresenter;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvBaseAdapter;
 import com.momo.demo.main.contacts.single.OnlineUserData;
 

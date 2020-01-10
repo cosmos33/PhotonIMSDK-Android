@@ -1,6 +1,6 @@
 package com.momo.demo.main.groupinfo.igroupinfo;
 
-import com.cosmos.photonim.imbase.base.mvpbase.IView;
+import com.cosmos.photonim.imbase.base.mvp.base.IView;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;
 import com.cosmos.photonim.imbase.utils.recycleadapter.actiivty.RvBaseActivity;
 import com.momo.demo.main.groupmemberselected.GroupMembersData;

@@ -1,21 +1,18 @@
 package com.cosmos.photonim.imbase.chat.ichat;
 
-import com.cosmos.photonim.imbase.base.mvpbase.IView;
+import com.cosmos.photon.im.PhotonIMMessage;
+import com.cosmos.photonim.imbase.base.mvp.base.IView;
 import com.cosmos.photonim.imbase.chat.ChatData;
+import com.cosmos.photonim.imbase.utils.AtEditText;
 import com.cosmos.photonim.imbase.utils.recycleadapter.actiivty.RvBaseActivity;
 
-import java.util.List;
-import java.util.Map;
+import java.util.ArrayList;
 
 public abstract class IChatView extends RvBaseActivity<IChatPresenter> implements IView {
-
-    public abstract void onloadHistoryResult(List<ChatData> chatData, Map<String, ChatData> chatDataMap, boolean search);
 
     public abstract void onRevertResult(ChatData data1, int error, String msg);
 
     public abstract void onGetChatVoiceFileResult(ChatData data, String path);
-
-    public abstract void onRecordFinish(long duration);
 
     public abstract void updateUnreadStatus(ChatData data);
 
@@ -23,5 +20,25 @@ public abstract class IChatView extends RvBaseActivity<IChatPresenter> implement
 
     public abstract void onRecordFailed();
 
-    public abstract void onDeleteMsgResult(ChatData chatData);
+    public abstract void notifyItemChanged(int listPostion);
+
+    public abstract void notifyItemInserted(int listPostion);
+
+    public abstract String getChatIcon(PhotonIMMessage msg);
+
+    public abstract void scrollToPosition(int i);
+
+    public abstract String getVideoFilePath();
+
+    public abstract void setRefreshing(boolean b);
+
+    public abstract void notifyDataSetChanged();
+
+    public abstract void notifyItemRangeInserted(int i, int size);
+
+    public abstract void toast(int chat_msg_nomore);
+
+    public abstract boolean isGroup();
+
+    public abstract ArrayList<AtEditText.Entity> getAtList();
 }

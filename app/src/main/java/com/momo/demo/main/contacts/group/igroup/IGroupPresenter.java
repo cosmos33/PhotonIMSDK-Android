@@ -3,7 +3,7 @@ package com.momo.demo.main.contacts.group.igroup;
 
 import android.support.v7.widget.RecyclerView;
 
-import com.cosmos.photonim.imbase.base.mvpbase.IPresenter;
+import com.cosmos.photonim.imbase.base.mvp.base.IPresenter;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvBaseAdapter;
 import com.momo.demo.main.contacts.group.GroupData;
 

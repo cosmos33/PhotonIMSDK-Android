@@ -1,6 +1,6 @@
 package com.momo.demo.regist.iregist;
 
-import com.cosmos.photonim.imbase.base.mvpbase.IPresenter;
+import com.cosmos.photonim.imbase.base.mvp.base.IPresenter;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;
 
 public abstract class IRegistPresenter<V extends IRegistView, M extends IRegistModel> extends IPresenter<V, M> {

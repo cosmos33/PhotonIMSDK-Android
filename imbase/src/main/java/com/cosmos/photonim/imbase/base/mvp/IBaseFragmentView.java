@@ -1,9 +1,10 @@
-package com.cosmos.photonim.imbase.base.mvpbase;
+package com.cosmos.photonim.imbase.base.mvp;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.cosmos.photonim.imbase.base.BaseFragment;
+import com.cosmos.photonim.imbase.base.mvp.base.IView;
 
 public abstract class IBaseFragmentView<P> extends BaseFragment implements IView {
     protected P presenter;

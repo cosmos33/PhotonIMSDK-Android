@@ -86,12 +86,12 @@ public class ChatNormalLeftItem extends ChatItemTypeAbstract {
 
     @Override
     public int[] getOnClickViews() {
-        return new int[]{R.id.tvContent, R.id.llVoice, R.id.ivPic};
+        return new int[]{R.id.tvContent, R.id.llVoice, R.id.ivPic, R.id.llLocation};
     }
 
     @Override
     public int[] getOnLongClickViews() {
-        return new int[]{R.id.tvContent, R.id.llVoice, R.id.ivPic};
+        return new int[]{R.id.tvContent, R.id.llVoice, R.id.ivPic, R.id.llLocation};
     }
 
     public interface OnGetVoiceFileListener {

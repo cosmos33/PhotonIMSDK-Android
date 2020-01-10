@@ -4,7 +4,7 @@ package com.cosmos.photonim.imbase.session.isession;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.cosmos.photonim.imbase.base.mvpbase.IPresenter;
+import com.cosmos.photonim.imbase.base.mvp.base.IPresenter;
 import com.cosmos.photonim.imbase.session.adapter.SessionData;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvBaseAdapter;
 
