@@ -88,8 +88,6 @@ public class ChatModel extends IChatModel {
             chatDataBuilder = new ChatData.Builder()
                     .msgType(photonIMMessage.messageType)
                     .chatWith(photonIMMessage.chatWith)
-                    .localFile(photonIMMessage.localFile)
-                    .fileUrl(photonIMMessage.fileUrl)
                     .from(photonIMMessage.from)
                     .fromName(nameTemp)
                     .chatType(photonIMMessage.chatType)
@@ -97,7 +95,6 @@ public class ChatModel extends IChatModel {
                     .time(photonIMMessage.time)
                     .timeContent(TimeUtils.getTimeContent(photonIMMessage.time, preData == null ? 0 : preData.getTime()))
                     .notic(photonIMMessage.notic)
-                    .content(photonIMMessage.content)
                     .remainHistory(photonIMMessage.remainHistory)
 //                    .extra(photonIMMessage.extra)
 //                    .icon(photonIMMessage)
@@ -105,7 +102,7 @@ public class ChatModel extends IChatModel {
                     .msgId(photonIMMessage.id)
                     .msgStatus(msgStatus)
                     .itemType(getItemType(photonIMMessage, ImBaseBridge.getInstance().getUserId()))
-                    .voiceDuration(photonIMMessage.mediaTime);
+                    .msgBody(photonIMMessage.body);
             if (photonIMMessage.messageType == PhotonIMMessage.LOCATION) {
                 PhotonIMLocationBody body = (PhotonIMLocationBody) photonIMMessage.body;
                 chatDataBuilder.lat(body.lat);

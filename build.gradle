@@ -33,7 +33,7 @@ allprojects {
     ext{
         ext_complieSdkVersion = 28
         ext_minSdkVersion = 21
-        ext_targetSdkVersion = 28
+        ext_targetSdkVersion = 29
         ext_buildToolsVersion = "28.0.3"
         // 国内
         imversion = "com.cosmos.photon:im:2.2.0"

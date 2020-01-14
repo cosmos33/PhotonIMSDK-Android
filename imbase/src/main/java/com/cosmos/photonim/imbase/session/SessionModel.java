@@ -105,19 +105,16 @@ public class SessionModel extends ISessionModel {
                 ChatData chatData = new ChatData.Builder()
                         .msgType(photonIMMessage.messageType)
                         .chatWith(photonIMMessage.chatWith)
-                        .localFile(photonIMMessage.localFile)
-                        .fileUrl(photonIMMessage.fileUrl)
                         .from(photonIMMessage.from)
                         .chatType(photonIMMessage.chatType)
                         .to(photonIMMessage.to)
                         .time(photonIMMessage.time)
                         .notic(photonIMMessage.notic)
-                        .content(photonIMMessage.content)
                         .icon(iconTemp)
                         .msgId(photonIMMessage.id)
                         .msgStatus(photonIMMessage.status)
                         .itemType(ChatModel.getItemType(photonIMMessage, ImBaseBridge.getInstance().getUserId()))
-                        .voiceDuration(photonIMMessage.mediaTime)
+                        .msgBody(photonIMMessage.body)
                         .build();
                 PhotonIMClient.getInstance().sendMessage(photonIMMessage, new PhotonIMClient.PhotonIMSendCallback() {
                     @Override

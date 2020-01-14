@@ -7,7 +7,13 @@ import android.text.TextUtils;
 
 import com.cosmos.photon.im.PhotonIMMessage;
 import com.cosmos.photon.im.PhotonIMSession;
+import com.cosmos.photon.im.messagebody.PhotonIMAudioBody;
+import com.cosmos.photon.im.messagebody.PhotonIMBaseBody;
+import com.cosmos.photon.im.messagebody.PhotonIMFileBody;
+import com.cosmos.photon.im.messagebody.PhotonIMImageBody;
 import com.cosmos.photon.im.messagebody.PhotonIMLocationBody;
+import com.cosmos.photon.im.messagebody.PhotonIMTextBody;
+import com.cosmos.photon.im.messagebody.PhotonIMVideoBody;
 import com.cosmos.photonim.imbase.chat.emoji.EmojiUtils;
 import com.cosmos.photonim.imbase.utils.AtSpan;
 import com.cosmos.photonim.imbase.utils.Constants;
@@ -97,24 +103,10 @@ public class ChatData implements ItemData, Parcelable {
         return msgId;
     }
 
-//    public String getInfo() {
-//        if (extra == null) {
-//            return icon;
-//        }
-//        return extra.getInfo();
-//    }
-
     public void setContent(String content) {
         this.content = content;
         contentShow = EmojiUtils.generateEmojiSpan(content);
     }
-
-//    public void icon(String icon) {
-//        if (extra == null) {
-//            extra = new MsgExtra();
-//        }
-//        extra.icon = icon;
-//    }
 
     public String getContent() {
         return content;
@@ -127,10 +119,6 @@ public class ChatData implements ItemData, Parcelable {
     public int getMsgStatus() {
         return msgStatus;
     }
-
-//    public boolean isIllegal() {
-//        return illegal;
-//    }
 
     public int getMsgType() {
         return msgType;
@@ -242,13 +230,6 @@ public class ChatData implements ItemData, Parcelable {
         return location;
     }
 
-    //    public String getExtra() {
-//        if (extra == null) {
-//            return null;
-//        }
-//        return new Gson().toJson(extra);
-//    }
-
     public PhotonIMMessage convertToIMMessage() {
         PhotonIMMessage photonIMMessage = new PhotonIMMessage();
         photonIMMessage.id = msgId;
@@ -259,12 +240,52 @@ public class ChatData implements ItemData, Parcelable {
         photonIMMessage.messageType = msgType;
         photonIMMessage.status = msgStatus;
         photonIMMessage.chatType = chatType;
-        photonIMMessage.content = content;
-        photonIMMessage.mediaTime = mediaTime;
-        photonIMMessage.fileUrl = StringUtils.getTextContent(fileUrl);
-        photonIMMessage.thumbUrl = StringUtils.getTextContent(fileUrl);
-        photonIMMessage.localFile = localFile;
-        photonIMMessage.whRatio =1.333;
+        switch (msgType) {
+            case PhotonIMMessage.UNKNOW:
+                break;
+            case PhotonIMMessage.RAW:
+                break;
+            case PhotonIMMessage.TEXT:
+                PhotonIMTextBody textBody = new PhotonIMTextBody();
+                textBody.content = content;
+                photonIMMessage.body = textBody;
+                break;
+            case PhotonIMMessage.IMAGE:
+                PhotonIMImageBody imageBody = new PhotonIMImageBody();
+                imageBody.url = StringUtils.getTextContent(fileUrl);
+                photonIMMessage.body = imageBody;
+                break;
+            case PhotonIMMessage.AUDIO:
+                PhotonIMAudioBody audioBody = new PhotonIMAudioBody();
+                audioBody.url = StringUtils.getTextContent(fileUrl);
+                audioBody.audioTime = time;
+                audioBody.localFile = localFile;
+                photonIMMessage.body = audioBody;
+                break;
+            case PhotonIMMessage.VIDEO:
+                PhotonIMVideoBody videoBody = new PhotonIMVideoBody();
+                videoBody.videoTime = time;
+                videoBody.url = fileUrl;
+                videoBody.localFile = localFile;
+                photonIMMessage.body = videoBody;
+                break;
+            case PhotonIMMessage.FILE:
+                PhotonIMFileBody fileBody = new PhotonIMFileBody();
+                fileBody.localFile = localFile;
+                fileBody.url = fileUrl;
+                photonIMMessage.body = fileBody;
+                break;
+            case PhotonIMMessage.LOCATION:
+                PhotonIMLocationBody locationBody = new PhotonIMLocationBody();
+                if (location != null) {
+                    locationBody.lat = location.lat;
+                    locationBody.lng = location.lng;
+                    locationBody.address = location.address;
+                    locationBody.detailedAddress = location.detailedAddress;
+                }
+                photonIMMessage.body = locationBody;
+                break;
+        }
         photonIMMessage.msgAtList = msgAtList;
         photonIMMessage.atType = atType;
         if (msgType == PhotonIMMessage.LOCATION) {
@@ -281,18 +302,21 @@ public class ChatData implements ItemData, Parcelable {
     }
 
     private void getMsgAtStatus(PhotonIMMessage photonIMMessage) {
-        if (TextUtils.isEmpty(photonIMMessage.content)) {
+        String content = null;
+        if (photonIMMessage.messageType == PhotonIMMessage.TEXT
+                && photonIMMessage.body != null
+                && TextUtils.isEmpty(content = ((PhotonIMTextBody) photonIMMessage.body).content)) {
             return;
         }
-        if (!photonIMMessage.content.contains("@")) {
+        if (!content.contains("@")) {
             return;
         }
-        if (photonIMMessage.content.contains("@ 所有人")) {
+        if (content.contains("@ 所有人")) {
             photonIMMessage.atType = PhotonIMMessage.MSG_AT_ALL;
 //            photonIMMessage.msgAtList;
         } else {
-            SpannableString spannableString = new SpannableString(photonIMMessage.content);
-            AtSpan[] spans = spannableString.getSpans(0, photonIMMessage.content.length(), AtSpan.class);
+            SpannableString spannableString = new SpannableString(content);
+            AtSpan[] spans = spannableString.getSpans(0, content.length(), AtSpan.class);
             if (spans.length != 0) {
                 for (AtSpan span : spans) {
 
@@ -363,6 +387,7 @@ public class ChatData implements ItemData, Parcelable {
         private boolean remainHistory;
         private boolean testSend;
         private Location location;
+        private PhotonIMBaseBody body;
 //        private MsgExtra extra;
 
         public Builder() {
@@ -454,6 +479,49 @@ public class ChatData implements ItemData, Parcelable {
         }
 
         public ChatData build() {
+            if (body != null) {
+                switch (msgType) {
+                    case PhotonIMMessage.UNKNOW:
+                        break;
+                    case PhotonIMMessage.RAW:
+                        break;
+                    case PhotonIMMessage.TEXT:
+                        PhotonIMTextBody textBody = (PhotonIMTextBody) body;
+                        this.content = textBody.content;
+                        break;
+                    case PhotonIMMessage.IMAGE:
+                        PhotonIMImageBody imageBody = (PhotonIMImageBody) body;
+                        this.fileUrl = imageBody.url;
+                        break;
+                    case PhotonIMMessage.AUDIO:
+                        PhotonIMAudioBody audioBody = (PhotonIMAudioBody) body;
+                        this.time = audioBody.audioTime;
+                        this.localFile = audioBody.localFile;
+                        this.fileUrl = audioBody.url;
+                        break;
+                    case PhotonIMMessage.VIDEO:
+                        PhotonIMVideoBody videoBody = (PhotonIMVideoBody) body;
+                        this.time = videoBody.videoTime;
+                        this.localFile = videoBody.localFile;
+                        this.fileUrl = videoBody.url;
+                        break;
+                    case PhotonIMMessage.FILE:
+                        PhotonIMFileBody fileBody = (PhotonIMFileBody) body;
+                        this.localFile = fileBody.localFile;
+                        this.fileUrl = fileBody.url;
+                        break;
+                    case PhotonIMMessage.LOCATION:
+                        if (this.location == null) {
+                            location = new Location();
+                        }
+                        PhotonIMLocationBody locationBody = (PhotonIMLocationBody) body;
+                        this.location.lat = locationBody.lat;
+                        this.location.lng = locationBody.lng;
+                        this.location.address = locationBody.address;
+                        this.location.detailedAddress = locationBody.detailedAddress;
+                        break;
+                }
+            }
             return new ChatData(this);
         }
 
@@ -525,6 +593,11 @@ public class ChatData implements ItemData, Parcelable {
                 location = new Location();
             }
             location.detailedAddress = detailAddress;
+            return this;
+        }
+
+        public Builder msgBody(PhotonIMBaseBody body) {
+            this.body = body;
             return this;
         }
         //        public Builder extra(String extra) {

@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.cosmos.photon.im.PhotonIMClient;
 import com.cosmos.photon.im.PhotonIMMessage;
+import com.cosmos.photon.im.messagebody.PhotonIMCustomBody;
 import com.cosmos.photonim.imbase.base.BaseActivity;
 import com.cosmos.photonim.imbase.base.BaseFragmentPagerAdapter;
 import com.cosmos.photonim.imbase.session.SessionFragment;
@@ -194,7 +195,8 @@ public class MainActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onReceiveMsg(PhotonIMMessage msg) {
         if (msg.chatType == PhotonIMMessage.CUSTOMMSG) {
-            ToastUtils.showText(this, String.format("收到自定义消息：customArg1:%d,customArg2:%d", msg.customArg1, msg.customArg2));
+            PhotonIMCustomBody body = (PhotonIMCustomBody) msg.body;
+            ToastUtils.showText(this, String.format("收到自定义消息：customArg1:%d,customArg2:%d", body.arg1, body.arg2));
         }
     }
 

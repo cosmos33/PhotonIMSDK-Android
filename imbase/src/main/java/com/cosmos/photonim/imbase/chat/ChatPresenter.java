@@ -272,20 +272,17 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
         ChatData messageData;
         messageData = new ChatData.Builder()
                 .chatWith(msg.chatWith)
-                .content(msg.content)
-                .localFile(msg.localFile)
                 .to(msg.to)
                 .from(msg.from)
                 .time(msg.time)
                 .itemType(msg.from.equals(loginUserId) ? Constants.ITEM_TYPE_CHAT_NORMAL_RIGHT : Constants.ITEM_TYPE_CHAT_NORMAL_LEFT)
-                .fileUrl(msg.fileUrl)
                 .msgStatus(msg.status)
                 .icon(getIView().getChatIcon(msg))
                 .msgId(msg.id)
                 .timeContent(getTimeContent(msg.time))
                 .msgType(msg.messageType)
-                .voiceDuration(msg.mediaTime)
                 .chatType(msg.chatType)
+                .msgBody(msg.body)
                 .build();
         chatMsg.add(messageData);
         chatMsgMap.put(msg.id, messageData);
