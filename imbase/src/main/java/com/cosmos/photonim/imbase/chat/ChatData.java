@@ -53,6 +53,8 @@ public class ChatData implements ItemData, Parcelable {
     private boolean remainHistory;
     private boolean testSend;
     private Location location;
+    private String fileName;
+    private String fileSize;
 
 //    private MsgExtra extra;
 
@@ -64,27 +66,28 @@ public class ChatData implements ItemData, Parcelable {
         contentShow = EmojiUtils.generateEmojiSpan(content);
         mediaTime = builder.voiceDuration;
         time = builder.time;
+//        fileSize = builder.fileSize;
 //        extra = builder.extra;
-        setMsgStatus(builder.msgStatus);
+        msgStatus = builder.msgStatus;
 //        setIllegal(builder.illegal);
-        setChatWith(builder.chatWith);
-        setFrom(builder.from);
-        setFromName(builder.fromName);
-        setTo(builder.to);
-        setIcon(builder.icon);
-        setFileUrl(builder.fileUrl);
-        setLocalFile(builder.localFile);
-        setChatType(builder.chatType);
-        setNotic(builder.notic);
+        chatWith = builder.chatWith;
+        from = builder.from;
+        fromName = builder.fromName;
+        to = builder.to;
+        icon = builder.icon;
+        fileUrl = builder.fileUrl;
+        localFile = builder.localFile;
+        chatType = builder.chatType;
+        notic = builder.notic;
         msgType = builder.msgType;
 //        setListPostion(builder.listPostion);
         itemType = builder.itemType;
-        setTimeContent(builder.timeContent);
+        timeContent = builder.timeContent;
         atType = builder.atType;
-        this.msgAtList = builder.msgAtList;
-        this.remainHistory = builder.remainHistory;
-        this.testSend = builder.testSend;
-        this.location = builder.location;
+        msgAtList = builder.msgAtList;
+        remainHistory = builder.remainHistory;
+        testSend = builder.testSend;
+        location = builder.location;
     }
 
     public void setNotic(String notic) {
@@ -360,6 +363,14 @@ public class ChatData implements ItemData, Parcelable {
         this.time = currentTimeMillis;
     }
 
+    public String getFileName() {
+        return fileName;
+    }
+
+    public String getFileSize() {
+        return fileSize;
+    }
+
 
     public static final class Builder implements Serializable {
         private String msgId;
@@ -388,6 +399,8 @@ public class ChatData implements ItemData, Parcelable {
         private boolean testSend;
         private Location location;
         private PhotonIMBaseBody body;
+        private String fileName;
+        private int fileSize;
 //        private MsgExtra extra;
 
         public Builder() {
@@ -478,6 +491,16 @@ public class ChatData implements ItemData, Parcelable {
             return this;
         }
 
+        public Builder fileName(String val) {
+            fileName = val;
+            return this;
+        }
+
+        public Builder fileSize(int val) {
+            fileSize = val;
+            return this;
+        }
+
         public ChatData build() {
             if (body != null) {
                 switch (msgType) {
@@ -509,6 +532,7 @@ public class ChatData implements ItemData, Parcelable {
                         PhotonIMFileBody fileBody = (PhotonIMFileBody) body;
                         this.localFile = fileBody.localFile;
                         this.fileUrl = fileBody.url;
+//                        this.fileName = fileBody.f
                         break;
                     case PhotonIMMessage.LOCATION:
                         if (this.location == null) {

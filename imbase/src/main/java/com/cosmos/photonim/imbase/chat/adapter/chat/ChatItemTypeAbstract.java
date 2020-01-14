@@ -41,22 +41,33 @@ public abstract class ChatItemTypeAbstract extends ItemTypeAbstract {
         rvViewHolder.getView(R.id.llMsgRoot).setVisibility(View.VISIBLE);
         switch (chatData.getMsgType()) {
             case PhotonIMMessage.TEXT:
+                rvViewHolder.getView(R.id.llVoice).setVisibility(View.GONE);
+                rvViewHolder.getView(R.id.ivPic).setVisibility(View.GONE);
+                rvViewHolder.getView(R.id.llLocation).setVisibility(View.GONE);
+                rvViewHolder.getView(R.id.llFileContainer).setVisibility(View.GONE);
+
                 TextView content = (TextView) rvViewHolder.getView(R.id.tvContent);
                 content.setVisibility(View.VISIBLE);
                 content.setText(chatData.getContentShow());
-                rvViewHolder.getView(R.id.llVoice).setVisibility(View.GONE);
-                rvViewHolder.getView(R.id.ivPic).setVisibility(View.GONE);
                 ImageLoaderUtils.getInstance().loadImage(view.getContext(), chatData.getIcon(), R.drawable.head_placeholder, (ImageView) rvViewHolder.getView(R.id.ivIcon));
                 break;
             case PhotonIMMessage.AUDIO:
-                rvViewHolder.getView(R.id.llVoice).setVisibility(View.VISIBLE);
-                ((TextView) rvViewHolder.getView(R.id.tvVoiceDuration)).setText(chatData.getMediaTime() + "");
                 rvViewHolder.getView(R.id.tvContent).setVisibility(View.GONE);
                 rvViewHolder.getView(R.id.ivPic).setVisibility(View.GONE);
+                rvViewHolder.getView(R.id.llLocation).setVisibility(View.GONE);
+                rvViewHolder.getView(R.id.llFileContainer).setVisibility(View.GONE);
+
+                rvViewHolder.getView(R.id.llVoice).setVisibility(View.VISIBLE);
+                ((TextView) rvViewHolder.getView(R.id.tvVoiceDuration)).setText(chatData.getMediaTime() + "");
                 ImageLoaderUtils.getInstance().loadImage(view.getContext(), chatData.getIcon(), R.drawable.head_placeholder, (ImageView) rvViewHolder.getView(R.id.ivIcon));
 
                 break;
             case PhotonIMMessage.IMAGE:
+                rvViewHolder.getView(R.id.tvContent).setVisibility(View.GONE);
+                rvViewHolder.getView(R.id.llVoice).setVisibility(View.GONE);
+                rvViewHolder.getView(R.id.llLocation).setVisibility(View.GONE);
+                rvViewHolder.getView(R.id.llFileContainer).setVisibility(View.GONE);
+
                 ImageView pic = (ImageView) rvViewHolder.getView(R.id.ivPic);
                 pic.setVisibility(View.VISIBLE);
                 // TODO: 2019-08-07 chatData.getLocalFile() 判断对方的
@@ -65,20 +76,31 @@ public abstract class ChatItemTypeAbstract extends ItemTypeAbstract {
                 } else {
                     ImageLoaderUtils.getInstance().loadImage(pic.getContext(), chatData.getFileUrl(), R.drawable.chat_placeholder, pic);
                 }
-                rvViewHolder.getView(R.id.tvContent).setVisibility(View.GONE);
-                rvViewHolder.getView(R.id.llVoice).setVisibility(View.GONE);
                 ImageLoaderUtils.getInstance().loadImage(view.getContext(), chatData.getIcon(), R.drawable.head_placeholder, (ImageView) rvViewHolder.getView(R.id.ivIcon));
                 break;
             case PhotonIMMessage.LOCATION:
                 rvViewHolder.getView(R.id.tvContent).setVisibility(View.GONE);
                 rvViewHolder.getView(R.id.ivPic).setVisibility(View.GONE);
                 rvViewHolder.getView(R.id.llVoice).setVisibility(View.GONE);
-                View locationContainer = rvViewHolder.getView(R.id.llLocation);
-                locationContainer.setVisibility(View.VISIBLE);
+                rvViewHolder.getView(R.id.llFileContainer).setVisibility(View.GONE);
+                rvViewHolder.getView(R.id.llLocation).setVisibility(View.VISIBLE);
+
                 TextView tvLocation = (TextView) rvViewHolder.getView(R.id.tvLocation);
                 tvLocation.setText(String.format("%s\n%s", StringUtils.getTextContent(chatData.getLocation().address),
                         StringUtils.getTextContent(chatData.getLocation().detailedAddress)));
                 ImageLoaderUtils.getInstance().loadImage(view.getContext(), chatData.getIcon(), R.drawable.head_placeholder, (ImageView) rvViewHolder.getView(R.id.ivIcon));
+                break;
+            case PhotonIMMessage.FILE:
+                rvViewHolder.getView(R.id.tvContent).setVisibility(View.GONE);
+                rvViewHolder.getView(R.id.ivPic).setVisibility(View.GONE);
+                rvViewHolder.getView(R.id.llVoice).setVisibility(View.GONE);
+                rvViewHolder.getView(R.id.llLocation).setVisibility(View.GONE);
+                rvViewHolder.getView(R.id.llFileContainer).setVisibility(View.VISIBLE);
+
+                TextView fileName = (TextView) rvViewHolder.getView(R.id.tvFileName);
+                fileName.setText(chatData.getFileName());
+                TextView fileSize = (TextView) rvViewHolder.getView(R.id.tvFileSize);
+                fileSize.setText(chatData.getFileSize());
                 break;
 
         }
