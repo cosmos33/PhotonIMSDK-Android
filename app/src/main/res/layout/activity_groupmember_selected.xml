@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.cosmos.photonim.imbase.view.SwipeFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -59,4 +59,4 @@
             android:padding="8dp"
             android:text="@string/forward_confirm" />
     </FrameLayout>
-</FrameLayout>
+</com.cosmos.photonim.imbase.view.SwipeFrameLayout>

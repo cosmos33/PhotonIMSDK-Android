@@ -1,8 +1,6 @@
 package com.momo.demo.login.ilogin;
 
 import com.cosmos.photonim.imbase.base.mvp.base.IPresenter;
-import com.cosmos.photonim.imbase.utils.http.jsons.JsonAuth;
-import com.cosmos.photonim.imbase.utils.http.jsons.JsonLogin;
 
 public abstract class ILoginPresenter<V extends ILoginView, M extends ILoginModel> extends IPresenter<V, M> {
     public ILoginPresenter(V iView) {
@@ -23,16 +21,6 @@ public abstract class ILoginPresenter<V extends ILoginView, M extends ILoginMode
 
             @Override
             public void hideDialog() {
-
-            }
-
-            @Override
-            public void onLoginResult(JsonLogin requestResult) {
-
-            }
-
-            @Override
-            public void onAuthResult(JsonAuth jsonAuth) {
 
             }
 

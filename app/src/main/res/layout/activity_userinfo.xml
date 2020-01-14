@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.cosmos.photonim.imbase.view.SwipeLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:apps="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -58,4 +58,4 @@
         android:padding="8dp"
         android:text="@string/userinfo_sendmsg" />
 
-</LinearLayout>
+</com.cosmos.photonim.imbase.view.SwipeLinearLayout>
