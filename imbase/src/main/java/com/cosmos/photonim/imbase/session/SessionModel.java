@@ -217,6 +217,13 @@ public class SessionModel extends ISessionModel {
                         tempContent = "[位置]";
                     }
                     break;
+                case PhotonIMMessage.FILE:
+                    if (!TextUtils.isEmpty(photonIMSession.lastMsgContent)) {
+                        tempContent = photonIMSession.lastMsgContent;
+                    } else {
+                        tempContent = "[文件]";
+                    }
+                    break;
                 default:
                     tempContent = "[未知消息]";
             }
@@ -291,7 +298,7 @@ public class SessionModel extends ISessionModel {
                 msgDataTemp = new SessionData.Builder()
                         .lastMsgContent(PhotonIMDatabase.getInstance().getSessionLastMsgId(list.getType(),
                                 list.getType() == PhotonIMMessage.SINGLE ? list.getUserId() : list.getId()))
-                        .sticky(list.getIsTop() == 0) //不考虑置顶
+                        .sticky(list.getIsTop() == 0)
                         .chatWith(list.getType() == PhotonIMMessage.SINGLE ? list.getUserId() : list.getId())
                         .chatType(list.getType())
                         .build();

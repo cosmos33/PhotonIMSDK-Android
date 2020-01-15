@@ -66,4 +66,5 @@ public abstract class IGroupInfoPresenter<V extends IGroupInfoView, M extends IG
 
     public abstract void changeGroupIgnoreStatus(String gid, boolean igonre);
 
+    public abstract void clearChatContent();
 }

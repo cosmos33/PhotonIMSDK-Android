@@ -186,6 +186,12 @@ public class GroupInfoActivity extends IGroupInfoView {
     public void onSearchContentClick() {
         SearchHistoryActivity.start(this, gid, PhotonIMMessage.GROUP);
     }
+
+    @OnClick(R2.id.flClearChatContent)
+    public void onClearChatContent() {
+        presenter.clearChatContent();
+    }
+
     private void updateSwipeLayoutStatus() {
         if (getGroupInfo && getGroupMemberInfo && getGroupStatusInfo) {
             if (swipeRefreshLayout.isRefreshing()) {

@@ -165,7 +165,7 @@ public class SessionPresenter extends ISessionPresenter<ISessionView, ISessionMo
         getiModel().loadHistoryFromRemote(new ISessionModel.OnLoadHistoryFromRemoteListener() {
             @Override
             public void onLoadHistoryFromRemote(List<SessionData> sessionData) {
-                onLoadHistoryFromRemote(sessionData);
+                SessionPresenter.this.onLoadHistoryFromRemote(sessionData);
             }
         });
     }

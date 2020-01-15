@@ -32,6 +32,8 @@
 
         <include layout="@layout/chat_type_file" />
 
+        <include layout="@layout/chat_type_video" />
+
         <ImageView
             android:id="@+id/ivIcon"
             android:layout_width="@dimen/chat_icon"

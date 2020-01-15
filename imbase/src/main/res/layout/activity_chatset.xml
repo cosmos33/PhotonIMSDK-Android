@@ -80,4 +80,5 @@
             android:layout_gravity="right" />
     </FrameLayout>
 
+    <include layout="@layout/chat_content_clear" />
 </com.cosmos.photonim.imbase.view.SwipeLinearLayout>

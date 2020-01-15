@@ -43,6 +43,11 @@ public class GroupInfoPresenter extends IGroupInfoPresenter<IGroupInfoView, IGro
     }
 
     @Override
+    public void clearChatContent() {
+
+    }
+
+    @Override
     public IGroupInfoModel generateIModel() {
         return new GroupInfoModel();
     }

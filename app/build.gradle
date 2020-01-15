@@ -136,7 +136,7 @@ dependencies {
 
     // 引入mdlog coded
     implementation "com.cosmos.baseutil:mdlog:2.0.0"
-    implementation "com.cosmos.baseutil:codedlib:1.0.0"
+    implementation "com.cosmos.baseutil:codedlib:$codedlibversion"
 
     //    //可任意选择三方push的接入，如果不想使用某一类厂商，不添加即可
     implementation "com.cosmos.photon:thirdpush-huawei:2.1.0"
@@ -149,7 +149,7 @@ dependencies {
     // 引用imcore模块(本地maven仓库)，因为是本地maven依赖所以间接依赖需要手动添加一下
     implementation "$imversion"
     implementation "com.cosmos.baseutil:mdlog:2.0.0"
-    implementation "com.cosmos.baseutil:codedlib:1.0.0"
+    implementation "com.cosmos.baseutil:codedlib:$codedlibversion"
     implementation "com.cosmos.baseutil:mmdevice:2.0.0"
     implementation "com.cosmos.baseutil:cpp_shared:r17c"
     implementation "com.android.support:support-compat:$supportverion"
