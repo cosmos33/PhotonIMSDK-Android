@@ -1,5 +1,7 @@
 package com.cosmos.photonim.imbase.businessmodel;
 
+import android.text.TextUtils;
+
 import com.cosmos.photon.im.PhotonIMMessage;
 import com.cosmos.photonim.imbase.ImBaseBridge;
 import com.cosmos.photonim.imbase.session.SessionUpdateOtherInfoImpl;
@@ -47,7 +49,7 @@ public class PersionInfoModel {
 
     private Object getOtherInfoInner(int chatType, String chatWith, String nickName, boolean updateFromInfo, String lastMsgFrom) {
         if (chatType == PhotonIMMessage.GROUP) {
-            if (nickName == null) {
+            if (TextUtils.isEmpty(nickName)) {
                 return getGroupInfo(chatWith);
             } else if (updateFromInfo) {
                 return getUserinfo(lastMsgFrom);

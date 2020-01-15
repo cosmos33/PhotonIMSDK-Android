@@ -70,6 +70,7 @@ public class ForwardPresenter extends IForwardPresenter<IForwardView, IChatModel
                     getiModel().sendMsgMulti(getChatData(chatData, selectedData, null), null);
                 }
                 break;
+            case PhotonIMMessage.LOCATION:
             case PhotonIMMessage.TEXT:
                 getiModel().sendMsgMulti(getChatData(chatData, selectedData, null), null);
                 break;
@@ -103,9 +104,11 @@ public class ForwardPresenter extends IForwardPresenter<IForwardView, IChatModel
         List<ChatData> result = new ArrayList<>(selectedData.size());
         String toId;
         ForwardData temp;
+        ChatData.Location location;
         while (iterator.hasNext()) {
             temp = iterator.next();
             toId = temp.getUserId();
+            location = chatData.getLocation();
             result.add(new ChatData.Builder()
                     .msgStatus(PhotonIMMessage.SENDING)
                     .itemType(Constants.ITEM_TYPE_CHAT_NORMAL_RIGHT)
@@ -121,6 +124,10 @@ public class ForwardPresenter extends IForwardPresenter<IForwardView, IChatModel
                     .time(System.currentTimeMillis())
                     .localFile(chatData.getLocalFile())
                     .msgId(UUID.randomUUID().toString())
+                    .detailAddress(location == null ? null : location.detailedAddress)
+                    .address(location == null ? null : location.address)
+                    .lat(location == null ? 0 : location.lat)
+                    .lng(location == null ? 0 : location.lng)
                     .build());
         }
         return result;

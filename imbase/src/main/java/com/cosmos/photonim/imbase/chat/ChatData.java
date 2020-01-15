@@ -14,6 +14,7 @@ import com.cosmos.photon.im.messagebody.PhotonIMImageBody;
 import com.cosmos.photon.im.messagebody.PhotonIMLocationBody;
 import com.cosmos.photon.im.messagebody.PhotonIMTextBody;
 import com.cosmos.photon.im.messagebody.PhotonIMVideoBody;
+import com.cosmos.photonim.imbase.ImBaseBridge;
 import com.cosmos.photonim.imbase.chat.emoji.EmojiUtils;
 import com.cosmos.photonim.imbase.utils.AtSpan;
 import com.cosmos.photonim.imbase.utils.Constants;
@@ -23,7 +24,7 @@ import com.cosmos.photonim.imbase.utils.recycleadapter.ItemData;
 import java.io.Serializable;
 import java.util.List;
 
-public class ChatData implements ItemData, Parcelable {
+public class ChatData implements ItemData, Parcelable, Cloneable {
     public static final int CHAT_STATUS_SENTED = 1;
     public static final int CHAT_STATUS_READ = 2;
     public static final int CHAT_STATUS_FAILED = 3;
@@ -89,6 +90,17 @@ public class ChatData implements ItemData, Parcelable {
         testSend = builder.testSend;
         location = builder.location;
     }
+
+//    public static ChatData getForwardChatData(ChatData chatData) {
+//        ChatData result = null;
+//        try {
+//            result = (ChatData) chatData.clone();
+//        } catch (CloneNotSupportedException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return result;
+//    }
 
     public void setNotic(String notic) {
         this.notic = notic;
@@ -624,34 +636,53 @@ public class ChatData implements ItemData, Parcelable {
             this.body = body;
             return this;
         }
-        //        public Builder extra(String extra) {
-//            this.extra = new Gson().fromJson(extra, MsgExtra.class);
-//            return this;
-//        }
-//
-//
-//        public Builder icon(String icon) {
-//            if (extra == null) {
-//                extra = new MsgExtra();
-//            }
-//            extra.icon = icon;
-//            return this;
-//        }
     }
 
-//    public static class MsgExtra implements Serializable {
-//
-//        public String icon;
-//
-//        public String getIcon() {
-//            return icon;
-//        }
-//
-//        public void setIcon(String icon) {
-//            this.icon = icon;
-//        }
-//    }
+    public static class Location implements Parcelable {
+        public int coordinateSystem;  //坐标系
+        public double lng;   // 经度
+        public double lat;   // 纬度
+        public String address = ""; // 坐标地址名称
+        public String detailedAddress = ""; //坐标详细地址名称
 
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeInt(this.coordinateSystem);
+            dest.writeDouble(this.lng);
+            dest.writeDouble(this.lat);
+            dest.writeString(this.address);
+            dest.writeString(this.detailedAddress);
+        }
+
+        public Location() {
+        }
+
+        protected Location(Parcel in) {
+            this.coordinateSystem = in.readInt();
+            this.lng = in.readDouble();
+            this.lat = in.readDouble();
+            this.address = in.readString();
+            this.detailedAddress = in.readString();
+        }
+
+        public static final Creator<Location> CREATOR = new Creator<Location>() {
+            @Override
+            public Location createFromParcel(Parcel source) {
+                return new Location(source);
+            }
+
+            @Override
+            public Location[] newArray(int size) {
+                return new Location[size];
+            }
+        };
+    }
 
     @Override
     public int describeContents() {
@@ -667,8 +698,6 @@ public class ChatData implements ItemData, Parcelable {
         dest.writeLong(this.mediaTime);
         dest.writeLong(this.time);
         dest.writeInt(this.msgStatus);
-//        dest.writeByte(this.illegal ? (byte) 1 : (byte) 0);
-        dest.writeString(this.notic);
         dest.writeString(this.chatWith);
         dest.writeString(this.from);
         dest.writeString(this.fromName);
@@ -680,6 +709,14 @@ public class ChatData implements ItemData, Parcelable {
         dest.writeInt(this.listPostion);
         dest.writeInt(this.itemType);
         dest.writeString(this.timeContent);
+        dest.writeString(this.notic);
+        dest.writeInt(this.atType);
+        dest.writeStringList(this.msgAtList);
+        dest.writeByte(this.remainHistory ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.testSend ? (byte) 1 : (byte) 0);
+        dest.writeParcelable(this.location, flags);
+        dest.writeString(this.fileName);
+        dest.writeString(this.fileSize);
     }
 
     protected ChatData(Parcel in) {
@@ -690,8 +727,6 @@ public class ChatData implements ItemData, Parcelable {
         this.mediaTime = in.readLong();
         this.time = in.readLong();
         this.msgStatus = in.readInt();
-//        this.illegal = in.readByte() != 0;
-        this.notic = in.readString();
         this.chatWith = in.readString();
         this.from = in.readString();
         this.fromName = in.readString();
@@ -703,6 +738,14 @@ public class ChatData implements ItemData, Parcelable {
         this.listPostion = in.readInt();
         this.itemType = in.readInt();
         this.timeContent = in.readString();
+        this.notic = in.readString();
+        this.atType = in.readInt();
+        this.msgAtList = in.createStringArrayList();
+        this.remainHistory = in.readByte() != 0;
+        this.testSend = in.readByte() != 0;
+        this.location = in.readParcelable(Location.class.getClassLoader());
+        this.fileName = in.readString();
+        this.fileSize = in.readString();
     }
 
     public static final Creator<ChatData> CREATOR = new Creator<ChatData>() {
@@ -717,12 +760,29 @@ public class ChatData implements ItemData, Parcelable {
         }
     };
 
-    public static class Location {
-        public int coordinateSystem;  //坐标系
-        public double lng;   // 经度
-        public double lat;   // 纬度
-        public String address = ""; // 坐标地址名称
-        public String detailedAddress = ""; //坐标详细地址名称
+    @Override
+    protected ChatData clone() throws CloneNotSupportedException {
+        return (new Builder()
+                .msgStatus(PhotonIMMessage.SENDING)
+                .itemType(Constants.ITEM_TYPE_CHAT_NORMAL_RIGHT)
+                .icon(ImBaseBridge.getInstance().getMyIcon())
+                .voiceDuration(mediaTime)
+                .msgType(msgType)
+                .chatType(chatType)
+                .chatWith(chatWith)
+                .content(content)
+                .from(from)
+                .to(to)
+                .fileUrl(fileUrl)
+                .time(time)
+                .localFile(localFile)
+                .msgId(msgId)
+//                .fileSize(fileSize)
+                .fileName(fileName)
+                .detailAddress(location == null ? null : location.detailedAddress)
+                .address(location == null ? null : location.address)
+                .lat(location == null ? 0 : location.lat)
+                .lng(location == null ? 0 : location.lng)
+                .build());
     }
-
 }

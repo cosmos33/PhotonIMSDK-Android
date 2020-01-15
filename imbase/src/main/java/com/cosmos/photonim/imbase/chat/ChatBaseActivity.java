@@ -323,7 +323,7 @@ public abstract class ChatBaseActivity extends IChatView {
                         ImageCheckActivity.startActivity(ChatBaseActivity.this, urls, currentPosition);
                     } else if (viewId == R.id.llLocation) {
 
-                        MapActivity.start(ChatBaseActivity.this, chatData.getLocation().lat, chatData.getLocation().lng);
+                        MapActivity.start(ChatBaseActivity.this, chatData);
                     }
                 }
 
@@ -331,7 +331,7 @@ public abstract class ChatBaseActivity extends IChatView {
                 public void onLongClick(View view, Object data, int position) {
                     ChatData chatData = (ChatData) data;
                     int i = view.getId();
-                    if (i == R.id.tvContent || i == R.id.llVoice || i == R.id.ivPic) {
+                    if (i == R.id.tvContent || i == R.id.llVoice || i == R.id.ivPic || i == R.id.llLocation) {
                         showPopupMenu(chatData, view);
                     }
                 }

@@ -89,7 +89,7 @@ public class SessionItem extends ItemTypeAbstract {
         ImageLoaderUtils.getInstance().loadImage(iconView.getContext(), sessionData.getIcon(), R.drawable.head_placeholder, iconView);
 
         if (updateOtherInfoListener != null) {
-            if (sessionData.getNickName() == null || shouldUpdateFromName(isSendFromMe)) {
+            if (TextUtils.isEmpty(sessionData.getNickName()) || shouldUpdateFromName(isSendFromMe)) {
                 updateOtherInfoListener.onUpdateOtherInfo(sessionData);
             }
         }

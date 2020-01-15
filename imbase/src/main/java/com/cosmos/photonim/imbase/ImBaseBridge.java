@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentActivity;
 
 import com.cosmos.photon.im.PhotonIMClient;
 import com.cosmos.photonim.imbase.base.BaseActivity;
-import com.cosmos.photonim.imbase.chat.ChatBaseActivity;
 import com.cosmos.photonim.imbase.chat.ChatData;
 import com.cosmos.photonim.imbase.chat.ChatGroupActivity;
 import com.cosmos.photonim.imbase.chat.emoji.EmojiUtils;
@@ -67,7 +66,7 @@ public class ImBaseBridge {
         }
     }
 
-    public void onRelayClick(ChatBaseActivity chatBaseActivity, ChatData data) {
+    public void onRelayClick(Activity chatBaseActivity, ChatData data) {
         if (businessListener != null) {
             businessListener.onRelayClick(chatBaseActivity, data);
         }
