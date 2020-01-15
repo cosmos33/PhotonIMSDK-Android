@@ -22,7 +22,7 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/chat_set_item_height"
                 android:layout_marginTop="@dimen/title_margin_top"
                 android:background="@color/white"
                 android:gravity="center_vertical"
@@ -52,7 +52,7 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/chat_set_item_height"
                 android:layout_marginTop="@dimen/title_margin_top"
                 android:background="@color/white"
                 android:gravity="center_vertical"
@@ -122,45 +122,9 @@
 
             <include layout="@layout/searchcontent" />
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/title_margin_top"
-                android:background="@color/white"
-                android:padding="@dimen/activity_padding"
-                android:visibility="gone">
+            <include layout="@layout/chat_set_top" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/chatset_top" />
-
-                <Switch
-                    android:id="@+id/sTop"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right" />
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/title_margin_top"
-                android:background="@color/white"
-                android:padding="@dimen/activity_padding">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="@string/chatset_ban" />
-
-                <Switch
-                    android:id="@+id/sIgnore"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right" />
-            </FrameLayout>
+            <include layout="@layout/chat_set_ban" />
 
             <include layout="@layout/chat_content_clear" />
 

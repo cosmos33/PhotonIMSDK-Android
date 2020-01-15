@@ -26,6 +26,7 @@ public class AMapFragment extends MapFragment implements IMapFragment {
     private Marker locationMarker;
     private MapInfo mapInfo;
     private double[] positionArray;
+    private boolean create;
 
     @Override
     public void onCreate(Bundle bundle) {
@@ -35,6 +36,7 @@ public class AMapFragment extends MapFragment implements IMapFragment {
             positionArray = getArguments().getDoubleArray(EXTRA_LATLNG);
         }
         GeocodeHelper.getInstance().init(getActivity());
+        create = true;
     }
 
     @Override
@@ -45,7 +47,7 @@ public class AMapFragment extends MapFragment implements IMapFragment {
 
     private void locateMyPositon() {
         AMap aMap = getMap();
-        if (aMap == null || mapInfo == null) {
+        if (aMap == null || mapInfo == null || !create) {
             return;
         }
         MyLocationStyle myLocationStyle = new MyLocationStyle();//初始化定位蓝点样式类myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE);//连续定位、且将视角移动到地图中心点，定位点依照设备方向旋转，并且会跟随设备移动。（1秒1次定位）如果不设置myLocationType，默认也会执行此种模式。

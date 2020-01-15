@@ -224,13 +224,7 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
 
     @Override
     public void deleteMsg(ChatData data) {
-        getiModel().deleteMsg(data, new IChatModel.OnDeleteMsgListener() {
-
-            @Override
-            public void onDeletemsgResult(ChatData data) {
-                onDeleteMsgResult(data);
-            }
-        });
+        getiModel().deleteMsg(data, null);
     }
 
     @Override
@@ -357,7 +351,7 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
                 getIView().toast(R.string.chat_revoke_failed);
                 break;
             default:
-                changeDataStatus(chatDataWrapper.chatData, chatDataWrapper.code, chatDataWrapper.msg);
+                changeDataStatus(chatDataWrapper.chatData, chatDataWrapper.code, chatDataWrapper.msg, chatDataWrapper.status);
         }
     }
 
@@ -430,7 +424,7 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
         getIView().scrollToPosition(chatMsg.size() - 1);
     }
 
-    private void changeDataStatus(ChatData chatData, int code, String msg) {
+    private void changeDataStatus(ChatData chatData, int code, String msg, int status) {
         ChatData temp = chatMsgMap.get(chatData.getMsgId());
         if (temp == null) {
             LogUtils.log(TAG, "chatData is null");
@@ -465,8 +459,12 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
                 temp.setNotic(msg);
 
         }
-        //需要从chatMsgMap读取：有可能是退出聊天再次进入
-        getIView().notifyItemChanged(temp.getListPostion());
+        if (status == ChatDataWrapper.STATUS_DELETE) {
+            onDeleteMsgResult(chatData);
+        } else {
+            //需要从chatMsgMap读取：有可能是退出聊天再次进入
+            getIView().notifyItemChanged(temp.getListPostion());
+        }
     }
 
     private String getMsgID() {

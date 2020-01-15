@@ -25,6 +25,7 @@ import com.cosmos.photonim.imbase.utils.ToastUtils;
 import com.cosmos.photonim.imbase.utils.Utils;
 import com.cosmos.photonim.imbase.utils.event.AlertEvent;
 import com.cosmos.photonim.imbase.utils.event.ChatDataWrapper;
+import com.cosmos.photonim.imbase.utils.event.ClearChatContent;
 import com.cosmos.photonim.imbase.utils.event.ClearUnReadStatus;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvBaseAdapter;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvListenerImpl;
@@ -383,6 +384,11 @@ public abstract class ChatBaseActivity extends IChatView {
         presenter.onReceiveMsg(msg);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onClearChatContent(ClearChatContent content) {
+        presenter.initData();
+        presenter.loadHistory();
+    }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onAlertEvent(AlertEvent event) {
         igoreAlert = event.igoreAlert;

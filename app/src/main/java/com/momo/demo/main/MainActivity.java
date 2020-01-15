@@ -1,11 +1,7 @@
 package com.momo.demo.main;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -65,16 +61,18 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maintab);
         initView();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-                requestPermissions(new String[]{
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.RECORD_AUDIO,
-                        Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS}, Permission_RequestCode);
-            }
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+//                requestPermissions(new String[]{
+//                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+//                        , Manifest.permission.RECORD_AUDIO
+//                        , Manifest.permission.ACCESS_FINE_LOCATION
+//                        , Manifest.permission.ACCESS_COARSE_LOCATION
+//                        , Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS
+//                        , Manifest.permission.CAMERA
+//                }, Permission_RequestCode);
+//            }
+//        }
     }
 
     private void initView() {
@@ -229,18 +227,18 @@ public class MainActivity extends BaseActivity {
         lastAllUnRead = allUnReadCount.allUnReadCount;
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == Permission_RequestCode) {
-            for (int i = 0; i < grantResults.length; i++) {
-                if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
-                    ToastUtils.showText(this, "没有给权限啊好难🤯");
-                    break;
-                }
-            }
-        }
-    }
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//        if (requestCode == Permission_RequestCode) {
+//            for (int i = 0; i < grantResults.length; i++) {
+//                if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+//                    ToastUtils.showText(this, "没有给权限啊好难🤯");
+//                    break;
+//                }
+//            }
+//        }
+//    }
 
     @Override
     protected void onDestroy() {

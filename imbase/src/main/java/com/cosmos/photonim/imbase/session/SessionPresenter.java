@@ -51,13 +51,6 @@ public class SessionPresenter extends ISessionPresenter<ISessionView, ISessionMo
     }
 
     @Override
-    public void clearSession(SessionData data) {
-        getiModel().clearSession(data, () -> {
-            onClearSession(data);
-        });
-    }
-
-    @Override
     public void updateUnRead(String chatWith) {
 //        iSessionModel.updateUnRead(chatWith);
     }
@@ -142,10 +135,6 @@ public class SessionPresenter extends ISessionPresenter<ISessionView, ISessionMo
         } else {
             getIView().setNoMsgViewVisibility(false);
         }
-    }
-
-    public void onClearSession(SessionData data) {
-        getIView().dismissSessionDialog();
     }
 
     public void onNewSession(SessionData sessionData) {

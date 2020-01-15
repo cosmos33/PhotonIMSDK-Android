@@ -56,6 +56,7 @@ public class SessionUpdateOtherInfoImpl implements SessionItem.UpdateOtherInfoLi
                 } else {
                     JsonGroupProfile jsonGroupProfile = (JsonGroupProfile) result.get();
                     JsonGroupProfile.DataBean.ProfileBean profile = jsonGroupProfile.getData().getProfile();
+                    sessionData.setUpdateFromInfo(false);
                     sessionData.setIcon(profile.getAvatar());
                     sessionData.setNickName(profile.getName());
                 }

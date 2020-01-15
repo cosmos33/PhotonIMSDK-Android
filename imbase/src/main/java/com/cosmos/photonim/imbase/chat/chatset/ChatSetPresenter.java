@@ -1,13 +1,19 @@
 package com.cosmos.photonim.imbase.chat.chatset;
 
 import com.cosmos.photon.im.PhotonIMMessage;
+import com.cosmos.photonim.imbase.chat.ChatModel;
 import com.cosmos.photonim.imbase.chat.chatset.ichatset.IChatSetModel;
 import com.cosmos.photonim.imbase.chat.chatset.ichatset.IChatSetPresenter;
 import com.cosmos.photonim.imbase.chat.chatset.ichatset.IChatSetView;
+import com.cosmos.photonim.imbase.chat.ichat.IChatModel;
+import com.cosmos.photonim.imbase.utils.event.ClearChatContent;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonSaveIgnoreInfo;
 
+import org.greenrobot.eventbus.EventBus;
+
 public class ChatSetPresenter extends IChatSetPresenter<IChatSetView, IChatSetModel> implements ChatSetModel.OnChangeStatusListener {
+    private ChatModel chatModel;
     public ChatSetPresenter(IChatSetView iView) {
         super(iView);
     }
@@ -30,6 +36,20 @@ public class ChatSetPresenter extends IChatSetPresenter<IChatSetView, IChatSetMo
     @Override
     public void getIgnoreStatus(String remoteId) {
         getiModel().getIgnoreStatus(remoteId, result -> getIView().onGetIgnoreStatus(result));
+    }
+
+    @Override
+    public void clearChatContent(int chatType, String chatWith) {
+        if (chatModel == null) {
+            chatModel = new ChatModel();
+        }
+        chatModel.clearChatContent(chatType, chatWith, new IChatModel.OnClearChatContentListener() {
+            @Override
+            public void onClearChatContent() {
+                EventBus.getDefault().post(new ClearChatContent());
+                getIView().dimissProgressDialog();
+            }
+        });
     }
 
     @Override

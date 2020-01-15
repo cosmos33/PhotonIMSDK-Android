@@ -1,22 +1,20 @@
-<FrameLayout android:id="@+id/flSearchContent"
-    android:layout_width="match_parent"
+<FrameLayout android:layout_width="match_parent"
     android:layout_height="@dimen/chat_set_item_height"
     android:layout_marginTop="@dimen/title_margin_top"
-    android:visibility="visible"
     android:background="@color/white"
-    android:gravity="center_vertical"
     android:padding="@dimen/activity_padding"
+    android:visibility="visible"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:text="查看聊天内容" />
+        android:text="@string/chatset_top" />
 
-    <ImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_gravity="right"
-        android:src="@drawable/arrow_right" />
+    <Switch
+        android:id="@+id/sTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|center_vertical" />
 </FrameLayout>

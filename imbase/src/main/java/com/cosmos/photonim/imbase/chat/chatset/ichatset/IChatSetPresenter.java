@@ -16,6 +16,7 @@ public abstract class IChatSetPresenter<V extends IChatSetView, M extends IChatS
 
     public abstract void getIgnoreStatus(String remoteId);
 
+    public abstract void clearChatContent(int chatType, String chatWith);
     @Override
     public V getEmptyView() {
         return (V) new IChatSetView() {
@@ -35,9 +36,15 @@ public abstract class IChatSetPresenter<V extends IChatSetView, M extends IChatS
             }
 
             @Override
+            public void dimissProgressDialog() {
+
+            }
+
+            @Override
             public IPresenter getIPresenter() {
                 return null;
             }
         };
     }
+
 }

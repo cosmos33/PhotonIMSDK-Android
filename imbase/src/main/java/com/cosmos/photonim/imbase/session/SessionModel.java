@@ -47,15 +47,6 @@ public class SessionModel extends ISessionModel {
     }
 
     @Override
-    public void clearSession(SessionData data, OnClearSessionListener onDeleteSessionListener) {
-        TaskExecutor.getInstance().createAsycTask(() -> clearSessionInner(data), result -> {
-            if (onDeleteSessionListener != null) {
-                onDeleteSessionListener.onClearSession();
-            }
-        });
-    }
-
-    @Override
     public void getNewSession(int chatType, String chatWith, OnGetSessionListener onGetSessionListener) {
 //        TaskExecutor.getInstance().createAsycTask(()-> getSessionInner(chatType,chatWith), result -> {
 //            if (onGetSessionListener != null) {
@@ -146,10 +137,6 @@ public class SessionModel extends ISessionModel {
 //    }
 
 
-    private Object clearSessionInner(SessionData data) {
-        PhotonIMDatabase.getInstance().clearMessage(data.getChatType(), data.getChatWith());
-        return null;
-    }
 
     private Object deleteSessionInner(SessionData data) {
         PhotonIMDatabase.getInstance().deleteSession(data.getChatType(), data.getChatWith(), true);

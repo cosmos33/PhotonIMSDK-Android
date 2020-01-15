@@ -1,14 +1,20 @@
 package com.momo.demo.main.groupinfo;
 
+import com.cosmos.photonim.imbase.chat.ChatModel;
+import com.cosmos.photonim.imbase.chat.ichat.IChatModel;
 import com.cosmos.photonim.imbase.utils.Constants;
+import com.cosmos.photonim.imbase.utils.event.ClearChatContent;
 import com.momo.demo.login.LoginInfo;
 import com.momo.demo.main.groupinfo.igroupinfo.IGroupInfoModel;
 import com.momo.demo.main.groupinfo.igroupinfo.IGroupInfoPresenter;
 import com.momo.demo.main.groupinfo.igroupinfo.IGroupInfoView;
 import com.momo.demo.main.groupmemberselected.GroupMemberSelectModel;
 
+import org.greenrobot.eventbus.EventBus;
+
 public class GroupInfoPresenter extends IGroupInfoPresenter<IGroupInfoView, IGroupInfoModel> {
     private GroupMemberSelectModel groupMemberSelectModel;
+    private ChatModel chatModel;
 
     public GroupInfoPresenter(IGroupInfoView iView) {
         super(iView);
@@ -43,10 +49,18 @@ public class GroupInfoPresenter extends IGroupInfoPresenter<IGroupInfoView, IGro
     }
 
     @Override
-    public void clearChatContent() {
-
+    public void clearChatContent(int chatType, String chatWith) {
+        if (chatModel == null) {
+            chatModel = new ChatModel();
+        }
+        chatModel.clearChatContent(chatType, chatWith, new IChatModel.OnClearChatContentListener() {
+            @Override
+            public void onClearChatContent() {
+                EventBus.getDefault().post(new ClearChatContent());
+                getIView().dimissProgressDialog();
+            }
+        });
     }
-
     @Override
     public IGroupInfoModel generateIModel() {
         return new GroupInfoModel();

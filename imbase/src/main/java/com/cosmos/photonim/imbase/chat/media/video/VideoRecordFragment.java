@@ -57,6 +57,8 @@ public class VideoRecordFragment extends BaseFragment {
     private String videoPath;
     private String videoName;
     private ProcessDialogFragment processDialogFragment;
+    private String time;
+    private int timeCount;
 
     @Override
     public int getLayoutId() {
@@ -100,15 +102,15 @@ public class VideoRecordFragment extends BaseFragment {
                 tvTime.setText(String.format("%d:%d(最长录制3分钟)", 0, 0));
                 if (start) {
                     setEnable(false);
+                    timeCount = 0;
                     customRunnable = new CustomRunnable.Builder()
                             .runnable(new Runnable() {
-                                int count;
 
                                 @Override
                                 public void run() {
-                                    count += 1;
-                                    tvTime.setText(String.format("%d:%d(最长录制3分钟)", count / 60, count % 60));
-                                    if (count * 1000 >= RECORD_MAX_TIME) {
+                                    timeCount += 1;
+                                    tvTime.setText((time = String.format("%d:%d", timeCount / 60, timeCount % 60)) + "(最长录制3分钟)");
+                                    if (timeCount * 1000 >= RECORD_MAX_TIME) {
                                         customRunnable.setCanceled(true);
                                         stopRecord();
                                     }
@@ -116,6 +118,7 @@ public class VideoRecordFragment extends BaseFragment {
                             })
                             .delayTime(1000)
                             .repeated(true).build();
+
                     MainLooperExecuteUtil.getInstance().post(customRunnable);
 
                     String videoPathTemp = FileUtils.getVideoPath();
@@ -143,6 +146,11 @@ public class VideoRecordFragment extends BaseFragment {
     }
 
     private void stopRecord() {
+        if (timeCount == 0) {
+            ToastUtils.showText("录制时间太短，请重新录制");
+            recorder.cancelRecord();
+            return;
+        }
         recorder.pauseRecord();
         recorder.finishRecord(new IRecordFinishListener() {
             @Override
@@ -194,6 +202,7 @@ public class VideoRecordFragment extends BaseFragment {
 //                    if (recorder.getRotateDegree() / 90 % 2 == 0) {
                         bundle.putInt(RecordResultFragment.BUNDLE_VIDEO_COVER_WIDTH, bmpInfo.width);
                         bundle.putInt(RecordResultFragment.BUNDLE_VIDEO_COVER_HEIGHT, bmpInfo.height);
+                    bundle.putString(RecordResultFragment.BUNDLE_VIDEO_TIME, time);
 //                    } else {
 //                        bundle.putInt(RecordResultFragment.BUNDLE_VIDEO_COVER_WIDTH, bmpInfo.height);
 //                        bundle.putInt(RecordResultFragment.BUNDLE_VIDEO_COVER_HEIGHT, bmpInfo.width);

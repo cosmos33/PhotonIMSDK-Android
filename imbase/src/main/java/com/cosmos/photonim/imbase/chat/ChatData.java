@@ -34,6 +34,7 @@ public class ChatData implements ItemData, Parcelable, Cloneable {
     private String content;
     private SpannableString contentShow;
     private long mediaTime;
+    private String mediaTimeShow;
     private long time;
     private int msgStatus;
     //    private boolean illegal;
@@ -243,6 +244,10 @@ public class ChatData implements ItemData, Parcelable, Cloneable {
 
     public Location getLocation() {
         return location;
+    }
+
+    public String getMediaTimeShow() {
+        return mediaTimeShow;
     }
 
     public PhotonIMMessage convertToIMMessage() {

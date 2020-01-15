@@ -212,13 +212,20 @@ public class ChatModel extends IChatModel {
     @Override
     public void deleteMsg(ChatData chatData, OnDeleteMsgListener onDeleteMsgListener) {
         TaskExecutor.getInstance().createAsycTask(() -> {
-                    PhotonIMDatabase.getInstance().deleteMessage(chatData.getChatType(), chatData.getChatWith(), chatData.getMsgId());
+                    ArrayList<String> msgs = new ArrayList<>(1);
+                    msgs.add(chatData.getMsgId());
+                    PhotonIMClient.getInstance().sendDeleteMessage(chatData.getChatType(), chatData.getChatWith(), msgs,
+                            new PhotonIMClient.PhotonIMSendCallback() {
+                                @Override
+                                public void onSent(int code, String msg, long time) {
+                                    PhotonIMDatabase.getInstance().deleteMessage(chatData.getChatType(), chatData.getChatWith(), chatData.getMsgId());
+                                    EventBus.getDefault().post(new ChatDataWrapper(chatData, code, msg, ChatDataWrapper.STATUS_DELETE));
+                                }
+                            });
                     return null;
                 },
                 result -> {
-                    if (onDeleteMsgListener != null) {
-                        onDeleteMsgListener.onDeletemsgResult(chatData);
-                    }
+
                 });
     }
 
@@ -410,6 +417,20 @@ public class ChatModel extends IChatModel {
             }
         });
 
+        return null;
+    }
+
+    @Override
+    public void clearChatContent(int chatType, String chatWith, OnClearChatContentListener onClearSessionListener) {
+        TaskExecutor.getInstance().createAsycTask(() -> clearSessionInner(chatType, chatWith), result -> {
+            if (onClearSessionListener != null) {
+                onClearSessionListener.onClearChatContent();
+            }
+        });
+    }
+
+    private Object clearSessionInner(int chatType, String chatWith) {
+        PhotonIMDatabase.getInstance().clearMessage(chatType, chatWith);
         return null;
     }
 }

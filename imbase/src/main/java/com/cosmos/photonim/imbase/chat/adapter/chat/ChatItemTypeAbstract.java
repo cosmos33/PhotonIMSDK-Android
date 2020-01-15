@@ -101,6 +101,7 @@ public abstract class ChatItemTypeAbstract extends ItemTypeAbstract {
                 } else {
                     ImageLoaderUtils.getInstance().loadImage(ivCover.getContext(), chatData.getFileUrl(), R.drawable.chat_placeholder, ivCover);
                 }
+                ((TextView) rvViewHolder.getView(R.id.tvTime)).setText(chatData.getMediaTimeShow());
                 break;
         }
         ImageLoaderUtils.getInstance().loadImage(view.getContext(), chatData.getIcon(), R.drawable.head_placeholder, (ImageView) rvViewHolder.getView(R.id.ivIcon));

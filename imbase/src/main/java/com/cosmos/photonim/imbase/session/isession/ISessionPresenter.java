@@ -25,8 +25,6 @@ public abstract class ISessionPresenter<V extends ISessionView, M extends ISessi
 
     public abstract void deleteSession(SessionData data);
 
-    public abstract void clearSession(SessionData data);
-
     public abstract void updateUnRead(String chatWith);
 
     public abstract void getNewSession(int chatType, String chatWith);

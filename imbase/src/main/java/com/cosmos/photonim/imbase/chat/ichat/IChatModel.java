@@ -62,6 +62,8 @@ public abstract class IChatModel implements IModel {
 
     public abstract void updateStatus(int chatType, String chatWith, String id, int status);
 
+    public abstract void clearChatContent(int chatType, String chatWith, OnClearChatContentListener onClearSessionListener);
+
     public interface OnLoadHistoryListener {
         void onLoadHistory(List<ChatData> chatData, Map<String, ChatData> chatDataMap);
     }
@@ -92,6 +94,10 @@ public abstract class IChatModel implements IModel {
 
     public interface OnDeleteMsgListener {
         void onDeletemsgResult(ChatData data);
+    }
+
+    public interface OnClearChatContentListener {
+        void onClearChatContent();
     }
 
 }

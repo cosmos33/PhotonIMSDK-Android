@@ -18,6 +18,8 @@ import com.cosmos.photonim.imbase.utils.ToastUtils;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonGetIgnoreInfo;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;
 import com.cosmos.photonim.imbase.utils.image.ImageLoaderUtils;
+import com.cosmos.photonim.imbase.view.ProcessDialogFragment;
+import com.cosmos.photonim.imbase.view.TipDialogFragment;
 import com.cosmos.photonim.imbase.view.TitleBar;
 
 import butterknife.BindView;
@@ -37,6 +39,8 @@ public class ChatSetActivity extends IChatSetView {
 
     private String userId;
     private String icon;
+    private TipDialogFragment tipDialogFragment;
+    private ProcessDialogFragment processDialogFragment;
 
     public static void startActivity(Activity activity, String userId, String icon) {
         Intent intent = new Intent(activity, ChatSetActivity.class);
@@ -80,6 +84,29 @@ public class ChatSetActivity extends IChatSetView {
     public void onSearchContent() {
         SearchHistoryActivity.start(this, userId, PhotonIMMessage.SINGLE);
     }
+
+    @OnClick(R2.id.flClearChatContent)
+    public void onClearChatContentClick() {
+        tipDialogFragment = TipDialogFragment.getInstance("删除聊天记录",
+                "删除后不可恢复，清谨慎操作",
+                "取消",
+                "删除", new TipDialogFragment.OnDialogClickListener() {
+                    @Override
+                    public void onConfirmClick() {
+                        tipDialogFragment.dismiss();
+                        presenter.clearChatContent(PhotonIMMessage.SINGLE, userId);
+                        processDialogFragment = new ProcessDialogFragment();
+                        processDialogFragment.show(getSupportFragmentManager(), "");
+                    }
+
+                    @Override
+                    public void onCancelClick() {
+                        tipDialogFragment.dismiss();
+                    }
+                });
+        tipDialogFragment.show(getSupportFragmentManager(), "");
+    }
+
     @Override
     public void onTopChangeStatusResult(boolean success) {
 
@@ -104,9 +131,23 @@ public class ChatSetActivity extends IChatSetView {
     }
 
     @Override
+    public void dimissProgressDialog() {
+        if (processDialogFragment != null) {
+            processDialogFragment.dismiss();
+        }
+    }
+
+    @Override
     public IPresenter getIPresenter() {
         return new ChatSetPresenter(this);
     }
 
-
+    @Override
+    protected void onDestroy() {
+        dimissProgressDialog();
+        if (tipDialogFragment != null) {
+            tipDialogFragment.dismiss();
+        }
+        super.onDestroy();
+    }
 }

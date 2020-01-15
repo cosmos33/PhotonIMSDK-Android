@@ -9,4 +9,6 @@ public abstract class IChatSetView extends IBaseActivityView<IChatSetPresenter> 
     public abstract void onIgnoreChangeStatusResult(boolean success);
 
     public abstract void onGetIgnoreStatus(JsonResult result);
+
+    public abstract void dimissProgressDialog();
 }

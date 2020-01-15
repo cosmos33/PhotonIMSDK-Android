@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.R2;
@@ -23,6 +24,7 @@ public class RecordResultFragment extends BaseFragment {
     public static final String BUNDLE_VIDEO_COVER_PATH = "BUNDLE_VIDEO_COVER_PATH";
     public static final String BUNDLE_VIDEO_COVER_WIDTH = "BUNDLE_VIDEO_COVER_WIDTH";
     public static final String BUNDLE_VIDEO_COVER_HEIGHT = "BUNDLE_VIDEO_COVER_HEIGHT";
+    public static final String BUNDLE_VIDEO_TIME = "BUNDLE_VIDEO_TIME";
 
     @BindView(R2.id.player)
     CosmosPlayer player;
@@ -30,6 +32,8 @@ public class RecordResultFragment extends BaseFragment {
     FrameLayout playerContainer;
     @BindView(R2.id.ivPlayIcon)
     ImageView ivPlayIcon;
+    @BindView(R2.id.tvTime)
+    TextView tvTime;
 
     private OnReturnFragmentListener onChangeFragmentListener;
     private String videoPath;
@@ -55,6 +59,8 @@ public class RecordResultFragment extends BaseFragment {
         videoCoverPath = arguments.getString(BUNDLE_VIDEO_COVER_PATH);
         width = arguments.getInt(BUNDLE_VIDEO_COVER_WIDTH);
         height = arguments.getInt(BUNDLE_VIDEO_COVER_HEIGHT);
+        String time = arguments.getString(BUNDLE_VIDEO_TIME);
+        tvTime.setText(time);
 
         ViewGroup.LayoutParams layoutParams = playerContainer.getLayoutParams();
         int[] screenSize = Utils.getScreenSize(getContext());

@@ -23,6 +23,8 @@ import com.cosmos.photonim.imbase.utils.http.jsons.JsonGetGroupIgnoreInfo;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonGroupProfile;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvBaseAdapter;
+import com.cosmos.photonim.imbase.view.ProcessDialogFragment;
+import com.cosmos.photonim.imbase.view.TipDialogFragment;
 import com.cosmos.photonim.imbase.view.TitleBar;
 import com.momo.demo.main.groupinfo.adapter.GroupInfoMemberAdapter;
 import com.momo.demo.main.groupinfo.igroupinfo.IGroupInfoView;
@@ -49,7 +51,7 @@ public class GroupInfoActivity extends IGroupInfoView {
     TextView tvNotic;
     @BindView(R2.id.tvMemberCount)
     TextView tvMemberCount;
-    @BindView(R2.id.sIgnore)
+    @BindView(R2.id.sBan)
     Switch sIgnore;
 
     private String gid;
@@ -58,6 +60,8 @@ public class GroupInfoActivity extends IGroupInfoView {
     private boolean getGroupInfo;
     private boolean getGroupMemberInfo;
     private boolean getGroupStatusInfo;
+    private TipDialogFragment tipDialogFragment;
+    private ProcessDialogFragment processDialogFragment;
 
     public static void startActivity(Activity activity, String gid) {
         Intent intent = new Intent(activity, GroupInfoActivity.class);
@@ -112,6 +116,27 @@ public class GroupInfoActivity extends IGroupInfoView {
         return new DividerItemDecoration(this, LinearLayoutManager.VERTICAL);
     }
 
+    @OnClick(R2.id.flClearChatContent)
+    public void onClearChatContentClick() {
+        tipDialogFragment = TipDialogFragment.getInstance("删除聊天记录",
+                "删除后不可恢复，清谨慎操作",
+                "取消",
+                "删除", new TipDialogFragment.OnDialogClickListener() {
+                    @Override
+                    public void onConfirmClick() {
+                        tipDialogFragment.dismiss();
+                        presenter.clearChatContent(PhotonIMMessage.GROUP, gid);
+                        processDialogFragment = new ProcessDialogFragment();
+                        processDialogFragment.show(getSupportFragmentManager(), "");
+                    }
+
+                    @Override
+                    public void onCancelClick() {
+                        tipDialogFragment.dismiss();
+                    }
+                });
+        tipDialogFragment.show(getSupportFragmentManager(), "");
+    }
     @Override
     public RvBaseAdapter getAdapter() {
         if (groupInfoMemberAdapter == null) {
@@ -172,7 +197,7 @@ public class GroupInfoActivity extends IGroupInfoView {
         }
     }
 
-    @OnClick(R2.id.sIgnore)
+    @OnClick(R2.id.sBan)
     public void onIgoreClick() {
         presenter.changeGroupIgnoreStatus(gid, sIgnore.isChecked());
     }
@@ -187,16 +212,27 @@ public class GroupInfoActivity extends IGroupInfoView {
         SearchHistoryActivity.start(this, gid, PhotonIMMessage.GROUP);
     }
 
-    @OnClick(R2.id.flClearChatContent)
-    public void onClearChatContent() {
-        presenter.clearChatContent();
-    }
-
     private void updateSwipeLayoutStatus() {
         if (getGroupInfo && getGroupMemberInfo && getGroupStatusInfo) {
             if (swipeRefreshLayout.isRefreshing()) {
                 swipeRefreshLayout.setRefreshing(false);
             }
         }
+    }
+
+    @Override
+    public void dimissProgressDialog() {
+        if (processDialogFragment != null) {
+            processDialogFragment.dismiss();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        dimissProgressDialog();
+        if (tipDialogFragment != null) {
+            tipDialogFragment.dismiss();
+        }
+        super.onDestroy();
     }
 }

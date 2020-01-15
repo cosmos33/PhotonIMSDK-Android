@@ -14,4 +14,6 @@ public abstract class IGroupInfoView extends RvBaseActivity<IGroupInfoPresenter>
     public abstract void onGetGroupIgnoreStatusResult(JsonResult jsonResult);
 
     public abstract void onChangeGroupIgnoreStatusResult(JsonResult jsonResult);
+
+    public abstract void dimissProgressDialog();
 }

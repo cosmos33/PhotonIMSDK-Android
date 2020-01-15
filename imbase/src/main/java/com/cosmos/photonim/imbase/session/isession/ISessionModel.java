@@ -12,8 +12,6 @@ public abstract class ISessionModel implements IModel {
 
     public abstract void deleteSession(SessionData data, OnDeleteSessionListener onDeleteSessionListener);
 
-    public abstract void clearSession(SessionData data, OnClearSessionListener onClearSessionListener);
-
     public abstract void getNewSession(int chatType, String chatWith, OnGetSessionListener onGetSessionListener);
 
     public abstract void getAllUnReadCount(OnGetAllUnReadCount onGetAllUnReadCount);
@@ -37,10 +35,6 @@ public abstract class ISessionModel implements IModel {
 
     public interface OnDeleteSessionListener {
         void onDeleteSession();
-    }
-
-    public interface OnClearSessionListener {
-        void onClearSession();
     }
 
 

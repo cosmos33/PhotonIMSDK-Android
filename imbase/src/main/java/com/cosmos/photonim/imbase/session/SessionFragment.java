@@ -54,7 +54,7 @@ public class SessionFragment extends ISessionView {
         presenter.getAllUnReadCount();
         itemContent = new ArrayList<>();
         itemContent.add("删除会话");
-        itemContent.add("清空会话");
+//        itemContent.add("清空会话");
         // 删除demo层的重发机制，防止和sdk内部重发逻辑混淆
 //        presenter.resendSendingStatusMsgs();
     }
@@ -196,9 +196,9 @@ public class SessionFragment extends ISessionView {
                                 case 0:
                                     presenter.deleteSession((SessionData) data);
                                     break;
-                                case 1:
-                                    presenter.clearSession((SessionData) data);
-                                    break;
+//                                case 1:
+//                                    presenter.clearSession((SessionData) data);
+//                                    break;
                             }
 
                         }
