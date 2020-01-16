@@ -68,6 +68,8 @@ public abstract class IChatPresenter<V extends IChatView, M extends IChatModel> 
 
     public abstract void getInfo(ChatData chatData);
 
+    public abstract void clearData();
+
     @Override
     public V getEmptyView() {
         return (V) new IChatView() {

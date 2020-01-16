@@ -15,6 +15,7 @@ public class SwipeFinishHelper {
     private float yLast;
     private WeakReference<View> viewWeakReference;
     private boolean toFinish;
+    private boolean startSwipe;
 
     public SwipeFinishHelper(View view) {
         viewWeakReference = new WeakReference<>(view);
@@ -31,6 +32,7 @@ public class SwipeFinishHelper {
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 if (ev.getRawX() <= DIFF) {
+                    startSwipe = true;
                     return true;
                 }
                 break;
@@ -39,6 +41,9 @@ public class SwipeFinishHelper {
     }
 
     public boolean onTouchEvent(MotionEvent event) {
+        if (!startSwipe) {
+            return false;
+        }
         if (animate) {
             return true;
         }
@@ -56,7 +61,7 @@ public class SwipeFinishHelper {
                 if (viewWeakReference != null
                         && (viewWeakReference.get() != null)
                         && viewWeakReference.get().getContext() instanceof Activity) {
-                    if (event.getRawX() > screenWidth / 2) {
+                    if (event.getRawX() > screenWidth / 3) {
                         animate = true;
                         toFinish = true;
                         AnimatorPath animatorPath = new AnimatorPath();

@@ -51,7 +51,7 @@ public class TipDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_tips, container);
-        getDialog().getWindow().setBackgroundDrawableResource(R.color.transparent);
+//        getDialog().getWindow().setBackgroundDrawableResource(R.color.transparent);
         ButterKnife.bind(this, view);
         tvTitle.setText(title);
         tvConfirm.setText(confirm);

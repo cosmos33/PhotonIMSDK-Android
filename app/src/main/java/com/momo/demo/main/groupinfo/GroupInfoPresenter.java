@@ -1,9 +1,11 @@
 package com.momo.demo.main.groupinfo;
 
 import com.cosmos.photonim.imbase.chat.ChatModel;
+import com.cosmos.photonim.imbase.chat.chatset.ChatSetModel;
 import com.cosmos.photonim.imbase.chat.ichat.IChatModel;
 import com.cosmos.photonim.imbase.utils.Constants;
 import com.cosmos.photonim.imbase.utils.event.ClearChatContent;
+import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;
 import com.momo.demo.login.LoginInfo;
 import com.momo.demo.main.groupinfo.igroupinfo.IGroupInfoModel;
 import com.momo.demo.main.groupinfo.igroupinfo.IGroupInfoPresenter;
@@ -12,9 +14,10 @@ import com.momo.demo.main.groupmemberselected.GroupMemberSelectModel;
 
 import org.greenrobot.eventbus.EventBus;
 
-public class GroupInfoPresenter extends IGroupInfoPresenter<IGroupInfoView, IGroupInfoModel> {
+public class GroupInfoPresenter extends IGroupInfoPresenter<IGroupInfoView, IGroupInfoModel> implements ChatSetModel.OnChangeStatusListener {
     private GroupMemberSelectModel groupMemberSelectModel;
     private ChatModel chatModel;
+    private boolean top;
 
     public GroupInfoPresenter(IGroupInfoView iView) {
         super(iView);
@@ -35,8 +38,7 @@ public class GroupInfoPresenter extends IGroupInfoPresenter<IGroupInfoView, IGro
     @Override
     public void getGroupIgnoreStatus(String gid) {
         getiModel().getGroupIgnoreStatus(LoginInfo.getInstance().getSessionId(),
-                LoginInfo.getInstance().getUserId(), gid,
-                jsonResult -> getIView().onGetGroupIgnoreStatusResult(jsonResult));
+                LoginInfo.getInstance().getUserId(), gid, this);
     }
 
     @Override
@@ -44,8 +46,7 @@ public class GroupInfoPresenter extends IGroupInfoPresenter<IGroupInfoView, IGro
         // 0（开启勿扰）1(关闭勿扰）
         int switchX = igonre ? 0 : 1;
         getiModel().changeGroupIgnoreStatus(LoginInfo.getInstance().getSessionId(),
-                LoginInfo.getInstance().getUserId(), gid, switchX,
-                jsonResult -> getIView().onChangeGroupIgnoreStatusResult(jsonResult));
+                LoginInfo.getInstance().getUserId(), gid, switchX, this);
     }
 
     @Override
@@ -61,6 +62,39 @@ public class GroupInfoPresenter extends IGroupInfoPresenter<IGroupInfoView, IGro
             }
         });
     }
+
+    @Override
+    public void changeTopStatus(int chatType, String id) {
+        getiModel().changeTopStatus(chatType, id, !top, this);
+    }
+
+    @Override
+    public void getTopStatus(int chatType, String id) {
+        getiModel().getTopStatus(chatType, id, this);
+    }
+
+    @Override
+    public void onGetTopStatus(boolean top) {
+        this.top = top;
+        getIView().changeTopStatus(top);
+    }
+
+    @Override
+    public void onChangeTopStatus() {
+        top = !top;
+        getIView().toast("操作成功");
+    }
+
+    @Override
+    public void onChangeIgnoreStatus(JsonResult success) {
+        getIView().onChangeGroupIgnoreStatusResult(success);
+    }
+
+    @Override
+    public void onGetIgnoreStatus(JsonResult result) {
+        getIView().onGetGroupIgnoreStatusResult(result);
+    }
+
     @Override
     public IGroupInfoModel generateIModel() {
         return new GroupInfoModel();

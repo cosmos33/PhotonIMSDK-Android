@@ -224,7 +224,14 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
 
     @Override
     public void deleteMsg(ChatData data) {
-        getiModel().deleteMsg(data, null);
+        getiModel().deleteMsg(data, new IChatModel.OnDeleteMsgListener() {
+            @Override
+            public void onDeletemsgResult(ChatData data, String error) {
+                if (!TextUtils.isEmpty(error)) {
+                    getIView().toast(error);
+                }
+            }
+        });
     }
 
     @Override
@@ -312,6 +319,15 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
         chatMsg = new ArrayList<>();
         chatMsgMap = new HashMap<>();
         return chatMsg;
+    }
+
+    public void clearData() {
+        if (chatMsg != null) {
+            chatMsg.clear();
+        }
+        if (chatMsgMap != null) {
+            chatMsgMap.clear();
+        }
     }
 
     @Override

@@ -10,7 +10,9 @@ public abstract class IChatSetPresenter<V extends IChatSetView, M extends IChatS
         super(iView);
     }
 
-    public abstract void changeTopStatus();
+    public abstract void changeTopStatus(int chatType, String id);
+
+    public abstract void getTopStatus(int chatType, String id);
 
     public abstract void changeIgnoreStatus(String remoteId, boolean open);
 
@@ -20,10 +22,6 @@ public abstract class IChatSetPresenter<V extends IChatSetView, M extends IChatS
     @Override
     public V getEmptyView() {
         return (V) new IChatSetView() {
-            @Override
-            public void onTopChangeStatusResult(boolean success) {
-
-            }
 
             @Override
             public void onIgnoreChangeStatusResult(boolean success) {
@@ -37,6 +35,11 @@ public abstract class IChatSetPresenter<V extends IChatSetView, M extends IChatS
 
             @Override
             public void dimissProgressDialog() {
+
+            }
+
+            @Override
+            public void changeTopStatus(boolean top) {
 
             }
 

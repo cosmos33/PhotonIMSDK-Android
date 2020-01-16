@@ -5,46 +5,54 @@
     android:background="@color/media_bg"
     android:orientation="vertical">
 
-    <com.cosmos.photonim.imbase.view.TitleBar
-        android:id="@+id/title"
+    <FrameLayout
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:src="@drawable/media_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/tvFlashing"
+            android:layout_width="@dimen/chat_media_camera_switch"
+            android:layout_height="@dimen/chat_media_camera_switch"
+            android:layout_gravity="center"
+            android:src="@drawable/media_flashing" />
+    </FrameLayout>
 
     <SurfaceView
         android:id="@+id/surfaceView"
         android:layout_width="match_parent"
-        android:layout_weight="1"
-        android:layout_height="0dp" />
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
     <FrameLayout
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:minHeight="100dp"
-        android:layout_height="wrap_content">
+        android:minHeight="100dp">
 
         <TextView
+            android:id="@+id/tvTakePhoto"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_gravity="center"
             android:background="@drawable/media_takephoto"
-            android:gravity="center"
-            android:id="@+id/tvTakePhoto"
-            android:text="@string/chat_media_takephoto" />
-
-        <ImageView
-            android:layout_width="@dimen/chat_media_width"
-            android:layout_height="@dimen/chat_media_width"
-            android:layout_gravity="right|center"
-            android:layout_marginRight="48dp"
-            android:id="@+id/tvFlashing"
-            android:src="@drawable/media_flashing" />
+            android:gravity="center" />
 
         <ImageView
             android:id="@+id/tvSwitch"
-            android:layout_width="@dimen/chat_media_width"
-            android:layout_height="@dimen/chat_media_width"
+            android:layout_width="@dimen/chat_media_camera_switch"
+            android:layout_height="@dimen/chat_media_camera_switch"
             android:layout_gravity="right|center"
-            android:src="@drawable/media_photo" />
+            android:layout_marginRight="40dp"
+            android:src="@drawable/media_camera_switch" />
 
     </FrameLayout>
 </LinearLayout>

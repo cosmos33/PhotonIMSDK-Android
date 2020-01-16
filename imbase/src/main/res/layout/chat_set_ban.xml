@@ -1,6 +1,6 @@
 <FrameLayout android:layout_width="match_parent"
     android:layout_height="@dimen/chat_set_item_height"
-    android:layout_marginTop="@dimen/title_margin_top"
+    android:layout_marginTop="@dimen/title_margin_top_item"
     android:background="@color/white"
     android:padding="@dimen/activity_padding"
     xmlns:android="http://schemas.android.com/apk/res/android">

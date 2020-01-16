@@ -47,6 +47,11 @@ public abstract class IGroupInfoPresenter<V extends IGroupInfoView, M extends IG
             }
 
             @Override
+            public void changeTopStatus(boolean top) {
+
+            }
+
+            @Override
             public IPresenter getIPresenter() {
                 return null;
             }
@@ -72,4 +77,8 @@ public abstract class IGroupInfoPresenter<V extends IGroupInfoView, M extends IG
     public abstract void changeGroupIgnoreStatus(String gid, boolean igonre);
 
     public abstract void clearChatContent(int chatType, String chatWith);
+
+    public abstract void changeTopStatus(int chatType, String id);
+
+    public abstract void getTopStatus(int chatType, String id);
 }

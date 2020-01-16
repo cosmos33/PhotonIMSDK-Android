@@ -386,8 +386,8 @@ public abstract class ChatBaseActivity extends IChatView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onClearChatContent(ClearChatContent content) {
-        presenter.initData();
-        presenter.loadHistory();
+        presenter.clearData();
+        chatAdapter.notifyDataSetChanged();
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onAlertEvent(AlertEvent event) {

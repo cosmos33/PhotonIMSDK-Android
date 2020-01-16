@@ -137,7 +137,6 @@ public class SessionModel extends ISessionModel {
 //    }
 
 
-
     private Object deleteSessionInner(SessionData data) {
         PhotonIMDatabase.getInstance().deleteSession(data.getChatType(), data.getChatWith(), true);
         return null;
@@ -215,7 +214,8 @@ public class SessionModel extends ISessionModel {
                     tempContent = "[未知消息]";
             }
             boolean isAtMeMsg = false;
-            if (!photonIMSession.lastMsgFr.equals(ImBaseBridge.getInstance().getUserId())
+            if (!TextUtils.isEmpty(photonIMSession.lastMsgFr)
+                    && !photonIMSession.lastMsgFr.equals(ImBaseBridge.getInstance().getUserId())
                     && photonIMSession.chatType == PhotonIMMessage.GROUP) {
                 isAtMeMsg = isAtMeMsg(photonIMSession);
                 Profile profile = DBHelperUtils.getInstance().findProfile(photonIMSession.lastMsgFr);
@@ -239,6 +239,7 @@ public class SessionModel extends ISessionModel {
                     .lastMsgContent(tempContent)
                     .lastMsgFr(photonIMSession.lastMsgFr)
                     .lastMsgFrName(lastMsgFrName)
+                    .sticky(photonIMSession.sticky)
                     .icon(icon)
                     .nickName(nickName)
                     .updateFromInfo(updateFromInfo)
@@ -257,7 +258,7 @@ public class SessionModel extends ISessionModel {
             }
         }
         if (sticker.size() != 0) {//置顶
-            result.addAll(sticker);
+            result.addAll(0, sticker);
         }
         return result;
     }

@@ -19,6 +19,6 @@
     <color name="btn_normal">#6495ED</color>
     <color name="btn_text_color">#ffffff</color>
     <color name="gray">#cccccc</color>
-    <color name="media_bg">#303030</color>
+    <color name="media_bg">#000000</color>
     <color name="search_bg">#efefef</color>
 </resources>

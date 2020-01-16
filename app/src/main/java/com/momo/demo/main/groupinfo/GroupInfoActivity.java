@@ -53,6 +53,8 @@ public class GroupInfoActivity extends IGroupInfoView {
     TextView tvMemberCount;
     @BindView(R2.id.sBan)
     Switch sIgnore;
+    @BindView(R2.id.sTop)
+    Switch sTop;
 
     private String gid;
     private List<GroupMembersData> groupInfoDataList;
@@ -77,6 +79,7 @@ public class GroupInfoActivity extends IGroupInfoView {
 
         initView();
         getGroupInfo();
+        presenter.getTopStatus(PhotonIMMessage.GROUP, gid);
     }
 
     private void getGroupInfo() {
@@ -195,6 +198,16 @@ public class GroupInfoActivity extends IGroupInfoView {
         } else {
             ToastUtils.showText("设置失败");
         }
+    }
+
+    @OnClick(R2.id.sTop)
+    public void onTopChange() {
+        presenter.changeTopStatus(PhotonIMMessage.GROUP, gid);
+    }
+
+    @Override
+    public void changeTopStatus(boolean top) {
+        sTop.setChecked(top);
     }
 
     @OnClick(R2.id.sBan)

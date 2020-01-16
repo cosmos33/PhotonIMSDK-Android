@@ -68,11 +68,11 @@ public class SessionItem extends ItemTypeAbstract {
         } else {
             ((TextView) rvViewHolder.getView(R.id.tvTime)).setText(sessionData.getTimeContent());
         }
-//       Z if (sessionData.isSticky()) {
-//            rvViewHolder.getView(R.id.ivTop).setVisibility(View.VISIBLE);
-//        } else {
-        rvViewHolder.getView(R.id.ivTop).setVisibility(View.GONE);
-//        }
+        if (sessionData.isSticky()) {
+            rvViewHolder.getView(R.id.ivTop).setVisibility(View.VISIBLE);
+        } else {
+            rvViewHolder.getView(R.id.ivTop).setVisibility(View.GONE);
+        }
         ((TextView) rvViewHolder.getView(R.id.tvMsgContent)).setText(getMsgContent(sessionData));
         if (sessionData.getUnreadCount() > 0) {
             TextView tvTemp = (TextView) rvViewHolder.getView(R.id.tvUnRead);
@@ -109,7 +109,10 @@ public class SessionItem extends ItemTypeAbstract {
     }
 
     private boolean shouldUpdateFromName(boolean isSendFromMe) {
-        return (sessionData.getChatType() == PhotonIMMessage.GROUP && sessionData.isUpdateFromInfo() && !isSendFromMe);
+        return (sessionData.getChatType() == PhotonIMMessage.GROUP
+                && sessionData.isUpdateFromInfo()
+                && !isSendFromMe
+                && !TextUtils.isEmpty(sessionData.getLastMsgFr()));
     }
 
     @Override

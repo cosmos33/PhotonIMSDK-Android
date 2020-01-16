@@ -54,7 +54,7 @@
             android:layout_height="@dimen/chat_media_width"
             android:layout_marginTop="10dp"
             android:layout_gravity="right|center"
-            android:src="@drawable/media_photo" />
+            android:src="@drawable/media_camera_switch" />
 
     </FrameLayout>
 </LinearLayout>

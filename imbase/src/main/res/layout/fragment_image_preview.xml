@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/media_bg">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        android:paddingTop="20dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="20dp">
+
+        <ImageView
+            android:id="@+id/ivClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/media_close" />
+
+        <ImageView
+            android:id="@+id/tvForward"
+            android:layout_width="@dimen/chat_media_camera_switch"
+            android:layout_height="@dimen/chat_media_camera_switch"
+            android:layout_gravity="right"
+            android:src="@drawable/media_forward" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="87dp"
+        android:layout_gravity="bottom"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/tvPreviewOrigin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="查看原图"
+            android:padding="12dp"
+            android:background="@drawable/image_origin_bg"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tvDown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:background="@drawable/image_download" />
+    </FrameLayout>
+</FrameLayout>

@@ -2,14 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="14dp"
+    android:minWidth="300dp"
     android:background="@drawable/drawable_dialog_bg"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content"
+        android:paddingTop="14dp"
         android:text="删除记录" />
 
     <TextView
@@ -17,7 +19,8 @@
         android:layout_width="wrap_content"
         android:paddingTop="8dp"
         android:layout_height="wrap_content"
-        android:text="删除后不可回复，"
+        android:layout_gravity="center_horizontal"
+        android:text="删除后不可回复，请谨慎操作"
         android:textColor="#b6b6b6"
         android:layout_marginBottom="16dp" />
 
@@ -36,10 +39,13 @@
             android:layout_weight="1"
             android:text="取消" />
 
+        <include layout="@layout/divider_vertical_gray" />
+
         <TextView
             android:id="@+id/tvConfirm"
             android:layout_width="0dp"
             android:padding="16dp"
+            android:textColor="#FFFF152F"
             android:gravity="center"
             android:layout_height="wrap_content"
             android:layout_weight="1"

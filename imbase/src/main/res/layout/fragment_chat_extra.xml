@@ -30,6 +30,7 @@
             android:background="@drawable/chat_send_et"
             android:focusable="true"
             android:focusableInTouchMode="true"
+            android:hint="发消息..."
             android:gravity="center_vertical"
             android:maxLines="4"
             android:minHeight="32dp"

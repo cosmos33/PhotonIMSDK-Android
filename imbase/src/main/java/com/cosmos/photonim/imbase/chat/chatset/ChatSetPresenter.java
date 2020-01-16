@@ -8,12 +8,13 @@ import com.cosmos.photonim.imbase.chat.chatset.ichatset.IChatSetView;
 import com.cosmos.photonim.imbase.chat.ichat.IChatModel;
 import com.cosmos.photonim.imbase.utils.event.ClearChatContent;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;
-import com.cosmos.photonim.imbase.utils.http.jsons.JsonSaveIgnoreInfo;
 
 import org.greenrobot.eventbus.EventBus;
 
 public class ChatSetPresenter extends IChatSetPresenter<IChatSetView, IChatSetModel> implements ChatSetModel.OnChangeStatusListener {
     private ChatModel chatModel;
+    private boolean top;
+
     public ChatSetPresenter(IChatSetView iView) {
         super(iView);
     }
@@ -24,8 +25,13 @@ public class ChatSetPresenter extends IChatSetPresenter<IChatSetView, IChatSetMo
     }
 
     @Override
-    public void changeTopStatus() {
-        getiModel().changeTopStatus(this);
+    public void changeTopStatus(int chatType, String id) {
+        getiModel().changeTopStatus(chatType, id, !top, this);
+    }
+
+    @Override
+    public void getTopStatus(int chatType, String id) {
+        getiModel().getTopStatus(chatType, id, this);
     }
 
     @Override
@@ -35,7 +41,7 @@ public class ChatSetPresenter extends IChatSetPresenter<IChatSetView, IChatSetMo
 
     @Override
     public void getIgnoreStatus(String remoteId) {
-        getiModel().getIgnoreStatus(remoteId, result -> getIView().onGetIgnoreStatus(result));
+        getiModel().getIgnoreStatus(remoteId, this);
     }
 
     @Override
@@ -53,12 +59,24 @@ public class ChatSetPresenter extends IChatSetPresenter<IChatSetView, IChatSetMo
     }
 
     @Override
-    public void onChangeTopStatus(JsonSaveIgnoreInfo result) {
-        getIView().onTopChangeStatusResult(result != null && result.success());
+    public void onGetTopStatus(boolean top) {
+        this.top = top;
+        getIView().changeTopStatus(top);
+    }
+
+    @Override
+    public void onChangeTopStatus() {
+        top = !top;
+        getIView().toast("操作成功");
     }
 
     @Override
     public void onChangeIgnoreStatus(JsonResult jsonResult) {
         getIView().onIgnoreChangeStatusResult(jsonResult.success());
+    }
+
+    @Override
+    public void onGetIgnoreStatus(JsonResult result) {
+        getIView().onGetIgnoreStatus(result);
     }
 }

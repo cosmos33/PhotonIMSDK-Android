@@ -13,14 +13,16 @@
 
     <FrameLayout
         android:layout_width="200dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="120dp"
-        android:layout_height="wrap_content">
+        android:layout_marginBottom="120dp">
 
         <ImageView
             android:id="@+id/ivReturn"
             android:layout_width="@dimen/chat_media_width"
             android:layout_height="@dimen/chat_media_width"
+            android:background="@drawable/drawable_media_return_bg"
+            android:padding="16dp"
             android:src="@drawable/media_left" />
 
         <ImageView
@@ -28,6 +30,8 @@
             android:layout_width="@dimen/chat_media_width"
             android:layout_height="@dimen/chat_media_width"
             android:layout_gravity="right"
+            android:background="@drawable/drawable_media_send_bg"
+            android:padding="16dp"
             android:src="@drawable/media_send" />
     </FrameLayout>
 </FrameLayout>

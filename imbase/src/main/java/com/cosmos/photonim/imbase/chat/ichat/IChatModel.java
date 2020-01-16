@@ -93,7 +93,7 @@ public abstract class IChatModel implements IModel {
     }
 
     public interface OnDeleteMsgListener {
-        void onDeletemsgResult(ChatData data);
+        void onDeletemsgResult(ChatData data, String error);
     }
 
     public interface OnClearChatContentListener {

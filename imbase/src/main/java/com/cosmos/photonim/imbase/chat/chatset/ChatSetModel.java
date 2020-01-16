@@ -8,8 +8,15 @@ import com.cosmos.photonim.imbase.utils.task.TaskExecutor;
 
 public class ChatSetModel extends IChatSetModel {
     @Override
-    public void changeTopStatus(OnChangeStatusListener listener) {
-
+    public void changeTopStatus(int chatType, String id, boolean top, OnChangeStatusListener listener) {
+        TaskExecutor.getInstance().createAsycTask(() -> {
+            PhotonIMDatabase.getInstance().updateSessionSticky(chatType, id, top);
+            return null;
+        }, result -> {
+            if (listener != null) {
+                listener.onChangeTopStatus();
+            }
+        });
     }
 
     @Override
@@ -22,10 +29,19 @@ public class ChatSetModel extends IChatSetModel {
     }
 
     @Override
-    public void getIgnoreStatus(String userId, OnGetIgnoreStatusListener onGetIgnoreStatusListener) {
+    public void getIgnoreStatus(String userId, OnChangeStatusListener onGetIgnoreStatusListener) {
         TaskExecutor.getInstance().createAsycTask(() -> ImBaseBridge.getInstance().getIgnoreStatus(userId), result -> {
             if (onGetIgnoreStatusListener != null) {
                 onGetIgnoreStatusListener.onGetIgnoreStatus((JsonResult) result);
+            }
+        });
+    }
+
+    @Override
+    public void getTopStatus(int chatType, String id, OnChangeStatusListener chatSetPresenter) {
+        TaskExecutor.getInstance().createAsycTask(() -> PhotonIMDatabase.getInstance().isSessionSticky(chatType, id), result -> {
+            if (chatSetPresenter != null) {
+                chatSetPresenter.onGetTopStatus((boolean) result);
             }
         });
     }

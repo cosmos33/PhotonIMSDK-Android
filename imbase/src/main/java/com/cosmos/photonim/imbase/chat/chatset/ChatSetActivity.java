@@ -36,6 +36,8 @@ public class ChatSetActivity extends IChatSetView {
     TextView tvNickName;
     @BindView(R2.id.sBan)
     Switch sBan;
+    @BindView(R2.id.sTop)
+    Switch sTop;
 
     private String userId;
     private String icon;
@@ -68,11 +70,12 @@ public class ChatSetActivity extends IChatSetView {
         tvNickName.setText(userId);
 
         presenter.getIgnoreStatus(userId);
+        presenter.getTopStatus(PhotonIMMessage.SINGLE, userId);
     }
 
     @OnClick(R2.id.sTop)
     public void onTopChange() {
-        presenter.changeTopStatus();
+        presenter.changeTopStatus(PhotonIMMessage.SINGLE, userId);
     }
 
     @OnClick(R2.id.sBan)
@@ -108,11 +111,6 @@ public class ChatSetActivity extends IChatSetView {
     }
 
     @Override
-    public void onTopChangeStatusResult(boolean success) {
-
-    }
-
-    @Override
     public void onIgnoreChangeStatusResult(boolean success) {
         ToastUtils.showText(this, success ? "成功" : "失败");
         if (!success) {
@@ -135,6 +133,11 @@ public class ChatSetActivity extends IChatSetView {
         if (processDialogFragment != null) {
             processDialogFragment.dismiss();
         }
+    }
+
+    @Override
+    public void changeTopStatus(boolean top) {
+        sTop.setChecked(top);
     }
 
     @Override
