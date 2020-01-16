@@ -285,7 +285,7 @@ public class SessionModel extends ISessionModel {
                 msgDataTemp = new SessionData.Builder()
                         .lastMsgContent(PhotonIMDatabase.getInstance().getSessionLastMsgId(list.getType(),
                                 list.getType() == PhotonIMMessage.SINGLE ? list.getUserId() : list.getId()))
-                        .sticky(list.getIsTop() == 0)
+                        .sticky(list.getIsTop() == 1)
                         .chatWith(list.getType() == PhotonIMMessage.SINGLE ? list.getUserId() : list.getId())
                         .chatType(list.getType())
                         .build();
