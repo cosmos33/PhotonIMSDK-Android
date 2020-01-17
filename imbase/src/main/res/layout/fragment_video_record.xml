@@ -5,10 +5,27 @@
     android:background="@color/media_bg"
     android:orientation="vertical">
 
-    <com.cosmos.photonim.imbase.view.TitleBar
-        android:id="@+id/title"
+    <FrameLayout
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/tvClose"
+            android:src="@drawable/media_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/tvFlashing"
+            android:layout_width="@dimen/chat_media_camera_switch"
+            android:layout_height="@dimen/chat_media_camera_switch"
+            android:layout_gravity="center"
+            android:src="@drawable/media_flashing" />
+    </FrameLayout>
 
     <SurfaceView
         android:id="@+id/surfaceView"
@@ -33,26 +50,23 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_gravity="center"
-            android:background="@drawable/media_takephoto"
+            android:background="@drawable/video_record"
             android:gravity="center"
-            android:layout_marginTop="10dp"
-            android:id="@+id/tvTakePhoto"
-            android:text="@string/chat_media_video_record" />
+            android:id="@+id/tvTakePhoto" />
 
-        <ImageView
-            android:layout_width="@dimen/chat_media_width"
-            android:layout_height="@dimen/chat_media_width"
-            android:layout_gravity="right|center"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="48dp"
-            android:id="@+id/tvFlashing"
-            android:src="@drawable/media_flashing" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:textColor="@color/white"
+            android:layout_gravity="center_horizontal|bottom"
+            android:text="按住录制"
+            android:layout_height="wrap_content" />
 
         <ImageView
             android:id="@+id/ivSwitch"
-            android:layout_width="@dimen/chat_media_width"
-            android:layout_height="@dimen/chat_media_width"
-            android:layout_marginTop="10dp"
+            android:layout_width="@dimen/chat_media_camera_switch"
+            android:layout_height="@dimen/chat_media_camera_switch"
+            android:layout_marginRight="40dp"
             android:layout_gravity="right|center"
             android:src="@drawable/media_camera_switch" />
 

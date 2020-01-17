@@ -24,6 +24,7 @@ allprojects {
         maven { url 'https://cosmos1602.bintray.com/photon/' }
         maven { url 'https://cosmos1602.bintray.com/mediax/' }
         maven { url 'http://developer.huawei.com/repo' }// 华为push
+        maven { url "https://jitpack.io" }
         google()
         jcenter()
 

@@ -68,4 +68,6 @@ dependencies {
     implementation "com.android.support:appcompat-v7:$supportverion"
     implementation "com.android.support:recyclerview-v7:$supportverion"
     implementation "com.cosmos.mediax:moment:2.2.5-20191014172300"
+
+    implementation 'com.github.chrisbanes:PhotoView:2.0.0'
 }

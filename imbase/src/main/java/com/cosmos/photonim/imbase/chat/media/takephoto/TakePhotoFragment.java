@@ -21,6 +21,7 @@ import com.immomo.media_cosmos.RecorderFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -99,6 +100,7 @@ public class TakePhotoFragment extends BaseFragment {
                 cameraId(Camera.CameraInfo.CAMERA_FACING_FRONT)
                 .encodeSize(new Size(1280, 720))
                 .targetVideoSize(new Size(1280, 720))
+                .videoFPS(20)
                 .build();
     }
 
@@ -114,6 +116,11 @@ public class TakePhotoFragment extends BaseFragment {
         if (!result) {
             ToastUtils.showText("不支持");
         }
+    }
+
+    @OnClick(R2.id.ivClose)
+    public void onCloseClick() {
+        Objects.requireNonNull(getActivity()).finish();
     }
 
     @OnClick(R2.id.tvTakePhoto)

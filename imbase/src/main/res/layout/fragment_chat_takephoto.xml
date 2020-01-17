@@ -14,6 +14,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
+            android:id="@+id/ivClose"
             android:src="@drawable/media_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -43,7 +44,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_gravity="center"
-            android:background="@drawable/media_takephoto"
+            android:background="@drawable/capture"
             android:gravity="center" />
 
         <ImageView

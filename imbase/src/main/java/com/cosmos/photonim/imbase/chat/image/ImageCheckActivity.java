@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 public class ImageCheckActivity extends BaseActivity {
     private static final String EXTRA_CHATDATA = "EXTRA_CHATDATA";
@@ -56,9 +55,9 @@ public class ImageCheckActivity extends BaseActivity {
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(currentPosition);
     }
-
-    @OnClick(R2.id.ivClose)
-    public void onCloseClick() {
-        finish();
-    }
+//
+//    @OnClick(R2.id.ivClose)
+//    public void onCloseClick() {
+//        finish();
+//    }
 }

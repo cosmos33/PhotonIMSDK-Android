@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -200,6 +201,12 @@ public abstract class ChatBaseActivity extends IChatView {
 
     public abstract boolean isGroup();
 
+    @Override
+    public RecyclerView.ItemDecoration getItemDecoration() {
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, LinearLayoutManager.VERTICAL);
+        dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.white));
+        return dividerItemDecoration;
+    }
 
     @Override
     public void onRecordFailed() {

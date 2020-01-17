@@ -1,0 +1,21 @@
+<FrameLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="8dp"
+    android:paddingTop="20dp"
+    android:paddingRight="8dp"
+    android:paddingBottom="20dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ImageView
+        android:id="@+id/ivClose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/media_close" />
+
+    <ImageView
+        android:id="@+id/tvForward"
+        android:layout_width="@dimen/chat_media_camera_switch"
+        android:layout_height="@dimen/chat_media_camera_switch"
+        android:layout_gravity="right"
+        android:src="@drawable/media_forward" />
+</FrameLayout>

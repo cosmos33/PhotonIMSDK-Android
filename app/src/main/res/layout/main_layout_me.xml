@@ -29,11 +29,12 @@
                 android:layout_width="@dimen/main_tab_img_size"
                 android:layout_height="@dimen/main_tab_img_size"
                 android:id="@+id/ivIcon"
-                android:src="@drawable/main_me" />
+                android:src="@drawable/drawable_main_me" />
         </FrameLayout>
 
         <TextView
             android:layout_width="wrap_content"
+            android:textSize="@dimen/main_tab_textsize"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="@string/main_me" />

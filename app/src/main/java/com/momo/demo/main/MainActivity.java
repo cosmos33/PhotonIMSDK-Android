@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cosmos.photon.im.PhotonIMClient;
@@ -97,28 +96,28 @@ public class MainActivity extends BaseActivity {
                 }
             }
         });
-        ImageView ivIcon = null;
+//        ImageView ivIcon = null;
         for (int i = 0; i < tabLayout.getTabCount(); i++) {
             TabLayout.Tab tab = tabLayout.getTabAt(i);
             switch (i) {
                 case 0:
                     tab.setCustomView(R.layout.main_layout_message);
-                    ivIcon = tab.getCustomView().findViewById(R.id.ivIcon);
+//                    ivIcon = tab.getCustomView().findViewById(R.id.ivIcon);
                     break;
                 case 1:
                     tab.setCustomView(R.layout.main_layout_contacts);
-                    ivIcon = tab.getCustomView().findViewById(R.id.ivIcon);
+//                    ivIcon = tab.getCustomView().findViewById(R.id.ivIcon);
                     break;
                 case 2:
                     tab.setCustomView(R.layout.main_layout_me);
-                    ivIcon = tab.getCustomView().findViewById(R.id.ivIcon);
+//                    ivIcon = tab.getCustomView().findViewById(R.id.ivIcon);
                     break;
                 case 3:
                     tab.setCustomView(R.layout.main_layout_test);
-                    ivIcon = tab.getCustomView().findViewById(R.id.ivIcon);
+//                    ivIcon = tab.getCustomView().findViewById(R.id.ivIcon);
                     break;
             }
-            ivIcon.setImageDrawable(Utils.tintDrawable(ivIcon.getDrawable(), getResources().getColorStateList(R.color.selector_tab)));
+//            ivIcon.setImageDrawable(Utils.tintDrawable(ivIcon.getDrawable(), getResources().getColorStateList(R.color.selector_tab)));
         }
         initAdapter();
         viewPager.setAdapter(baseFragmentPagerAdapter);

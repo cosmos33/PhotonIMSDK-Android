@@ -22,7 +22,6 @@ import com.cosmos.photonim.imbase.utils.looperexecute.MainLooperExecuteUtil;
 import com.cosmos.photonim.imbase.utils.task.AsycTaskUtil;
 import com.cosmos.photonim.imbase.utils.task.TaskExecutor;
 import com.cosmos.photonim.imbase.view.ProcessDialogFragment;
-import com.cosmos.photonim.imbase.view.TitleBar;
 import com.immomo.media_cosmos.IRecordFinishListener;
 import com.immomo.media_cosmos.IRecorder;
 import com.immomo.media_cosmos.MediaConfig;
@@ -32,6 +31,7 @@ import com.immomo.moment.mediautils.VideoDataRetrieverBySoft;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 
 import butterknife.BindView;
@@ -39,8 +39,6 @@ import butterknife.OnClick;
 
 public class VideoRecordFragment extends BaseFragment {
     private static final int RECORD_MAX_TIME = 3 * 60 * 1000;
-    @BindView(R2.id.title)
-    TitleBar title;
     @BindView(R2.id.tvTime)
     TextView tvTime;
     @BindView(R2.id.surfaceView)
@@ -67,15 +65,6 @@ public class VideoRecordFragment extends BaseFragment {
 
     @Override
     protected void initView(View view) {
-        title.setTitle("");
-        title.setLeftImageEvent(R.drawable.chat_close, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (getActivity() != null) {
-                    getActivity().finish();
-                }
-            }
-        });
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
@@ -245,6 +234,10 @@ public class VideoRecordFragment extends BaseFragment {
         super.onPause();
     }
 
+    @OnClick(R2.id.tvClose)
+    public void onCloseClick() {
+        Objects.requireNonNull(getActivity()).finish();
+    }
     @OnClick(R2.id.ivSwitch)
     public void onSwitchCameraClick() {
         recorder.switchCamera();
