@@ -3,7 +3,6 @@ package com.cosmos.photonim.imbase.chat;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Environment;
 import android.text.TextUtils;
 
@@ -11,6 +10,8 @@ import com.cosmos.maplib.map.MyLocation;
 import com.cosmos.photon.im.PhotonIMMessage;
 import com.cosmos.photonim.imbase.ImBaseBridge;
 import com.cosmos.photonim.imbase.R;
+import com.cosmos.photonim.imbase.chat.album.AlbumFragment;
+import com.cosmos.photonim.imbase.chat.album.adapter.CategoryFile;
 import com.cosmos.photonim.imbase.chat.ichat.IChatModel;
 import com.cosmos.photonim.imbase.chat.ichat.IChatPresenter;
 import com.cosmos.photonim.imbase.chat.ichat.IChatView;
@@ -24,7 +25,6 @@ import com.cosmos.photonim.imbase.utils.FileUtils;
 import com.cosmos.photonim.imbase.utils.LogUtils;
 import com.cosmos.photonim.imbase.utils.TimeUtils;
 import com.cosmos.photonim.imbase.utils.ToastUtils;
-import com.cosmos.photonim.imbase.utils.Utils;
 import com.cosmos.photonim.imbase.utils.VoiceHelper;
 import com.cosmos.photonim.imbase.utils.event.ChatDataWrapper;
 import com.cosmos.photonim.imbase.utils.event.ClearUnReadStatus;
@@ -744,22 +744,29 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
     }
 
     protected void sendImage(Intent data) {
-        Uri originalUri = data.getData(); // 获得图片的uri
-        String filePath = Utils.getFilePath(ImBaseBridge.getInstance().getApplication(), originalUri);
-        if (new File(filePath).length() >= IMAGE_MAX_SIZE) {
-            ToastUtils.showText("仅支持发送10M以内的图片");
+//        Uri originalUri = data.getData(); // 获得图片的uri
+//        String filePath = Utils.getFilePath(ImBaseBridge.getInstance().getApplication(), originalUri);
+//        if (new File(filePath).length() >= IMAGE_MAX_SIZE) {
+//            ToastUtils.showText("仅支持发送10M以内的图片");
+//            return;
+//        }
+        ArrayList<CategoryFile> files = data.getParcelableArrayListExtra(AlbumFragment.ALBUM);
+
+        if (CollectionUtils.isEmpty(files)) {
             return;
         }
-        ChatData.Builder chatDataBuild = new ChatData.Builder()
-                .icon(myIcon)
-                .localFile(filePath)
-                .msgType(PhotonIMMessage.IMAGE)
-                .chatType(chatType)
-                .chatWith(chatWith)
-                .from(loginUserId)
-                .to(chatWith);
+        for (CategoryFile file : files) {
+            ChatData.Builder chatDataBuild = new ChatData.Builder()
+                    .icon(myIcon)
+                    .localFile(file.mPath)
+                    .msgType(PhotonIMMessage.IMAGE)
+                    .chatType(chatType)
+                    .chatWith(chatWith)
+                    .from(loginUserId)
+                    .to(chatWith);
 
-        sendMsg(chatDataBuild);
+            sendMsg(chatDataBuild);
+        }
     }
 
     public void onDeleteMsgResult(ChatData chatData) {

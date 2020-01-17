@@ -14,7 +14,6 @@ import com.cosmos.photonim.imbase.base.BaseFragment;
 import com.cosmos.photonim.imbase.chat.media.OnChangeToResultFragmentListener;
 import com.cosmos.photonim.imbase.utils.FileUtils;
 import com.cosmos.photonim.imbase.utils.ToastUtils;
-import com.cosmos.photonim.imbase.view.TitleBar;
 import com.immomo.media_cosmos.IRecorder;
 import com.immomo.media_cosmos.ITakePhotoCallBack;
 import com.immomo.media_cosmos.MediaConfig;
@@ -27,8 +26,8 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class TakePhotoFragment extends BaseFragment {
-    @BindView(R2.id.title)
-    TitleBar title;
+    //    @BindView(R2.id.title)
+//    TitleBar title;
     @BindView(R2.id.surfaceView)
     SurfaceView surfaceView;
 
@@ -48,15 +47,15 @@ public class TakePhotoFragment extends BaseFragment {
     }
 
     private void init() {
-        title.setTitle("");
-        title.setLeftImageEvent(R.drawable.chat_close, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (getActivity() != null) {
-                    getActivity().finish();
-                }
-            }
-        });
+//        title.setTitle("");
+//        title.setLeftImageEvent(R.drawable.chat_close, new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (getActivity() != null) {
+//                    getActivity().finish();
+//                }
+//            }
+//        });
         recorder = RecorderFactory.createRecorder();
         recorder.prepare(getActivity(), getConfig());
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {

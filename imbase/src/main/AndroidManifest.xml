@@ -29,5 +29,7 @@
         <activity android:name=".chat.media.takephoto.TakePhotoActivity" />
         <activity android:name=".chat.media.video.VideoActivity" />
         <activity android:name=".chat.searchhistory.SearchHistoryActivity" />
+        <activity android:name=".chat.album.AlbumActivity" />
+        <activity android:name=".chat.album.preview.ImagePreviewActivity" />
     </application>
 </manifest>

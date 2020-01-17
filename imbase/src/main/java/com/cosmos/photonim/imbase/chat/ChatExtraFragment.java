@@ -1,7 +1,5 @@
 package com.cosmos.photonim.imbase.chat;
 
-import android.content.Intent;
-import android.provider.MediaStore;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,13 +20,13 @@ import com.cosmos.photonim.imbase.R2;
 import com.cosmos.photonim.imbase.base.RvBaseFragment;
 import com.cosmos.photonim.imbase.chat.adapter.chatextra.ChatExtraAdapter;
 import com.cosmos.photonim.imbase.chat.adapter.chatextra.ChatExtraItemData;
+import com.cosmos.photonim.imbase.chat.album.AlbumActivity;
 import com.cosmos.photonim.imbase.chat.emoji.EmojiContainerFragment;
 import com.cosmos.photonim.imbase.chat.map.MapActivity;
 import com.cosmos.photonim.imbase.chat.media.takephoto.TakePhotoActivity;
 import com.cosmos.photonim.imbase.chat.media.video.VideoActivity;
 import com.cosmos.photonim.imbase.utils.AtEditText;
 import com.cosmos.photonim.imbase.utils.CheckAudioPermission;
-import com.cosmos.photonim.imbase.utils.Constants;
 import com.cosmos.photonim.imbase.utils.ToastUtils;
 import com.cosmos.photonim.imbase.utils.Utils;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvBaseAdapter;
@@ -301,9 +299,11 @@ public class ChatExtraFragment extends RvBaseFragment {
                 @Override
                 public void onClick(View view, Object data, int position) {
                     if (position == 0) {
-                        Intent intent = new Intent(Intent.ACTION_PICK, null);
-                        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, IMAGE_UNSPECIFIED);
-                        startActivityForResult(intent, Constants.REQUEST_IMAGE_CODE);
+                        AlbumActivity.start(ChatExtraFragment.this.getActivity());
+
+//                        Intent intent = new Intent(Intent.ACTION_PICK, null);
+//                        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, IMAGE_UNSPECIFIED);
+//                        startActivityForResult(intent, Constants.REQUEST_IMAGE_CODE);
                     } else if (position == 1) {
                         TakePhotoActivity.start(getActivity());
                     } else if (position == 2) {

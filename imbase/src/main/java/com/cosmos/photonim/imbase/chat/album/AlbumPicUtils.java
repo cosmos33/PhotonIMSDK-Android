@@ -6,6 +6,7 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 
 import com.cosmos.photonim.imbase.ImBaseBridge;
+import com.cosmos.photonim.imbase.chat.album.adapter.CategoryFile;
 
 import java.util.ArrayList;
 
@@ -33,7 +34,7 @@ public class AlbumPicUtils {
         return "";
     }
 
-    private ArrayList<CategoryFile> queryCategoryFilesSync() {
+    public static ArrayList<CategoryFile> queryCategoryFilesSync() {
         ArrayList<CategoryFile> files = new ArrayList<>();
         Uri uri = MediaStore.Images.Media.getContentUri("external");
         if (uri != null) {
@@ -51,6 +52,7 @@ public class AlbumPicUtils {
                                 .getColumnIndex(MediaStore.Files.FileColumns.SIZE);
                         final int modifyIdx = cursor
                                 .getColumnIndex(MediaStore.Files.FileColumns.DATE_MODIFIED);
+                        int index = 0;
                         do {
                             String path = cursor.getString(pathIdx);
                             CategoryFile file = new CategoryFile();
@@ -59,7 +61,9 @@ public class AlbumPicUtils {
                             file.mName = getNameFromFilepath(file.mPath);
                             file.mSize = cursor.getLong(sizeIdx);
                             file.mLastModifyTime = cursor.getLong(modifyIdx);
+                            file.position = index;
                             files.add(file);
+                            index++;
                         } while (cursor.moveToNext());
                     }
                 } catch (Exception e) {

@@ -79,7 +79,7 @@ public class TitleBar extends FrameLayout {
     }
 
     public TitleBar setRightTextEvent(String leftContent, OnClickListener onClickListener) {
-        return setRightTextEvent(leftContent, 0, 0, onClickListener);
+        return setRightTextEvent(leftContent, R.color.black, 0, onClickListener);
     }
 
     public TitleBar setRightTextEvent(String leftContent, int colorId, int drawableId, OnClickListener onClickListener) {

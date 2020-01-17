@@ -15,11 +15,6 @@
         <item name="android:backgroundDimAmount">0.0000001</item>
     </style>
 
-    <style name="checkboxStyle">
-        <item name="android:button">@drawable/selector_cb</item>
-        <item name="android:drawable">@null</item>
-    </style>
-
 
 </resources>
 
