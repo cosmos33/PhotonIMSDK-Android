@@ -43,4 +43,6 @@ public abstract class RvBaseFragment extends BaseFragment implements ICreateRv {
     public RecyclerView.ItemDecoration getItemDecoration() {
         return new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL);
     }
+
+
 }

@@ -31,5 +31,6 @@
         <activity android:name=".chat.searchhistory.SearchHistoryActivity" />
         <activity android:name=".chat.album.AlbumActivity" />
         <activity android:name=".chat.album.preview.ImagePreviewActivity" />
+        <activity android:name=".chat.file.FileActivity" />
     </application>
 </manifest>

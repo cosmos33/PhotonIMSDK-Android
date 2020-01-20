@@ -19,6 +19,7 @@ public class Constants {
     public static final int ITEM_TYPE_CHAT_EXTRA = 17;
     public static final int ITEM_TYPE_SEARCH = 18;
     public static final int ITEM_TYPE_ALBUM = 19;
+    public static final int ITEM_TYPE_FILE = 20;
 
     public static final int REQUEST_CAMERA = 1000;
     public static final int REQUEST_IMAGE_CODE = 1001;
