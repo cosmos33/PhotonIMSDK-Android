@@ -3,6 +3,8 @@ package com.cosmos.photonim.imbase.chat;
 import com.cosmos.photon.im.PhotonIMClient;
 import com.cosmos.photon.im.PhotonIMDatabase;
 import com.cosmos.photon.im.PhotonIMMessage;
+import com.cosmos.photon.im.messagebody.PhotonIMAudioBody;
+import com.cosmos.photon.im.messagebody.PhotonIMImageBody;
 import com.cosmos.photon.im.messagebody.PhotonIMLocationBody;
 import com.cosmos.photonim.imbase.ImBaseBridge;
 import com.cosmos.photonim.imbase.chat.ichat.IChatModel;
@@ -103,13 +105,7 @@ public class ChatModel extends IChatModel {
                     .msgStatus(msgStatus)
                     .itemType(getItemType(photonIMMessage, ImBaseBridge.getInstance().getUserId()))
                     .msgBody(photonIMMessage.body);
-            if (photonIMMessage.messageType == PhotonIMMessage.LOCATION) {
-                PhotonIMLocationBody body = (PhotonIMLocationBody) photonIMMessage.body;
-                chatDataBuilder.lat(body.lat);
-                chatDataBuilder.lng(body.lng);
-                chatDataBuilder.address(body.address);
-                chatDataBuilder.detailAddress(body.address);
-            }
+            changeBody(photonIMMessage, chatDataBuilder);
             ChatData chatData = chatDataBuilder.build();
             result.add(chatData);
             resultMap.put(photonIMMessage.id, chatData);
@@ -118,6 +114,29 @@ public class ChatModel extends IChatModel {
         r.put("list", result);
         r.put("map", resultMap);
         return r;
+    }
+
+    private void changeBody(PhotonIMMessage photonIMMessage, ChatData.Builder chatDataBuilder) {
+        switch (photonIMMessage.messageType) {
+            case PhotonIMMessage.LOCATION:
+                PhotonIMLocationBody body = (PhotonIMLocationBody) photonIMMessage.body;
+                chatDataBuilder.lat(body.lat);
+                chatDataBuilder.lng(body.lng);
+                chatDataBuilder.address(body.address);
+                chatDataBuilder.detailAddress(body.address);
+                break;
+            case PhotonIMMessage.IMAGE:
+                PhotonIMImageBody imageBody = (PhotonIMImageBody) photonIMMessage.body;
+                chatDataBuilder.localFile(imageBody.localFile);
+                chatDataBuilder.fileUrl(imageBody.url);
+                break;
+            case PhotonIMMessage.AUDIO:
+                PhotonIMAudioBody audioBody = (PhotonIMAudioBody) photonIMMessage.body;
+                chatDataBuilder.localFile(audioBody.localFile);
+                chatDataBuilder.fileUrl(audioBody.url);
+                chatDataBuilder.voiceDuration(audioBody.audioTime);
+                break;
+        }
     }
 
     @Override

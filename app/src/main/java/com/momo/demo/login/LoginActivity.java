@@ -54,9 +54,6 @@ public class LoginActivity extends ILoginView implements MyApplication.PushToken
         // push
         PhotonPushManager.getInstance().logPushClick(getIntent());
 
-//        etUserName.setText("fan");
-//        etPwd.setText("123");
-
         MyApplication.registerPushTokenObserver(this);
 
 
