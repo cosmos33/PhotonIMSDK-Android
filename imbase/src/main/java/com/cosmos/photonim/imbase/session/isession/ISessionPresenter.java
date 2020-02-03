@@ -91,4 +91,5 @@ public abstract class ISessionPresenter<V extends ISessionView, M extends ISessi
 
     public abstract ArrayList<SessionData> initData();
 
+    public abstract void changeSessionTopStatus(int chatType, String id, boolean isTopStatus);
 }

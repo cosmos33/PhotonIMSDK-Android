@@ -36,7 +36,7 @@ public class AlbumPicUtils {
 
     public static ArrayList<CategoryFile> queryCategoryFilesSync() {
         ArrayList<CategoryFile> files = new ArrayList<>();
-        Uri uri = MediaStore.Images.Media.getContentUri("external");
+        Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
         if (uri != null) {
             String[] projection = new String[]{MediaStore.Files.FileColumns._ID, // id
                     MediaStore.Files.FileColumns.DATA, // 文件路径

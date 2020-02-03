@@ -60,6 +60,7 @@
 
             <ImageView
                 android:id="@+id/ivTop"
+                android:layout_marginLeft="8dp"
                 android:layout_width="20dp"
                 android:layout_height="@dimen/msg_icon_size"
                 android:src="@drawable/top" />

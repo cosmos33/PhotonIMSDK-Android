@@ -62,6 +62,7 @@ public class LoginActivity extends ILoginView implements MyApplication.PushToken
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE
                     , Manifest.permission.RECORD_AUDIO
                     , Manifest.permission.ACCESS_FINE_LOCATION

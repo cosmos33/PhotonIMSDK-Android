@@ -214,17 +214,18 @@ public class SessionModel extends ISessionModel {
                     tempContent = "[未知消息]";
             }
             boolean isAtMeMsg = false;
+            Profile profile = DBHelperUtils.getInstance().findProfile(photonIMSession.chatWith);
             if (!TextUtils.isEmpty(photonIMSession.lastMsgFr)
                     && !photonIMSession.lastMsgFr.equals(ImBaseBridge.getInstance().getUserId())
                     && photonIMSession.chatType == PhotonIMMessage.GROUP) {
                 isAtMeMsg = isAtMeMsg(photonIMSession);
-                Profile profile = DBHelperUtils.getInstance().findProfile(photonIMSession.lastMsgFr);
-                updateFromInfo = profile == null;
-                lastMsgFrName = profile == null ? photonIMSession.lastMsgFr : profile.getName();
+                Profile fromProfile = DBHelperUtils.getInstance().findProfile(photonIMSession.lastMsgFr);
+                updateFromInfo = fromProfile == null;
+                lastMsgFrName = fromProfile == null ? photonIMSession.lastMsgFr : fromProfile.getName();
+
                 icon = profile == null ? "" : profile.getIcon();
                 nickName = profile == null ? "" : profile.getName();
             } else {
-                Profile profile = DBHelperUtils.getInstance().findProfile(photonIMSession.chatWith);
                 icon = profile == null ? "" : profile.getIcon();
                 nickName = profile == null ? "" : profile.getName();
             }

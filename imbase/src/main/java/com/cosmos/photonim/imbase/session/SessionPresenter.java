@@ -1,6 +1,8 @@
 package com.cosmos.photonim.imbase.session;
 
 import com.cosmos.photonim.imbase.businessmodel.PersionInfoModel;
+import com.cosmos.photonim.imbase.chat.chatset.ChatSetModel;
+import com.cosmos.photonim.imbase.chat.chatset.ichatset.IChatSetModel;
 import com.cosmos.photonim.imbase.session.adapter.SessionData;
 import com.cosmos.photonim.imbase.session.isession.ISessionModel;
 import com.cosmos.photonim.imbase.session.isession.ISessionPresenter;
@@ -8,6 +10,7 @@ import com.cosmos.photonim.imbase.session.isession.ISessionView;
 import com.cosmos.photonim.imbase.utils.CollectionUtils;
 import com.cosmos.photonim.imbase.utils.LocalRestoreUtils;
 import com.cosmos.photonim.imbase.utils.event.AllUnReadCount;
+import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -18,6 +21,7 @@ public class SessionPresenter extends ISessionPresenter<ISessionView, ISessionMo
     private PersionInfoModel persionInfoModel;
     private boolean isFirstLoad;
     private List<SessionData> baseDataList;
+    private ChatSetModel chatSetModel;
 
     public SessionPresenter(ISessionView iView) {
         super(iView);
@@ -147,6 +151,35 @@ public class SessionPresenter extends ISessionPresenter<ISessionView, ISessionMo
     public ArrayList<SessionData> initData() {
         baseDataList = new ArrayList<>();
         return (ArrayList<SessionData>) baseDataList;
+    }
+
+    @Override
+    public void changeSessionTopStatus(int chatType, String id, boolean isTopStatus) {
+        if (chatSetModel == null) {
+            chatSetModel = new ChatSetModel();
+        }
+        chatSetModel.changeTopStatus(chatType, id, !isTopStatus, new IChatSetModel.OnChangeStatusListener() {
+            @Override
+            public void onGetTopStatus(boolean top) {
+
+            }
+
+            @Override
+            public void onChangeTopStatus() {
+                getIView().dismissSessionDialog();
+                getIView().toast("操作成功");
+            }
+
+            @Override
+            public void onChangeIgnoreStatus(JsonResult success) {
+
+            }
+
+            @Override
+            public void onGetIgnoreStatus(JsonResult result) {
+
+            }
+        });
     }
 
     @Override

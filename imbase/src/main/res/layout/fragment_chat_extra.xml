@@ -77,6 +77,7 @@
         android:layout_width="match_parent"
         android:id="@+id/recyclerView"
         android:visibility="gone"
+        android:background="@color/activity_bg"
         android:layout_height="wrap_content" />
 
     <ViewStub

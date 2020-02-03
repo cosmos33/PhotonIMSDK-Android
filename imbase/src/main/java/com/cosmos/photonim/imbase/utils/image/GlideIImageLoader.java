@@ -1,6 +1,7 @@
 package com.cosmos.photonim.imbase.utils.image;
 
 import android.content.Context;
+import android.net.Uri;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -17,7 +18,8 @@ public class GlideIImageLoader implements IImageLoader {
     }
     @Override
     public void loadImage(Context context, String url, int placeHolderResId, ImageView imageView) {
-        Glide.with(context).load(url).placeholder(placeHolderResId).into(imageView);
+//        Glide.with(context).load(url).placeholder(placeHolderResId).into(imageView);
+        Glide.with(context).load(Uri.parse(url)).placeholder(placeHolderResId).into(imageView);
     }
 
     @Override

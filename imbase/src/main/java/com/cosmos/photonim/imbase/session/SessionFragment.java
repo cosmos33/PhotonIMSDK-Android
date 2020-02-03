@@ -40,7 +40,6 @@ public class SessionFragment extends ISessionView {
     private ProcessDialogFragment processDialogFragment;
     private ListDialogFragment sessionDialogFragment;
     private boolean isVisibleToUser;
-    private List<String> itemContent;
 
     @Override
     public int getLayoutId() {
@@ -52,9 +51,6 @@ public class SessionFragment extends ISessionView {
         recyclerView = view.findViewById(R.id.recyclerView);
         presenter.loadHistoryData();
         presenter.getAllUnReadCount();
-        itemContent = new ArrayList<>();
-        itemContent.add("删除会话");
-//        itemContent.add("清空会话");
         // 删除demo层的重发机制，防止和sdk内部重发逻辑混淆
 //        presenter.resendSendingStatusMsgs();
     }
@@ -189,6 +185,16 @@ public class SessionFragment extends ISessionView {
                     if (sessionDialogFragment != null) {
                         sessionDialogFragment.dismiss();
                     }
+                    SessionData sessionData = (SessionData) data;
+                    final boolean isTopStatus = sessionData.isSticky();
+                    List<String> itemContent;
+                    itemContent = new ArrayList<>();
+                    itemContent.add("删除会话");
+                    if (!isTopStatus) {
+                        itemContent.add("会话置顶");
+                    } else {
+                        itemContent.add("取消置顶");
+                    }
                     sessionDialogFragment = ListDialogFragment.getInstance(new ListDialogFragment.OnHandleListener() {
                         @Override
                         public void onItemClick(int positon) {
@@ -196,9 +202,10 @@ public class SessionFragment extends ISessionView {
                                 case 0:
                                     presenter.deleteSession((SessionData) data);
                                     break;
-//                                case 1:
+                                case 1:
 //                                    presenter.clearSession((SessionData) data);
-//                                    break;
+                                    presenter.changeSessionTopStatus(sessionData.getChatType(), sessionData.getChatWith(), isTopStatus);
+                                    break;
                             }
 
                         }
