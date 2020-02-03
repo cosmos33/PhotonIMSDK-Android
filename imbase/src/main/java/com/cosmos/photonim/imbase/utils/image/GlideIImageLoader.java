@@ -18,9 +18,13 @@ public class GlideIImageLoader implements IImageLoader {
     }
 
     @Override
+    public void loadImageUri(Context context, Uri uri, int placeHolderResId, ImageView imageView) {
+        Glide.with(context).load(uri).placeholder(placeHolderResId).into(imageView);
+    }
+
+    @Override
     public void loadImage(Context context, String url, int placeHolderResId, ImageView imageView) {
-//        Glide.with(context).load(url).placeholder(placeHolderResId).into(imageView);
-        Glide.with(context).load(url == null ? "" : Uri.parse(url)).placeholder(placeHolderResId).into(imageView);
+        Glide.with(context).load(url).placeholder(placeHolderResId).into(imageView);
     }
 
     @Override

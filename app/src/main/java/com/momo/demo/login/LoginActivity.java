@@ -1,8 +1,6 @@
 package com.momo.demo.login;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,6 +16,7 @@ import com.cosmos.photon.im.PhotonIMClient;
 import com.cosmos.photon.push.PhotonPushManager;
 import com.cosmos.photon.push.msg.MoMessage;
 import com.cosmos.photonim.imbase.base.mvp.base.IPresenter;
+import com.cosmos.photonim.imbase.utils.PermissionUtils;
 import com.cosmos.photonim.imbase.utils.ToastUtils;
 import com.cosmos.photonim.imbase.utils.event.IMStatus;
 import com.cosmos.photonim.imbase.view.ProcessDialogFragment;
@@ -57,15 +56,8 @@ public class LoginActivity extends ILoginView implements MyApplication.PushToken
         MyApplication.registerPushTokenObserver(this);
 
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    , Manifest.permission.RECORD_AUDIO
-                    , Manifest.permission.ACCESS_FINE_LOCATION
-                    , Manifest.permission.ACCESS_COARSE_LOCATION
-                    , Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS
-                    , Manifest.permission.CAMERA}, 101);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !PermissionUtils.checkPersmission(this)) {
+            requestPermissions(PermissionUtils.permissions, 101);
         }
     }
 

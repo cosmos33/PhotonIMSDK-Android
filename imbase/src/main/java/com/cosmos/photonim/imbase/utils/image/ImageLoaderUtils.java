@@ -1,9 +1,10 @@
 package com.cosmos.photonim.imbase.utils.image;
 
 import android.content.Context;
+import android.net.Uri;
 import android.widget.ImageView;
 
-public class ImageLoaderUtils {
+public class ImageLoaderUtils implements IImageLoader {
     private IImageLoader imageLoader;
 
     private ImageLoaderUtils() {
@@ -23,10 +24,17 @@ public class ImageLoaderUtils {
         return ImageLoaderUtilsHolder.imageLoaderUtils;
     }
 
+    @Override
     public void loadImage(Context context, String url, int placeHolderResId, ImageView imageView) {
         imageLoader.loadImage(context, url, placeHolderResId, imageView);
     }
 
+    @Override
+    public void loadImageUri(Context context, Uri uri, int placeHolderResId, ImageView imageView) {
+        imageLoader.loadImageUri(context, uri, placeHolderResId, imageView);
+    }
+
+    @Override
     public void loadResImage(Context context, int resId, ImageView imageView) {
         imageLoader.loadResImage(context, resId, imageView);
     }
