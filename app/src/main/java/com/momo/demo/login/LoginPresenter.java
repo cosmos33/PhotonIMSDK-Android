@@ -31,9 +31,9 @@ public class LoginPresenter extends ILoginPresenter<ILoginView, ILoginModel> {
     public void onLoginClick(String userName, String pwd) {
         getIView().showDialog();
         getiModel().login(userName, pwd, (result) -> {
-            if (result == null || !result.success()) {
-                getIView().hideDialog();
-            }
+//            if (result == null || !result.success()) {
+//                getIView().hideDialog();
+//            }
             onLoginResult(result);
         });
     }
@@ -58,7 +58,6 @@ public class LoginPresenter extends ILoginPresenter<ILoginView, ILoginModel> {
         }, new AsycTaskUtil.OnTaskListener() {
             @Override
             public void onTaskFinished(Object result) {
-                getIView().hideDialog();
             }
         }, ExecutorUtil.getDefaultExecutor(), Process.THREAD_PRIORITY_FOREGROUND);
     }

@@ -16,10 +16,11 @@ public class GlideIImageLoader implements IImageLoader {
     public GlideIImageLoader() {
         Glide.init(ImBaseBridge.getInstance().getApplication(), new GlideBuilder().setDiskCache(diskLruCacheFactory));
     }
+
     @Override
     public void loadImage(Context context, String url, int placeHolderResId, ImageView imageView) {
 //        Glide.with(context).load(url).placeholder(placeHolderResId).into(imageView);
-        Glide.with(context).load(Uri.parse(url)).placeholder(placeHolderResId).into(imageView);
+        Glide.with(context).load(url == null ? "" : Uri.parse(url)).placeholder(placeHolderResId).into(imageView);
     }
 
     @Override
