@@ -267,7 +267,7 @@ public class ChatModel extends IChatModel {
         EventBus.getDefault().post(new ChatDataWrapper(chatData, PhotonIMMessage.SENDING, null));
         TaskExecutor.getInstance().createAsycTask(() -> {
             PhotonIMMessage message = chatData.convertToIMMessage();
-            PhotonIMDatabase.getInstance().saveMessage(message);
+//            PhotonIMDatabase.getInstance().saveMessage(message);
             return ImBaseBridge.getInstance().sendPic(chatData.getLocalFile());
         }, result -> {
             if (onPicUploadListener != null) {
