@@ -3,6 +3,7 @@ package com.cosmos.photonim.imbase.utils;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Environment;
+import android.text.TextUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -104,5 +105,13 @@ public class FileUtils {
             e.printStackTrace();
         }
         return imageFile;
+    }
+
+    public static String getFileName(String path) {
+        if (TextUtils.isEmpty(path)) {
+            return null;
+        }
+        String[] split = path.split("/");
+        return split[split.length - 1];
     }
 }

@@ -720,6 +720,8 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
             ChatData.Builder chatDataBuild = new ChatData.Builder()
                     .icon(myIcon)
                     .localFile(file.getFilePath())
+                    .fileName(file.getFileName())
+                    .fileSizeL(file.getSizeL())
                     .msgType(PhotonIMMessage.FILE)
                     .chatType(chatType)
                     .chatWith(chatWith)

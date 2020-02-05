@@ -11,6 +11,7 @@ import com.cosmos.photon.im.messagebody.PhotonIMLocationBody;
 import com.cosmos.photonim.imbase.ImBaseBridge;
 import com.cosmos.photonim.imbase.chat.ichat.IChatModel;
 import com.cosmos.photonim.imbase.utils.Constants;
+import com.cosmos.photonim.imbase.utils.FileUtils;
 import com.cosmos.photonim.imbase.utils.LogUtils;
 import com.cosmos.photonim.imbase.utils.TimeUtils;
 import com.cosmos.photonim.imbase.utils.dbhelper.DBHelperUtils;
@@ -138,6 +139,14 @@ public class ChatModel extends IChatModel {
                 chatDataBuilder.fileUrl(audioBody.url);
                 chatDataBuilder.voiceDuration(audioBody.audioTime);
                 break;
+            case PhotonIMMessage.FILE:
+                PhotonIMFileBody fileBody = (PhotonIMFileBody) photonIMMessage.body;
+                chatDataBuilder.localFile(fileBody.localFile);
+                chatDataBuilder.fileUrl(fileBody.url);
+                chatDataBuilder.fileSize(SizeUtils.getSize(fileBody.size));
+                chatDataBuilder.fileName(FileUtils.getFileName(fileBody.localFile));
+                break;
+
         }
     }
 
@@ -292,8 +301,7 @@ public class ChatModel extends IChatModel {
             public void onLoad(int i, String s, String s1) {
                 if (onFileUploadListener != null) {
                     if (i == 0) {
-                        PhotonIMFileBody body = (PhotonIMFileBody) message.body;
-                        chatData.setFileUrl(body.url);
+                        chatData.setFileUrl(s1);
                     }
                     onFileUploadListener.onFileUpload(i == 0, chatData);
                 }

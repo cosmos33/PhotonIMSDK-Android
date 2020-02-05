@@ -57,6 +57,7 @@ public class ChatData implements ItemData, Parcelable, Cloneable {
     private Location location;
     private String fileName;
     private String fileSize;
+    private long fileSizeL;
 
 //    private MsgExtra extra;
 
@@ -90,6 +91,9 @@ public class ChatData implements ItemData, Parcelable, Cloneable {
         remainHistory = builder.remainHistory;
         testSend = builder.testSend;
         location = builder.location;
+        fileName = builder.fileName;
+        fileSizeL = builder.fileSizeL;
+        fileSize = builder.fileSize == null ? SizeUtils.getSize(builder.fileSizeL) : builder.fileSize;
     }
 
 //    public static ChatData getForwardChatData(ChatData chatData) {
@@ -293,6 +297,7 @@ public class ChatData implements ItemData, Parcelable, Cloneable {
                 PhotonIMFileBody fileBody = new PhotonIMFileBody();
                 fileBody.localFile = localFile;
                 fileBody.url = fileUrl;
+                fileBody.size = fileSizeL;
                 photonIMMessage.body = fileBody;
                 break;
             case PhotonIMMessage.LOCATION:
@@ -417,7 +422,8 @@ public class ChatData implements ItemData, Parcelable, Cloneable {
         private Location location;
         private PhotonIMBaseBody body;
         private String fileName;
-        private int fileSize;
+        private long fileSizeL;
+        private String fileSize;
 //        private MsgExtra extra;
 
         public Builder() {
@@ -513,7 +519,12 @@ public class ChatData implements ItemData, Parcelable, Cloneable {
             return this;
         }
 
-        public Builder fileSize(int val) {
+        public Builder fileSizeL(long val) {
+            fileSizeL = val;
+            return this;
+        }
+
+        public Builder fileSize(String val) {
             fileSize = val;
             return this;
         }
@@ -549,6 +560,7 @@ public class ChatData implements ItemData, Parcelable, Cloneable {
                         PhotonIMFileBody fileBody = (PhotonIMFileBody) body;
                         this.localFile = fileBody.localFile;
                         this.fileUrl = fileBody.url;
+                        this.fileSizeL = fileBody.size;
 //                        this.fileName = fileBody.f
                         break;
                     case PhotonIMMessage.LOCATION:
