@@ -10,6 +10,7 @@ import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.R2;
 import com.cosmos.photonim.imbase.base.BaseActivity;
 import com.cosmos.photonim.imbase.chat.file.adapter.FileItemData;
+import com.cosmos.photonim.imbase.utils.Constants;
 import com.cosmos.photonim.imbase.utils.ToastUtils;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class FileActivity extends BaseActivity {
+    public static final String INTENT_FILE = "INTENT_FILE";
     @BindView(R2.id.tvSize)
     TextView tvSize;
 
@@ -25,7 +27,7 @@ public class FileActivity extends BaseActivity {
 
     public static void start(Activity activity) {
         Intent intent = new Intent(activity, FileActivity.class);
-        activity.startActivity(intent);
+        activity.startActivityForResult(intent, Constants.REQUEST_FILE);
     }
 
     @Override
@@ -55,7 +57,9 @@ public class FileActivity extends BaseActivity {
             ToastUtils.showText("未选中");
             return;
         }
-        // TODO: 2020-01-20 发送
+        Intent intent = new Intent();
+        intent.putExtra(INTENT_FILE, checkedData);
+        setResult(Activity.RESULT_OK, intent);
         this.finish();
     }
 }

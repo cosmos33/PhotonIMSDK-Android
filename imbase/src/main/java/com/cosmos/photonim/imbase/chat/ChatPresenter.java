@@ -12,6 +12,8 @@ import com.cosmos.photonim.imbase.ImBaseBridge;
 import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.chat.album.AlbumFragment;
 import com.cosmos.photonim.imbase.chat.album.adapter.CategoryFile;
+import com.cosmos.photonim.imbase.chat.file.FileActivity;
+import com.cosmos.photonim.imbase.chat.file.adapter.FileItemData;
 import com.cosmos.photonim.imbase.chat.ichat.IChatModel;
 import com.cosmos.photonim.imbase.chat.ichat.IChatPresenter;
 import com.cosmos.photonim.imbase.chat.ichat.IChatView;
@@ -193,8 +195,24 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
             case PhotonIMMessage.VIDEO:
                 sendVideo(chatData);
                 break;
+            case PhotonIMMessage.FILE:
+                sendFile(chatData);
+                break;
         }
         return chatData;
+    }
+
+    private void sendFile(ChatData chatData) {
+        getiModel().uploadFile(chatData, new IChatModel.OnFileUploadListener() {
+            @Override
+            public void onFileUpload(boolean success, ChatData chatData) {
+                if (success) {
+                    getiModel().sendMsg(chatData, null);
+                } else {
+                    EventBus.getDefault().post(new ChatDataWrapper(chatData, PhotonIMMessage.SEND_FAILED, null));
+                }
+            }
+        });
     }
 
     private void sendVideo(ChatData chatData) {
@@ -305,6 +323,8 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
             sendVideo(data);
         } else if (requestCode == Constants.REQUEST_MAP && resultCode == Activity.RESULT_OK) {
             sendMap(data);
+        } else if (requestCode == Constants.REQUEST_FILE && resultCode == Activity.RESULT_OK) {
+            sendFile(data);
         }
     }
 
@@ -493,7 +513,7 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
                 JsonUploadImage jsonUploadImage = (JsonUploadImage) result.get();
                 String url = jsonUploadImage.getData().getUrl();
                 chatData.setFileUrl(url);
-                getiModel().sendPicMsg(chatData, null);
+                getiModel().sendMsg(chatData, null);
             } else {
                 getiModel().updateStatus(chatData.getChatType(), chatData.getChatWith(), chatData.getMsgId(), PhotonIMMessage.SEND_FAILED);
                 EventBus.getDefault().post(new ChatDataWrapper(chatData, ChatModel.MSG_ERROR_CODE_UPLOAD_PIC_FAILED, "上传图片失败"));
@@ -688,6 +708,27 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
         return new ChatModel();
     }
 
+    private void sendFile(Intent data) {
+        ArrayList<FileItemData> result = (ArrayList<FileItemData>) data.getSerializableExtra(FileActivity.INTENT_FILE);
+        if (result == null) {
+            return;
+        }
+        if (CollectionUtils.isEmpty(result)) {
+            return;
+        }
+        for (FileItemData file : result) {
+            ChatData.Builder chatDataBuild = new ChatData.Builder()
+                    .icon(myIcon)
+                    .localFile(file.getFilePath())
+                    .msgType(PhotonIMMessage.FILE)
+                    .chatType(chatType)
+                    .chatWith(chatWith)
+                    .from(loginUserId)
+                    .to(chatWith);
+
+            sendMsg(chatDataBuild);
+        }
+    }
     private void sendMap(Intent data) {
         MyLocation result = (MyLocation) data.getSerializableExtra(MapActivity.MAP_LOCATION);
         if (result == null) {

@@ -26,4 +26,5 @@ public class Constants {
     public static final int REQUEST_VIDEO = 1002;
     public static final int REQUEST_MAP = 1003;
     public static final int REQUEST_PREVIEW_CODE = 1004;
+    public static final int REQUEST_FILE = 1005;
 }

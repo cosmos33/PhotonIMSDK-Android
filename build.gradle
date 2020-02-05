@@ -37,7 +37,7 @@ allprojects {
         ext_targetSdkVersion = 29
         ext_buildToolsVersion = "28.0.3"
         // 国内
-        imversion = "com.cosmos.photon:im:2.2.0"
+        imversion = "com.cosmos.photon:im:2.3.0"
         applicationID = "com.wemomo.cosmos.photonim"
 
         // 海外

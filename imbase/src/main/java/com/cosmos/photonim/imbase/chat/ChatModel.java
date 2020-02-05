@@ -2,8 +2,10 @@ package com.cosmos.photonim.imbase.chat;
 
 import com.cosmos.photon.im.PhotonIMClient;
 import com.cosmos.photon.im.PhotonIMDatabase;
+import com.cosmos.photon.im.PhotonIMFileManager;
 import com.cosmos.photon.im.PhotonIMMessage;
 import com.cosmos.photon.im.messagebody.PhotonIMAudioBody;
+import com.cosmos.photon.im.messagebody.PhotonIMFileBody;
 import com.cosmos.photon.im.messagebody.PhotonIMImageBody;
 import com.cosmos.photon.im.messagebody.PhotonIMLocationBody;
 import com.cosmos.photonim.imbase.ImBaseBridge;
@@ -254,7 +256,7 @@ public class ChatModel extends IChatModel {
 
     private void sendTextMsgInner(ChatData chatData) {
         EventBus.getDefault().post(new ChatDataWrapper(chatData, PhotonIMMessage.SENDING, null));
-        TaskExecutor.getInstance().createAsycTaskChat(() -> sendMsg(chatData, null));
+        TaskExecutor.getInstance().createAsycTaskChat(() -> sendMsgInner(chatData, null));
     }
 
 
@@ -281,6 +283,29 @@ public class ChatModel extends IChatModel {
         uploadVoiceFileInner(chatData, onVoiceUploadListener);
     }
 
+    @Override
+    public void uploadFile(ChatData chatData, OnFileUploadListener onFileUploadListener) {
+        EventBus.getDefault().post(new ChatDataWrapper(chatData, PhotonIMMessage.SENDING, null));
+        PhotonIMMessage message = chatData.convertToIMMessage();
+        PhotonIMFileManager.getInstance().uploadMessage(message, new PhotonIMFileManager.FileLoadListener() {
+            @Override
+            public void onLoad(int i, String s, String s1) {
+                if (onFileUploadListener != null) {
+                    if (i == 0) {
+                        PhotonIMFileBody body = (PhotonIMFileBody) message.body;
+                        chatData.setFileUrl(body.url);
+                    }
+                    onFileUploadListener.onFileUpload(i == 0, chatData);
+                }
+            }
+
+            @Override
+            public void onProgress(int i) {
+
+            }
+        });
+    }
+
     private void uploadVoiceFileInner(ChatData chatData, OnVoiceUploadListener onVoiceUploadListener) {
         EventBus.getDefault().post(new ChatDataWrapper(chatData, PhotonIMMessage.SENDING, null));
         TaskExecutor.getInstance().createAsycTask(() -> {
@@ -295,8 +320,8 @@ public class ChatModel extends IChatModel {
     }
 
     @Override
-    public void sendPicMsg(ChatData chatData, OnMsgSendListener onMsgSendListener) {
-        TaskExecutor.getInstance().createAsycTaskChat(() -> sendMsg(chatData, onMsgSendListener));
+    public void sendMsg(ChatData chatData, OnMsgSendListener onMsgSendListener) {
+        TaskExecutor.getInstance().createAsycTaskChat(() -> sendMsgInner(chatData, onMsgSendListener));
     }
 
     @Override
@@ -305,7 +330,7 @@ public class ChatModel extends IChatModel {
             if (chatDatas.size() <= 0)
                 return null;
             for (ChatData chatDatum : chatDatas) {
-                sendMsg(chatDatum, null);
+                sendMsgInner(chatDatum, null);
             }
             return null;
         });
@@ -313,7 +338,7 @@ public class ChatModel extends IChatModel {
 
     @Override
     public void sendVoiceFileMsg(ChatData chatData, OnMsgSendListener onMsgSendListener) {
-        TaskExecutor.getInstance().createAsycTaskChat(() -> sendMsg(chatData, onMsgSendListener));
+        TaskExecutor.getInstance().createAsycTaskChat(() -> sendMsgInner(chatData, onMsgSendListener));
     }
 
     @Override
@@ -429,7 +454,7 @@ public class ChatModel extends IChatModel {
         return null;
     }
 
-    private Object sendMsg(ChatData chatData, OnMsgSendListener onMsgSendListener) {
+    private Object sendMsgInner(ChatData chatData, OnMsgSendListener onMsgSendListener) {
         PhotonIMMessage message = chatData.convertToIMMessage();
         PhotonIMDatabase.getInstance().saveMessage(message);
 

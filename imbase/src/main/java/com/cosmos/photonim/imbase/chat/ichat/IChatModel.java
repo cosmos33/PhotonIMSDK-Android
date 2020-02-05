@@ -40,11 +40,13 @@ public abstract class IChatModel implements IModel {
 
     public abstract void uploadVoiceFile(ChatData chatData, OnVoiceUploadListener onVoiceUploadListener);
 
+    public abstract void uploadFile(ChatData chatData, OnFileUploadListener onFileUploadListener);
+
     public abstract void sendTextMsg(ChatData chatData);
 
     public abstract void deleteMsg(ChatData chatData, OnDeleteMsgListener onDeleteMsgListener);
 
-    public abstract void sendPicMsg(ChatData chatData, OnMsgSendListener onMsgSendListener);
+    public abstract void sendMsg(ChatData chatData, OnMsgSendListener onMsgSendListener);
 
     public abstract void sendMsgMulti(List<ChatData> chatDatas, OnMsgSendListener onMsgSendListener);
 
@@ -78,6 +80,10 @@ public abstract class IChatModel implements IModel {
 
     public interface OnVoiceUploadListener {
         void onVoiceFileUpload(ChatData chatData, JsonResult result);
+    }
+
+    public interface OnFileUploadListener {
+        void onFileUpload(boolean success, ChatData chatData);
     }
 
     public interface OnRevertListener {

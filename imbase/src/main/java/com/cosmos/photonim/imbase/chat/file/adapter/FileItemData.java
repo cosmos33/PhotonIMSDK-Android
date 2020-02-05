@@ -9,9 +9,10 @@ import com.cosmos.photonim.imbase.utils.TimeUtils;
 import com.cosmos.photonim.imbase.utils.recycleadapter.ItemData;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.Date;
 
-public class FileItemData implements ItemData {
+public class FileItemData implements ItemData, Serializable {
     private File file;
     private int childSize;
     private String time;
