@@ -32,6 +32,8 @@ import com.cosmos.photonim.imbase.utils.VoiceHelper;
 import com.cosmos.photonim.imbase.utils.event.ChatDataWrapper;
 import com.cosmos.photonim.imbase.utils.event.ClearUnReadStatus;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonUploadImage;
+import com.cosmos.photonim.imbase.utils.looperexecute.CustomRunnable;
+import com.cosmos.photonim.imbase.utils.looperexecute.MainLooperExecuteUtil;
 import com.cosmos.photonim.imbase.view.ChatToastUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -69,6 +71,7 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
     private HashMap<String, ChatData> chatMsgMap;//key:msgId
     private boolean lastLoadHistoryFromRemote = false;
     private boolean firstLoad = true;
+    private HashMap<String, ChatData> downloadData;
 
     public ChatPresenter(IChatView iView) {
         super(iView);
@@ -634,11 +637,23 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
             LogUtils.log(TAG, "fileurl == null");
             return;
         }
+        if (downloadData != null && downloadData.get(chatData.getMsgId()) != null) {
+            getIView().toast("下载中");
+            return;
+        }
+        if (downloadData == null) {
+            downloadData = new HashMap<>();
+        }
+        downloadData.put(chatData.getMsgId(), chatData);
 //        File file = new File(Environment.getExternalStorageDirectory(), FileUtils.VOICE_PATH_RECEIVE + fileUrlName);
 //        FileUtils.createFile(file);
+        chatData.setDownloading(true);
+        getIView().notifyItemChanged(chatData.getListPostion());
         getiModel().getFile(chatData, null, new IChatModel.OnGetFileListener() {
             @Override
             public void onGetFile(String path) {
+                downloadData.remove(chatData.getMsgId());
+                chatData.setDownloading(false);
                 if (TextUtils.isEmpty(path)) {
                     getIView().toast("下载失败");
                     return;
@@ -650,7 +665,14 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
             public void onProgress(ChatData chatData, int progress) {
                 chatData.setDownloadProgress(progress);
                 LogUtils.log(String.format("download progress %d", progress));
-                getIView().notifyItemChanged(chatData.getListPostion());
+                CustomRunnable customRunnable = new CustomRunnable.Builder()
+                        .runnable(new Runnable() {
+                            @Override
+                            public void run() {
+                                getIView().notifyItemChanged(chatData.getListPostion());
+                            }
+                        }).build();
+                MainLooperExecuteUtil.getInstance().post(customRunnable);
             }
         });
     }

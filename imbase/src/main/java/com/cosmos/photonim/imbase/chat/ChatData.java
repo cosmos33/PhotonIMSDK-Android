@@ -65,6 +65,7 @@ public class ChatData implements ItemData, Parcelable, Cloneable {
     private String videoCover;
     private int downloadProgress;
     private double videowhRatio;
+    private boolean downloading;
 
 //    private MsgExtra extra;
 
@@ -429,6 +430,13 @@ public class ChatData implements ItemData, Parcelable, Cloneable {
         return videowhRatio;
     }
 
+    public boolean isDownloading() {
+        return downloading;
+    }
+
+    public void setDownloading(boolean downloading) {
+        this.downloading = downloading;
+    }
 
     public static final class Builder implements Serializable {
         private String msgId;

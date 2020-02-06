@@ -14,6 +14,7 @@ import com.cosmos.photonim.imbase.utils.image.ImageLoaderUtils;
 import com.cosmos.photonim.imbase.utils.recycleadapter.ItemData;
 import com.cosmos.photonim.imbase.utils.recycleadapter.ItemTypeAbstract;
 import com.cosmos.photonim.imbase.utils.recycleadapter.RvViewHolder;
+import com.cosmos.photonim.imbase.view.DownLoadProgress;
 
 public abstract class ChatItemTypeAbstract extends ItemTypeAbstract {
     protected ChatData chatData;
@@ -89,6 +90,13 @@ public abstract class ChatItemTypeAbstract extends ItemTypeAbstract {
                 fileName.setText(chatData.getFileName());
                 TextView fileSize = (TextView) rvViewHolder.getView(R.id.tvFileSize);
                 fileSize.setText(chatData.getFileSize());
+                DownLoadProgress progress = (DownLoadProgress) rvViewHolder.getView(R.id.progress);
+                if (chatData.isDownloading()) {
+                    progress.setVisibility(View.VISIBLE);
+                    progress.setCurrentProgress(chatData.getDownloadProgress());
+                } else {
+                    progress.setVisibility(View.GONE);
+                }
                 break;
             case PhotonIMMessage.VIDEO:
                 setVisible(rvViewHolder, R.id.flVideo);
@@ -97,6 +105,13 @@ public abstract class ChatItemTypeAbstract extends ItemTypeAbstract {
                 ivCover.setVisibility(View.VISIBLE);
                 ImageLoaderUtils.getInstance().loadImage(ivCover.getContext(), chatData.getVideoCover(), R.drawable.chat_placeholder, ivCover);
                 ((TextView) rvViewHolder.getView(R.id.tvVideoTime)).setText(chatData.getVideoTime());
+                progress = (DownLoadProgress) rvViewHolder.getView(R.id.progress);
+                if (chatData.isDownloading()) {
+                    progress.setVisibility(View.VISIBLE);
+                    progress.setCurrentProgress(chatData.getDownloadProgress());
+                } else {
+                    progress.setVisibility(View.GONE);
+                }
                 break;
         }
         ImageLoaderUtils.getInstance().loadImage(view.getContext(), chatData.getIcon(), R.drawable.head_placeholder, (ImageView) rvViewHolder.getView(R.id.ivIcon));

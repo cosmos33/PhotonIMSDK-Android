@@ -34,4 +34,10 @@
             android:text="00:23" />
     </LinearLayout>
 
+    <com.cosmos.photonim.imbase.view.DownLoadProgress
+        android:id="@+id/progress"
+        android:layout_width="100dp"
+        android:layout_gravity="center"
+        android:layout_height="100dp" />
+
 </FrameLayout>
