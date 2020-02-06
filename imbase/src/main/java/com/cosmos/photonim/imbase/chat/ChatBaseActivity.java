@@ -24,6 +24,7 @@ import com.cosmos.photonim.imbase.chat.image.VideoPreviewActivity;
 import com.cosmos.photonim.imbase.chat.map.MapActivity;
 import com.cosmos.photonim.imbase.chat.media.video.VideoInfo;
 import com.cosmos.photonim.imbase.utils.AtEditText;
+import com.cosmos.photonim.imbase.utils.OpenFileUtils;
 import com.cosmos.photonim.imbase.utils.ToastUtils;
 import com.cosmos.photonim.imbase.utils.Utils;
 import com.cosmos.photonim.imbase.utils.event.AlertEvent;
@@ -309,59 +310,75 @@ public abstract class ChatBaseActivity extends IChatView {
             chatAdapter.setRvListener(new RvListenerImpl() {
                 @Override
                 public void onClick(View view, Object data, int position) {
-                    ChatData chatData = (ChatData) data;
-                    int viewId = view.getId();
-                    if (viewId == R.id.llVoice) {
-                        presenter.cancelPlay();
-                        if (chatData.getFrom().equals(ImBaseBridge.getInstance().getUserId())) {
-                            presenter.play(ChatBaseActivity.this, ((ChatData) data).getLocalFile());
-                        } else {
-                            if (TextUtils.isEmpty(((ChatData) data).getLocalFile())) {
-                                ToastUtils.showText(ChatBaseActivity.this, "请稍后");
-                                return;
-                            }
-                            presenter.play(ChatBaseActivity.this, ((ChatData) data).getLocalFile());
-                        }
-                    } else if (viewId == R.id.ivWarn) {
-                        presenter.removeData(chatData);
-                        chatAdapter.notifyDataSetChanged();
-//                        chatAdapter.notifyItemRemoved(chatData.getListPostion());
-                        resendMsg(chatData);
-                    } else if (viewId == R.id.ivPic) {
-                        // TODO: 2019-08-19 图片的获取移到其他位置获取
-                        ArrayList<String> urls = new ArrayList<>();
-                        int currentPosition = presenter.getImageUrls(chatData, urls);
-                        ImageCheckActivity.startActivity(ChatBaseActivity.this, urls, currentPosition);
-                    } else if (viewId == R.id.llLocation) {
-
-                        MapActivity.start(ChatBaseActivity.this, chatData);
-                    } else if (viewId == R.id.flVideo) {
-                        if (TextUtils.isEmpty(chatData.getLocalFile())) {
-                            toast("下载中...");
-                            presenter.downLoadFile(chatData);
-                        } else {
-                            VideoInfo videoInfo = new VideoInfo();
-                            videoInfo.path = chatData.getLocalFile();
-                            videoInfo.videoTime = chatData.getVideoTimeL();
-                            videoInfo.videoCoverPath = chatData.getVideoCover();
-                            videoInfo.height = 1;
-                            videoInfo.width = (int) (chatData.getVideowhRatio() * videoInfo.height);
-                            VideoPreviewActivity.startActivity(ChatBaseActivity.this, videoInfo);
-                        }
-                    }
+                    onItemClick(view, data);
                 }
 
                 @Override
                 public void onLongClick(View view, Object data, int position) {
                     ChatData chatData = (ChatData) data;
                     int i = view.getId();
-                    if (i == R.id.tvContent || i == R.id.llVoice || i == R.id.ivPic || i == R.id.llLocation) {
+                    if (i == R.id.tvContent
+                            || i == R.id.llVoice
+                            || i == R.id.ivPic
+                            || i == R.id.llLocation
+                            || i == R.id.llFileContainer
+                            || i == R.id.flVideo) {
                         showPopupMenu(chatData, view);
                     }
                 }
             });
         }
         return chatAdapter;
+    }
+
+    private void onItemClick(View view, Object data) {
+        ChatData chatData = (ChatData) data;
+        int viewId = view.getId();
+        if (viewId == R.id.llVoice) {
+            presenter.cancelPlay();
+            if (chatData.getFrom().equals(ImBaseBridge.getInstance().getUserId())) {
+                presenter.play(ChatBaseActivity.this, ((ChatData) data).getLocalFile());
+            } else {
+                if (TextUtils.isEmpty(((ChatData) data).getLocalFile())) {
+                    ToastUtils.showText(ChatBaseActivity.this, "请稍后");
+                    return;
+                }
+                presenter.play(ChatBaseActivity.this, ((ChatData) data).getLocalFile());
+            }
+        } else if (viewId == R.id.ivWarn) {
+            presenter.removeData(chatData);
+            chatAdapter.notifyDataSetChanged();
+//                        chatAdapter.notifyItemRemoved(chatData.getListPostion());
+            resendMsg(chatData);
+        } else if (viewId == R.id.ivPic) {
+            // TODO: 2019-08-19 图片的获取移到其他位置获取
+            ArrayList<String> urls = new ArrayList<>();
+            int currentPosition = presenter.getImageUrls(chatData, urls);
+            ImageCheckActivity.startActivity(ChatBaseActivity.this, urls, currentPosition);
+        } else if (viewId == R.id.llLocation) {
+
+            MapActivity.start(ChatBaseActivity.this, chatData);
+        } else if (viewId == R.id.flVideo) {
+            if (TextUtils.isEmpty(chatData.getLocalFile())) {
+                toast("下载中...");
+                presenter.downLoadFile(chatData);
+            } else {
+                VideoInfo videoInfo = new VideoInfo();
+                videoInfo.path = chatData.getLocalFile();
+                videoInfo.videoTime = chatData.getVideoTimeL();
+                videoInfo.videoCoverPath = chatData.getVideoCover();
+                videoInfo.height = 1;
+                videoInfo.width = (int) (chatData.getVideowhRatio() * videoInfo.height);
+                VideoPreviewActivity.startActivity(ChatBaseActivity.this, videoInfo);
+            }
+        } else if (viewId == R.id.llFileContainer) {
+            if (TextUtils.isEmpty(chatData.getLocalFile())) {
+                toast("下载中...");
+                presenter.downLoadFile(chatData);
+            } else {
+                OpenFileUtils.openFile(this, chatData.getLocalFile());
+            }
+        }
     }
 
     private void resendMsg(ChatData chatData) {

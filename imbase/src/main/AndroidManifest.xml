@@ -33,5 +33,15 @@
         <activity android:name=".chat.album.preview.ImagePreviewActivity" />
         <activity android:name=".chat.file.FileActivity" />
         <activity android:name=".chat.image.VideoPreviewActivity" />
+
+        <provider
+            android:name=".utils.GenericFileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
     </application>
 </manifest>

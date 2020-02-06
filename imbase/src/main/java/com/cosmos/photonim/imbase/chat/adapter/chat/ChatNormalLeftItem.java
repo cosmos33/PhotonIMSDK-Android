@@ -85,18 +85,20 @@ public class ChatNormalLeftItem extends ChatItemTypeAbstract {
     }
 
     private boolean loadFile(ItemData data) {
-        return (chatData.getMsgType() == PhotonIMMessage.AUDIO || chatData.getMsgType() == PhotonIMMessage.FILE)
+        return (chatData.getMsgType() == PhotonIMMessage.AUDIO
+//                || chatData.getMsgType() == PhotonIMMessage.FILE
+        )
                 && TextUtils.isEmpty(((ChatData) data).getLocalFile());
     }
 
     @Override
     public int[] getOnClickViews() {
-        return new int[]{R.id.tvContent, R.id.llVoice, R.id.ivPic, R.id.llLocation, R.id.flVideo};
+        return new int[]{R.id.tvContent, R.id.llVoice, R.id.ivPic, R.id.llLocation, R.id.flVideo, R.id.llFileContainer};
     }
 
     @Override
     public int[] getOnLongClickViews() {
-        return new int[]{R.id.tvContent, R.id.llVoice, R.id.ivPic, R.id.llLocation, R.id.flVideo};
+        return new int[]{R.id.tvContent, R.id.llVoice, R.id.ivPic, R.id.llLocation, R.id.flVideo, R.id.llFileContainer};
     }
 
     public interface OnGetVoiceFileListener {

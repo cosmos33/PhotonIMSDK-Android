@@ -249,8 +249,8 @@ public class ChatModel extends IChatModel {
                             new PhotonIMClient.PhotonIMSendCallback() {
                                 @Override
                                 public void onSent(int code, String msg, long time) {
-//                                    PhotonIMDatabase.getInstance().deleteMessage(chatData.getChatType(), chatData.getChatWith(), chatData.getMsgId());
                                     if (code == 0) {
+                                        PhotonIMDatabase.getInstance().deleteMessage(chatData.getChatType(), chatData.getChatWith(), chatData.getMsgId());
                                         EventBus.getDefault().post(new ChatDataWrapper(chatData, code, msg, ChatDataWrapper.STATUS_DELETE));
                                     } else {
                                         onDeleteMsgListener.onDeletemsgResult(chatData, msg);
