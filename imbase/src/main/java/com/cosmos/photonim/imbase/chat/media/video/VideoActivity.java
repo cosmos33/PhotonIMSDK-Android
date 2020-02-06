@@ -40,9 +40,9 @@ public class VideoActivity extends BaseActivity {
                     recordResultFragment.setOnChangeFragmentListener(new OnReturnFragmentListener() {
 
                         @Override
-                        public void onDoneClick(String result) {
+                        public void onDoneClick(VideoInfo videoInfo) {
                             Intent intent = new Intent();
-                            intent.putExtra(RecordResultFragment.BUNDLE_VIDEO_PATH, result);
+                            intent.putExtra(RecordResultFragment.BUNDLE_VIDEO, videoInfo);
                             setResult(Activity.RESULT_OK, intent);
                             VideoActivity.this.finish();
                         }

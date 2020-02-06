@@ -60,7 +60,7 @@ public abstract class IChatPresenter<V extends IChatView, M extends IChatModel> 
 
     public abstract void cancelRecord();
 
-    public abstract void getVoiceFile(ChatData chatData);
+    public abstract void downLoadFile(ChatData chatData);
 
     public abstract void updateExtra(ChatData messageData);
 

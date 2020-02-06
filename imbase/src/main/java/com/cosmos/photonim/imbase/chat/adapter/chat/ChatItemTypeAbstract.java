@@ -95,13 +95,8 @@ public abstract class ChatItemTypeAbstract extends ItemTypeAbstract {
 
                 ImageView ivCover = (ImageView) rvViewHolder.getView(R.id.ivCover);
                 ivCover.setVisibility(View.VISIBLE);
-                // TODO: 2019-08-07 chatData.getLocalFile() 判断对方的
-                if (!TextUtils.isEmpty(chatData.getLocalFile())) {
-                    ImageLoaderUtils.getInstance().loadImage(ivCover.getContext(), chatData.getLocalFile(), R.drawable.chat_placeholder, ivCover);
-                } else {
-                    ImageLoaderUtils.getInstance().loadImage(ivCover.getContext(), chatData.getFileUrl(), R.drawable.chat_placeholder, ivCover);
-                }
-                ((TextView) rvViewHolder.getView(R.id.tvTime)).setText(chatData.getMediaTimeShow());
+                ImageLoaderUtils.getInstance().loadImage(ivCover.getContext(), chatData.getVideoCover(), R.drawable.chat_placeholder, ivCover);
+                ((TextView) rvViewHolder.getView(R.id.tvVideoTime)).setText(chatData.getVideoTime());
                 break;
         }
         ImageLoaderUtils.getInstance().loadImage(view.getContext(), chatData.getIcon(), R.drawable.head_placeholder, (ImageView) rvViewHolder.getView(R.id.ivIcon));

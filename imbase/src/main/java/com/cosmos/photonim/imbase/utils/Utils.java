@@ -241,4 +241,8 @@ public class Utils {
         }
         return null;
     }
+
+    public static String videoTime(long time) {
+        return String.format("%d:%d", time / 60, time % 60);
+    }
 }

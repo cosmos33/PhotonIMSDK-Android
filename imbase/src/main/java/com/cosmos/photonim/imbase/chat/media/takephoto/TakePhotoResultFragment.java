@@ -7,7 +7,7 @@ import android.view.View;
 import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.R2;
 import com.cosmos.photonim.imbase.base.BaseFragment;
-import com.cosmos.photonim.imbase.chat.media.OnReturnFragmentListener;
+import com.cosmos.photonim.imbase.chat.media.OnReturnPicFragmentListener;
 import com.cosmos.photonim.imbase.utils.ToastUtils;
 import com.github.chrisbanes.photoview.PhotoView;
 
@@ -20,7 +20,7 @@ public class TakePhotoResultFragment extends BaseFragment {
     PhotoView photoView;
 
     private String photoPath;
-    private OnReturnFragmentListener onChangeFragmentListener;
+    private OnReturnPicFragmentListener onChangeFragmentListener;
 
     @Override
     public int getLayoutId() {
@@ -58,7 +58,7 @@ public class TakePhotoResultFragment extends BaseFragment {
         }
     }
 
-    public void setOnChangeFragmentListener(OnReturnFragmentListener onChangeFragmentListener) {
+    public void setOnChangeFragmentListener(OnReturnPicFragmentListener onChangeFragmentListener) {
         this.onChangeFragmentListener = onChangeFragmentListener;
     }
 }

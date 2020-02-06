@@ -32,5 +32,6 @@
         <activity android:name=".chat.album.AlbumActivity" />
         <activity android:name=".chat.album.preview.ImagePreviewActivity" />
         <activity android:name=".chat.file.FileActivity" />
+        <activity android:name=".chat.image.VideoPreviewActivity" />
     </application>
 </manifest>

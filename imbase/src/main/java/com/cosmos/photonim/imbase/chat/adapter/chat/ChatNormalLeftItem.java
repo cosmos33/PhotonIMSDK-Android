@@ -48,7 +48,7 @@ public class ChatNormalLeftItem extends ChatItemTypeAbstract {
     public void fillContent(RvViewHolder rvViewHolder, int position, ItemData data) {
         super.fillContent(rvViewHolder, position, data);
         fillMsgContent(rvViewHolder);
-        if (chatData.getMsgType() == PhotonIMMessage.AUDIO && TextUtils.isEmpty(((ChatData) data).getLocalFile())) {
+        if (loadFile(data)) {
             if (onGetVoiceFileListener != null) {
                 onGetVoiceFileListener.onGetVoice((ChatData) data);
             }
@@ -84,14 +84,19 @@ public class ChatNormalLeftItem extends ChatItemTypeAbstract {
         }
     }
 
+    private boolean loadFile(ItemData data) {
+        return (chatData.getMsgType() == PhotonIMMessage.AUDIO || chatData.getMsgType() == PhotonIMMessage.FILE)
+                && TextUtils.isEmpty(((ChatData) data).getLocalFile());
+    }
+
     @Override
     public int[] getOnClickViews() {
-        return new int[]{R.id.tvContent, R.id.llVoice, R.id.ivPic, R.id.llLocation};
+        return new int[]{R.id.tvContent, R.id.llVoice, R.id.ivPic, R.id.llLocation, R.id.flVideo};
     }
 
     @Override
     public int[] getOnLongClickViews() {
-        return new int[]{R.id.tvContent, R.id.llVoice, R.id.ivPic, R.id.llLocation};
+        return new int[]{R.id.tvContent, R.id.llVoice, R.id.ivPic, R.id.llLocation, R.id.flVideo};
     }
 
     public interface OnGetVoiceFileListener {

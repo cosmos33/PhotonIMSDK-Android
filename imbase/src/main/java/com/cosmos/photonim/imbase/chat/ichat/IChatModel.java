@@ -46,17 +46,17 @@ public abstract class IChatModel implements IModel {
 
     public abstract void deleteMsg(ChatData chatData, OnDeleteMsgListener onDeleteMsgListener);
 
-    public abstract void sendMsg(ChatData chatData, OnMsgSendListener onMsgSendListener);
+    public abstract void updateAndsendMsg(ChatData chatData, OnMsgSendListener onMsgSendListener);
 
     public abstract void sendMsgMulti(List<ChatData> chatDatas, OnMsgSendListener onMsgSendListener);
 
-    public abstract void sendVoiceFileMsg(ChatData chatData, OnMsgSendListener onMsgSendListener);
+//    public abstract void sendVoiceFileMsg(ChatData chatData, OnMsgSendListener onMsgSendListener);
 
     public abstract void revertMsg(ChatData data, OnRevertListener onRevertListener);
 
     public abstract void sendReadMsg(ChatData messageData, OnSendReadListener onSendReadListener);
 
-    public abstract void getVoiceFile(ChatData chatData, String savePath, OnGetFileListener onGetFileListener);
+    public abstract void getFile(ChatData chatData, String savePath, OnGetFileListener onGetFileListener);
 
     public abstract void updateExtra(ChatData messageData);
 
@@ -96,6 +96,8 @@ public abstract class IChatModel implements IModel {
 
     public interface OnGetFileListener {
         void onGetFile(String path);
+
+        void onProgress(ChatData chatData, int progress);
     }
 
     public interface OnDeleteMsgListener {

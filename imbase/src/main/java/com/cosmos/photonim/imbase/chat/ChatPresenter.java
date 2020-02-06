@@ -20,6 +20,7 @@ import com.cosmos.photonim.imbase.chat.ichat.IChatView;
 import com.cosmos.photonim.imbase.chat.map.MapActivity;
 import com.cosmos.photonim.imbase.chat.media.takephoto.TakePhotoResultFragment;
 import com.cosmos.photonim.imbase.chat.media.video.RecordResultFragment;
+import com.cosmos.photonim.imbase.chat.media.video.VideoInfo;
 import com.cosmos.photonim.imbase.utils.AtEditText;
 import com.cosmos.photonim.imbase.utils.CollectionUtils;
 import com.cosmos.photonim.imbase.utils.Constants;
@@ -31,7 +32,6 @@ import com.cosmos.photonim.imbase.utils.VoiceHelper;
 import com.cosmos.photonim.imbase.utils.event.ChatDataWrapper;
 import com.cosmos.photonim.imbase.utils.event.ClearUnReadStatus;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonUploadImage;
-import com.cosmos.photonim.imbase.utils.http.jsons.JsonUploadVoice;
 import com.cosmos.photonim.imbase.view.ChatToastUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -190,12 +190,8 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
                 sendPicMsgInner(chatData);
                 break;
             case PhotonIMMessage.AUDIO:
-                sendVoice(chatData);
-                break;
-            case PhotonIMMessage.VIDEO:
-                sendVideo(chatData);
-                break;
             case PhotonIMMessage.FILE:
+            case PhotonIMMessage.VIDEO:
                 sendFile(chatData);
                 break;
         }
@@ -203,20 +199,22 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
     }
 
     private void sendFile(ChatData chatData) {
-        getiModel().uploadFile(chatData, new IChatModel.OnFileUploadListener() {
-            @Override
-            public void onFileUpload(boolean success, ChatData chatData) {
-                if (success) {
-                    getiModel().sendMsg(chatData, null);
-                } else {
-                    EventBus.getDefault().post(new ChatDataWrapper(chatData, PhotonIMMessage.SEND_FAILED, null));
+        EventBus.getDefault().post(new ChatDataWrapper(chatData, PhotonIMMessage.SENDING, null));
+        if (TextUtils.isEmpty(chatData.getFileUrl())) {// TODO: 2020-02-05 maybe judge file is exist?
+            getiModel().uploadFile(chatData, new IChatModel.OnFileUploadListener() {
+                @Override
+                public void onFileUpload(boolean success, ChatData chatData) {
+                    if (success) {
+                        getiModel().updateAndsendMsg(chatData, null);
+                    } else {
+                        getiModel().updateStatus(chatData.getChatType(), chatData.getChatWith(), chatData.getMsgId(), PhotonIMMessage.SEND_FAILED);
+                        EventBus.getDefault().post(new ChatDataWrapper(chatData, ChatModel.MSG_ERROR_CODE_UPLOAD_PIC_FAILED, "上传失败"));
+                    }
                 }
-            }
-        });
-    }
-
-    private void sendVideo(ChatData chatData) {
-        // TODO: 2020-01-07
+            });
+        } else {
+            getiModel().updateAndsendMsg(chatData, null);
+        }
     }
 
     @Override
@@ -232,10 +230,9 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
                 sendPicMsgInner(chatData);
                 break;
             case PhotonIMMessage.AUDIO:
-                sendVoice(chatData);
-                break;
             case PhotonIMMessage.VIDEO:
-                sendVideo(chatData);
+            case PhotonIMMessage.FILE:
+                sendFile(chatData);
                 break;
         }
     }
@@ -513,7 +510,7 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
                 JsonUploadImage jsonUploadImage = (JsonUploadImage) result.get();
                 String url = jsonUploadImage.getData().getUrl();
                 chatData.setFileUrl(url);
-                getiModel().sendMsg(chatData, null);
+                getiModel().updateAndsendMsg(chatData, null);
             } else {
                 getiModel().updateStatus(chatData.getChatType(), chatData.getChatWith(), chatData.getMsgId(), PhotonIMMessage.SEND_FAILED);
                 EventBus.getDefault().post(new ChatDataWrapper(chatData, ChatModel.MSG_ERROR_CODE_UPLOAD_PIC_FAILED, "上传图片失败"));
@@ -521,19 +518,7 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
         });
     }
 
-    private void sendVoice(ChatData chatDataTemp) {
-        getiModel().uploadVoiceFile(chatDataTemp, (chatData, result) -> {
-            if (result.success()) {
-                JsonUploadVoice jsonUploadImage = (JsonUploadVoice) result.get();
-                String url = jsonUploadImage.getData().getUrl();
-                chatData.setFileUrl(url);
-                getiModel().sendVoiceFileMsg(chatData, null);
-            } else {
-                getiModel().updateStatus(chatData.getChatType(), chatData.getChatWith(), chatData.getMsgId(), PhotonIMMessage.SEND_FAILED);
-                EventBus.getDefault().post(new ChatDataWrapper(chatData, ChatModel.MSG_ERROR_CODE_UPLOAD_PIC_FAILED, "上传语音失败"));
-            }
-        });
-    }
+
 
     @Override
     public void revertMsg(ChatData data) {
@@ -643,18 +628,29 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
     }
 
     @Override
-    public void getVoiceFile(ChatData chatData) {
+    public void downLoadFile(ChatData chatData) {
         String fileUrlName = getFileUrlName(chatData.getFileUrl());
         if (fileUrlName == null) {
             LogUtils.log(TAG, "fileurl == null");
             return;
         }
-        File file = new File(Environment.getExternalStorageDirectory(), FileUtils.VOICE_PATH_RECEIVE + fileUrlName);
-        FileUtils.createFile(file);
-        getiModel().getVoiceFile(chatData, file.getAbsolutePath(), new IChatModel.OnGetFileListener() {
+//        File file = new File(Environment.getExternalStorageDirectory(), FileUtils.VOICE_PATH_RECEIVE + fileUrlName);
+//        FileUtils.createFile(file);
+        getiModel().getFile(chatData, null, new IChatModel.OnGetFileListener() {
             @Override
             public void onGetFile(String path) {
+                if (TextUtils.isEmpty(path)) {
+                    getIView().toast("下载失败");
+                    return;
+                }
                 getIView().onGetChatVoiceFileResult(chatData, path);
+            }
+
+            @Override
+            public void onProgress(ChatData chatData, int progress) {
+                chatData.setDownloadProgress(progress);
+                LogUtils.log(String.format("download progress %d", progress));
+                getIView().notifyItemChanged(chatData.getListPostion());
             }
         });
     }
@@ -751,13 +747,15 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
     }
 
     private void sendVideo(Intent data) {
-        String result = data.getStringExtra(RecordResultFragment.BUNDLE_VIDEO_PATH);
+        VideoInfo result = (VideoInfo) data.getSerializableExtra(RecordResultFragment.BUNDLE_VIDEO);
         if (result == null) {
             return;
         }
         ChatData.Builder chatDataBuild = new ChatData.Builder()
                 .icon(myIcon)
-                .localFile(result)
+                .localFile(result.path)
+                .videoCover(result.videoCoverPath)
+                .videoTime(result.videoTime)
                 .msgType(PhotonIMMessage.VIDEO)
                 .chatType(chatType)
                 .chatWith(chatWith)

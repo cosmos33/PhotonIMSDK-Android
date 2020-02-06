@@ -8,7 +8,7 @@ import android.support.annotation.Nullable;
 import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.base.BaseActivity;
 import com.cosmos.photonim.imbase.chat.media.OnChangeToResultFragmentListener;
-import com.cosmos.photonim.imbase.chat.media.OnReturnFragmentListener;
+import com.cosmos.photonim.imbase.chat.media.OnReturnPicFragmentListener;
 import com.cosmos.photonim.imbase.utils.Constants;
 
 public class TakePhotoActivity extends BaseActivity {
@@ -37,7 +37,7 @@ public class TakePhotoActivity extends BaseActivity {
                 if (takePhotoResultFragment == null) {
                     takePhotoResultFragment = (TakePhotoResultFragment) replaceNewFragment(R.id.flContainer,
                             "com.cosmos.photonim.imbase.chat.media.takephoto.TakePhotoResultFragment", args);
-                    takePhotoResultFragment.setOnChangeFragmentListener(new OnReturnFragmentListener() {
+                    takePhotoResultFragment.setOnChangeFragmentListener(new OnReturnPicFragmentListener() {
 
                         @Override
                         public void onDoneClick(String result) {

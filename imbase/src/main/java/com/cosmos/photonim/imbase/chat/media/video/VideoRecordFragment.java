@@ -17,6 +17,7 @@ import com.cosmos.photonim.imbase.base.BaseFragment;
 import com.cosmos.photonim.imbase.chat.media.OnChangeToResultFragmentListener;
 import com.cosmos.photonim.imbase.utils.FileUtils;
 import com.cosmos.photonim.imbase.utils.ToastUtils;
+import com.cosmos.photonim.imbase.utils.Utils;
 import com.cosmos.photonim.imbase.utils.looperexecute.CustomRunnable;
 import com.cosmos.photonim.imbase.utils.looperexecute.MainLooperExecuteUtil;
 import com.cosmos.photonim.imbase.utils.task.AsycTaskUtil;
@@ -98,7 +99,7 @@ public class VideoRecordFragment extends BaseFragment {
                                 @Override
                                 public void run() {
                                     timeCount += 1;
-                                    tvTime.setText((time = String.format("%d:%d", timeCount / 60, timeCount % 60)) + "(最长录制3分钟)");
+                                    tvTime.setText((time = Utils.videoTime(timeCount)) + "(最长录制3分钟)");
                                     if (timeCount * 1000 >= RECORD_MAX_TIME) {
                                         customRunnable.setCanceled(true);
                                         stopRecord();
@@ -185,18 +186,20 @@ public class VideoRecordFragment extends BaseFragment {
                 }
                 recorder.release();
                 if (onChangeFragmentListener != null) {
-                    Bundle bundle = new Bundle();
-                    bundle.putString(RecordResultFragment.BUNDLE_VIDEO_PATH, videoPath);
                     BmpInfo bmpInfo = (BmpInfo) result;
+                    Bundle bundle = new Bundle();
+                    VideoInfo videoInfo = new VideoInfo();
+                    videoInfo.videoTime = timeCount;
+                    videoInfo.path = videoPath;
+                    videoInfo.width = bmpInfo.width;
+                    videoInfo.height = bmpInfo.height;
+                    videoInfo.videoCoverPath = bmpInfo.path;
+                    bundle.putSerializable(RecordResultFragment.BUNDLE_VIDEO, videoInfo);
 //                    if (recorder.getRotateDegree() / 90 % 2 == 0) {
-                        bundle.putInt(RecordResultFragment.BUNDLE_VIDEO_COVER_WIDTH, bmpInfo.width);
-                        bundle.putInt(RecordResultFragment.BUNDLE_VIDEO_COVER_HEIGHT, bmpInfo.height);
-                    bundle.putString(RecordResultFragment.BUNDLE_VIDEO_TIME, time);
 //                    } else {
 //                        bundle.putInt(RecordResultFragment.BUNDLE_VIDEO_COVER_WIDTH, bmpInfo.height);
 //                        bundle.putInt(RecordResultFragment.BUNDLE_VIDEO_COVER_HEIGHT, bmpInfo.width);
 //                    }
-                    bundle.putString(RecordResultFragment.BUNDLE_VIDEO_COVER_PATH, bmpInfo.path);
                     onChangeFragmentListener.onChangeToResultFragment(bundle);
                 }
             }

@@ -20,7 +20,9 @@ import com.cosmos.photonim.imbase.base.mvp.base.IPresenter;
 import com.cosmos.photonim.imbase.chat.adapter.chat.ChatAdapter;
 import com.cosmos.photonim.imbase.chat.ichat.IChatView;
 import com.cosmos.photonim.imbase.chat.image.ImageCheckActivity;
+import com.cosmos.photonim.imbase.chat.image.VideoPreviewActivity;
 import com.cosmos.photonim.imbase.chat.map.MapActivity;
+import com.cosmos.photonim.imbase.chat.media.video.VideoInfo;
 import com.cosmos.photonim.imbase.utils.AtEditText;
 import com.cosmos.photonim.imbase.utils.ToastUtils;
 import com.cosmos.photonim.imbase.utils.Utils;
@@ -248,6 +250,7 @@ public abstract class ChatBaseActivity extends IChatView {
     public void onGetChatVoiceFileResult(ChatData data, String path) {
         data.setLocalFile(path);
         chatAdapter.notifyItemChanged(data.getListPostion());
+        toast("下载成功");
     }
 
     @OnClick(R2.id.etInput)
@@ -298,7 +301,7 @@ public abstract class ChatBaseActivity extends IChatView {
         if (chatAdapter == null) {
             chatAdapter = new ChatAdapter(presenter.initData(), (chatData) -> {
                 // TODO: 2019-08-17 已经下载中的无需下载
-                presenter.getVoiceFile(chatData);
+                presenter.downLoadFile(chatData);
             }, data -> presenter.sendReadMsg(data), chatData -> {
                 // TODO: 2019-08-17 已经下载中的无需下载
                 presenter.getInfo(chatData);
@@ -332,6 +335,19 @@ public abstract class ChatBaseActivity extends IChatView {
                     } else if (viewId == R.id.llLocation) {
 
                         MapActivity.start(ChatBaseActivity.this, chatData);
+                    } else if (viewId == R.id.flVideo) {
+                        if (TextUtils.isEmpty(chatData.getLocalFile())) {
+                            toast("下载中...");
+                            presenter.downLoadFile(chatData);
+                        } else {
+                            VideoInfo videoInfo = new VideoInfo();
+                            videoInfo.path = chatData.getLocalFile();
+                            videoInfo.videoTime = chatData.getVideoTimeL();
+                            videoInfo.videoCoverPath = chatData.getVideoCover();
+                            videoInfo.height = 1;
+                            videoInfo.width = (int) (chatData.getVideowhRatio() * videoInfo.height);
+                            VideoPreviewActivity.startActivity(ChatBaseActivity.this, videoInfo);
+                        }
                     }
                 }
 

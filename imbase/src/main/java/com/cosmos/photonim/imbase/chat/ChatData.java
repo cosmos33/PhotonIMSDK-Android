@@ -18,7 +18,9 @@ import com.cosmos.photonim.imbase.ImBaseBridge;
 import com.cosmos.photonim.imbase.chat.emoji.EmojiUtils;
 import com.cosmos.photonim.imbase.utils.AtSpan;
 import com.cosmos.photonim.imbase.utils.Constants;
+import com.cosmos.photonim.imbase.utils.FileUtils;
 import com.cosmos.photonim.imbase.utils.StringUtils;
+import com.cosmos.photonim.imbase.utils.Utils;
 import com.cosmos.photonim.imbase.utils.recycleadapter.ItemData;
 
 import java.io.Serializable;
@@ -34,7 +36,7 @@ public class ChatData implements ItemData, Parcelable, Cloneable {
     private String content;
     private SpannableString contentShow;
     private long mediaTime;
-    private String mediaTimeShow;
+    //    private String mediaTimeShow;
     private long time;
     private int msgStatus;
     //    private boolean illegal;
@@ -58,6 +60,11 @@ public class ChatData implements ItemData, Parcelable, Cloneable {
     private String fileName;
     private String fileSize;
     private long fileSizeL;
+    private long videoTimeL;
+    private String videoTime;
+    private String videoCover;
+    private int downloadProgress;
+    private double videowhRatio;
 
 //    private MsgExtra extra;
 
@@ -94,6 +101,10 @@ public class ChatData implements ItemData, Parcelable, Cloneable {
         fileName = builder.fileName;
         fileSizeL = builder.fileSizeL;
         fileSize = builder.fileSize == null ? SizeUtils.getSize(builder.fileSizeL) : builder.fileSize;
+
+        videoTimeL = builder.videoTimeL;
+        videoTime = Utils.videoTime(videoTimeL);
+        videoCover = builder.videoCover;
     }
 
 //    public static ChatData getForwardChatData(ChatData chatData) {
@@ -250,8 +261,28 @@ public class ChatData implements ItemData, Parcelable, Cloneable {
         return location;
     }
 
-    public String getMediaTimeShow() {
-        return mediaTimeShow;
+    //    public String getMediaTimeShow() {
+    //        return mediaTimeShow;
+    //    }
+
+    public String getVideoTime() {
+        return videoTime;
+    }
+
+    public long getVideoTimeL() {
+        return videoTimeL;
+    }
+
+    public String getVideoCover() {
+        return videoCover;
+    }
+
+    public int getDownloadProgress() {
+        return downloadProgress;
+    }
+
+    public void setDownloadProgress(int downloadProgress) {
+        this.downloadProgress = downloadProgress;
     }
 
     public PhotonIMMessage convertToIMMessage() {
@@ -288,9 +319,10 @@ public class ChatData implements ItemData, Parcelable, Cloneable {
                 break;
             case PhotonIMMessage.VIDEO:
                 PhotonIMVideoBody videoBody = new PhotonIMVideoBody();
-                videoBody.videoTime = mediaTime;
+                videoBody.videoTime = videoTimeL;
                 videoBody.url = fileUrl;
                 videoBody.localFile = localFile;
+                videoBody.coverUrl = videoCover;
                 photonIMMessage.body = videoBody;
                 break;
             case PhotonIMMessage.FILE:
@@ -393,6 +425,10 @@ public class ChatData implements ItemData, Parcelable, Cloneable {
         return fileSize;
     }
 
+    public double getVideowhRatio() {
+        return videowhRatio;
+    }
+
 
     public static final class Builder implements Serializable {
         private String msgId;
@@ -424,6 +460,10 @@ public class ChatData implements ItemData, Parcelable, Cloneable {
         private String fileName;
         private long fileSizeL;
         private String fileSize;
+        private long videoTimeL;
+        private String videoCover;
+        private double videowhRatio;
+
 //        private MsgExtra extra;
 
         public Builder() {
@@ -529,6 +569,21 @@ public class ChatData implements ItemData, Parcelable, Cloneable {
             return this;
         }
 
+        public Builder videoTime(long var) {
+            videoTimeL = var;
+            return this;
+        }
+
+        public Builder videoCover(String var) {
+            videoCover = var;
+            return this;
+        }
+
+        public Builder videowhRatio(double var) {
+            videowhRatio = var;
+            return this;
+        }
+
         public ChatData build() {
             if (body != null) {
                 switch (msgType) {
@@ -543,25 +598,27 @@ public class ChatData implements ItemData, Parcelable, Cloneable {
                     case PhotonIMMessage.IMAGE:
                         PhotonIMImageBody imageBody = (PhotonIMImageBody) body;
                         this.fileUrl = imageBody.url;
+                        this.localFile = imageBody.localFile;
                         break;
                     case PhotonIMMessage.AUDIO:
                         PhotonIMAudioBody audioBody = (PhotonIMAudioBody) body;
-                        this.time = audioBody.audioTime;
+                        this.voiceDuration = audioBody.audioTime;
                         this.localFile = audioBody.localFile;
                         this.fileUrl = audioBody.url;
                         break;
                     case PhotonIMMessage.VIDEO:
                         PhotonIMVideoBody videoBody = (PhotonIMVideoBody) body;
-                        this.time = videoBody.videoTime;
+                        this.videoTimeL = videoBody.videoTime;
                         this.localFile = videoBody.localFile;
                         this.fileUrl = videoBody.url;
+                        this.videoCover = videoBody.coverUrl;
                         break;
                     case PhotonIMMessage.FILE:
                         PhotonIMFileBody fileBody = (PhotonIMFileBody) body;
                         this.localFile = fileBody.localFile;
                         this.fileUrl = fileBody.url;
                         this.fileSizeL = fileBody.size;
-//                        this.fileName = fileBody.f
+                        this.fileName = FileUtils.getFileName(fileBody.localFile);
                         break;
                     case PhotonIMMessage.LOCATION:
                         if (this.location == null) {

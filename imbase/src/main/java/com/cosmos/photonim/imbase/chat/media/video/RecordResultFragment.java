@@ -20,11 +20,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class RecordResultFragment extends BaseFragment {
-    public static final String BUNDLE_VIDEO_PATH = "BUNDLE_VIDEO_PATH";
-    public static final String BUNDLE_VIDEO_COVER_PATH = "BUNDLE_VIDEO_COVER_PATH";
-    public static final String BUNDLE_VIDEO_COVER_WIDTH = "BUNDLE_VIDEO_COVER_WIDTH";
-    public static final String BUNDLE_VIDEO_COVER_HEIGHT = "BUNDLE_VIDEO_COVER_HEIGHT";
-    public static final String BUNDLE_VIDEO_TIME = "BUNDLE_VIDEO_TIME";
+    public static final String BUNDLE_VIDEO = "BUNDLE_VIDEO";
 
     @BindView(R2.id.player)
     CosmosPlayer player;
@@ -36,12 +32,9 @@ public class RecordResultFragment extends BaseFragment {
     TextView tvTime;
 
     private OnReturnFragmentListener onChangeFragmentListener;
-    private String videoPath;
-    private String videoCoverPath;
 
     private boolean startPlay;
-    private int width;
-    private int height;
+    private VideoInfo videoInfo;
 
     @Override
     public int getLayoutId() {
@@ -55,34 +48,30 @@ public class RecordResultFragment extends BaseFragment {
             ToastUtils.showText("photo path maybe null");
             return;
         }
-        videoPath = arguments.getString(BUNDLE_VIDEO_PATH);
-        videoCoverPath = arguments.getString(BUNDLE_VIDEO_COVER_PATH);
-        width = arguments.getInt(BUNDLE_VIDEO_COVER_WIDTH);
-        height = arguments.getInt(BUNDLE_VIDEO_COVER_HEIGHT);
-        String time = arguments.getString(BUNDLE_VIDEO_TIME);
-        tvTime.setText(time);
+        videoInfo = (VideoInfo) arguments.getSerializable(BUNDLE_VIDEO);
+        tvTime.setText(Utils.videoTime(videoInfo.videoTime));
 
         ViewGroup.LayoutParams layoutParams = playerContainer.getLayoutParams();
         int[] screenSize = Utils.getScreenSize(getContext());
         int layoutWidth = screenSize[0];
         int layoutHeight = screenSize[1];
 
-        double coverRatio = width * 1. / height;
+        double coverRatio = videoInfo.width * 1. / videoInfo.height;
         double layoutRatio = layoutWidth * 1. / layoutHeight;
         if (coverRatio >= layoutRatio) {
-            if (layoutWidth > width) {
-                layoutWidth = width;
+            if (layoutWidth > videoInfo.width) {
+                layoutWidth = videoInfo.width;
             }
             layoutParams.height = (int) (layoutWidth * 1. / coverRatio);
         } else {
-            if (layoutHeight > height) {
-                layoutHeight = height;
+            if (layoutHeight > videoInfo.height) {
+                layoutHeight = videoInfo.height;
             }
             layoutParams.width = (int) (layoutHeight * coverRatio);
         }
         playerContainer.setLayoutParams(layoutParams);
 
-        ImageLoaderUtils.getInstance().loadImage(getContext(), videoCoverPath, R.drawable.chat_placeholder, player.getCoverView());
+        ImageLoaderUtils.getInstance().loadImage(getContext(), videoInfo.videoCoverPath, R.drawable.chat_placeholder, player.getCoverView());
     }
 
     @OnClick(R2.id.ivPlayIcon)
@@ -95,7 +84,7 @@ public class RecordResultFragment extends BaseFragment {
                 player.resume();
             } else {
                 ivPlayIcon.setVisibility(View.GONE);
-                player.playVideo(videoPath);
+                player.playVideo(videoInfo.path);
                 startPlay = true;
             }
         }
@@ -112,7 +101,7 @@ public class RecordResultFragment extends BaseFragment {
     @OnClick(R2.id.ivDone)
     public void onDonwClick() {
         if (onChangeFragmentListener != null) {
-            onChangeFragmentListener.onDoneClick(videoPath);
+            onChangeFragmentListener.onDoneClick(videoInfo);
         }
     }
 

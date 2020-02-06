@@ -4,14 +4,9 @@ import com.cosmos.photon.im.PhotonIMClient;
 import com.cosmos.photon.im.PhotonIMDatabase;
 import com.cosmos.photon.im.PhotonIMFileManager;
 import com.cosmos.photon.im.PhotonIMMessage;
-import com.cosmos.photon.im.messagebody.PhotonIMAudioBody;
-import com.cosmos.photon.im.messagebody.PhotonIMFileBody;
-import com.cosmos.photon.im.messagebody.PhotonIMImageBody;
-import com.cosmos.photon.im.messagebody.PhotonIMLocationBody;
 import com.cosmos.photonim.imbase.ImBaseBridge;
 import com.cosmos.photonim.imbase.chat.ichat.IChatModel;
 import com.cosmos.photonim.imbase.utils.Constants;
-import com.cosmos.photonim.imbase.utils.FileUtils;
 import com.cosmos.photonim.imbase.utils.LogUtils;
 import com.cosmos.photonim.imbase.utils.TimeUtils;
 import com.cosmos.photonim.imbase.utils.dbhelper.DBHelperUtils;
@@ -108,7 +103,7 @@ public class ChatModel extends IChatModel {
                     .msgStatus(msgStatus)
                     .itemType(getItemType(photonIMMessage, ImBaseBridge.getInstance().getUserId()))
                     .msgBody(photonIMMessage.body);
-            changeBody(photonIMMessage, chatDataBuilder);
+//            changeBody(photonIMMessage, chatDataBuilder);
             ChatData chatData = chatDataBuilder.build();
             result.add(chatData);
             resultMap.put(photonIMMessage.id, chatData);
@@ -119,36 +114,42 @@ public class ChatModel extends IChatModel {
         return r;
     }
 
-    private void changeBody(PhotonIMMessage photonIMMessage, ChatData.Builder chatDataBuilder) {
-        switch (photonIMMessage.messageType) {
-            case PhotonIMMessage.LOCATION:
-                PhotonIMLocationBody body = (PhotonIMLocationBody) photonIMMessage.body;
-                chatDataBuilder.lat(body.lat);
-                chatDataBuilder.lng(body.lng);
-                chatDataBuilder.address(body.address);
-                chatDataBuilder.detailAddress(body.address);
-                break;
-            case PhotonIMMessage.IMAGE:
-                PhotonIMImageBody imageBody = (PhotonIMImageBody) photonIMMessage.body;
-                chatDataBuilder.localFile(imageBody.localFile);
-                chatDataBuilder.fileUrl(imageBody.url);
-                break;
-            case PhotonIMMessage.AUDIO:
-                PhotonIMAudioBody audioBody = (PhotonIMAudioBody) photonIMMessage.body;
-                chatDataBuilder.localFile(audioBody.localFile);
-                chatDataBuilder.fileUrl(audioBody.url);
-                chatDataBuilder.voiceDuration(audioBody.audioTime);
-                break;
-            case PhotonIMMessage.FILE:
-                PhotonIMFileBody fileBody = (PhotonIMFileBody) photonIMMessage.body;
-                chatDataBuilder.localFile(fileBody.localFile);
-                chatDataBuilder.fileUrl(fileBody.url);
-                chatDataBuilder.fileSize(SizeUtils.getSize(fileBody.size));
-                chatDataBuilder.fileName(FileUtils.getFileName(fileBody.localFile));
-                break;
-
-        }
-    }
+//    private void changeBody(PhotonIMMessage photonIMMessage, ChatData.Builder chatDataBuilder) {
+//        switch (photonIMMessage.messageType) {
+//            case PhotonIMMessage.LOCATION:
+//                PhotonIMLocationBody body = (PhotonIMLocationBody) photonIMMessage.body;
+//                chatDataBuilder.lat(body.lat);
+//                chatDataBuilder.lng(body.lng);
+//                chatDataBuilder.address(body.address);
+//                chatDataBuilder.detailAddress(body.address);
+//                break;
+//            case PhotonIMMessage.IMAGE:
+//                PhotonIMImageBody imageBody = (PhotonIMImageBody) photonIMMessage.body;
+//                chatDataBuilder.localFile(imageBody.localFile);
+//                chatDataBuilder.fileUrl(imageBody.url);
+//                break;
+//            case PhotonIMMessage.AUDIO:
+//                PhotonIMAudioBody audioBody = (PhotonIMAudioBody) photonIMMessage.body;
+//                chatDataBuilder.localFile(audioBody.localFile);
+//                chatDataBuilder.fileUrl(audioBody.url);
+//                chatDataBuilder.voiceDuration(audioBody.audioTime);
+//                break;
+//            case PhotonIMMessage.FILE:
+//                PhotonIMFileBody fileBody = (PhotonIMFileBody) photonIMMessage.body;
+//                chatDataBuilder.localFile(fileBody.localFile);
+//                chatDataBuilder.fileUrl(fileBody.url);
+//                chatDataBuilder.fileSize(SizeUtils.getSize(fileBody.size));
+//                chatDataBuilder.fileName(FileUtils.getFileName(fileBody.localFile));
+//                break;
+//            case PhotonIMMessage.VIDEO:
+//                PhotonIMVideoBody videoBody = (PhotonIMVideoBody) photonIMMessage.body;
+//                chatDataBuilder.localFile(videoBody.localFile);
+//                chatDataBuilder.fileUrl(videoBody.url);
+//                chatDataBuilder.v
+//                break;
+//
+//        }
+//    }
 
     @Override
     public void loadAfterSearchMsgId(int chatType, String chatWith, String anchorMsgId, boolean beforeAuthor, boolean asc, int size, OnLoadHistoryListener listener) {
@@ -294,22 +295,32 @@ public class ChatModel extends IChatModel {
 
     @Override
     public void uploadFile(ChatData chatData, OnFileUploadListener onFileUploadListener) {
-        EventBus.getDefault().post(new ChatDataWrapper(chatData, PhotonIMMessage.SENDING, null));
-        PhotonIMMessage message = chatData.convertToIMMessage();
-        PhotonIMFileManager.getInstance().uploadMessage(message, new PhotonIMFileManager.FileLoadListener() {
+        TaskExecutor.getInstance().createAsycTask(new Callable() {
             @Override
-            public void onLoad(int i, String s, String s1) {
-                if (onFileUploadListener != null) {
-                    if (i == 0) {
-                        chatData.setFileUrl(s1);
+            public Object call() throws Exception {
+                PhotonIMMessage message = chatData.convertToIMMessage();
+                PhotonIMDatabase.getInstance().saveMessage(message);
+                PhotonIMFileManager.getInstance().uploadFile(message, new PhotonIMFileManager.FileLoadListener() {
+                    @Override
+                    public void onLoad(int i, String s, String s1) {
+                        if (i == 200) {
+                            if (onFileUploadListener != null) {
+                                chatData.setFileUrl(s1);
+                                onFileUploadListener.onFileUpload(true, chatData);
+                            }
+                        } else if (i != 202) {
+                            if (onFileUploadListener != null) {
+                                onFileUploadListener.onFileUpload(false, chatData);
+                            }
+                        }
                     }
-                    onFileUploadListener.onFileUpload(i == 0, chatData);
-                }
-            }
 
-            @Override
-            public void onProgress(int i) {
+                    @Override
+                    public void onProgress(int i) {
 
+                    }
+                });
+                return null;
             }
         });
     }
@@ -328,8 +339,8 @@ public class ChatModel extends IChatModel {
     }
 
     @Override
-    public void sendMsg(ChatData chatData, OnMsgSendListener onMsgSendListener) {
-        TaskExecutor.getInstance().createAsycTaskChat(() -> sendMsgInner(chatData, onMsgSendListener));
+    public void updateAndsendMsg(ChatData chatData, OnMsgSendListener onMsgSendListener) {
+        TaskExecutor.getInstance().createAsycTaskChat(() -> sendMsgInner(true, chatData, onMsgSendListener));
     }
 
     @Override
@@ -344,10 +355,10 @@ public class ChatModel extends IChatModel {
         });
     }
 
-    @Override
-    public void sendVoiceFileMsg(ChatData chatData, OnMsgSendListener onMsgSendListener) {
-        TaskExecutor.getInstance().createAsycTaskChat(() -> sendMsgInner(chatData, onMsgSendListener));
-    }
+//    @Override
+//    public void sendVoiceFileMsg(ChatData chatData, OnMsgSendListener onMsgSendListener) {
+//        TaskExecutor.getInstance().createAsycTaskChat(() -> sendMsgInner(chatData, onMsgSendListener));
+//    }
 
     @Override
     public void revertMsg(ChatData data, OnRevertListener onRevertListener) {
@@ -360,24 +371,37 @@ public class ChatModel extends IChatModel {
     }
 
     @Override
-    public void getVoiceFile(ChatData data, String savePath, OnGetFileListener onGetFileListener) {
-        TaskExecutor.getInstance().createAsycTask(() -> getVoiceFileInner(data, data.getFileUrl(), savePath, new OnGetFileListener() {
+    public void getFile(ChatData data, String savePath, OnGetFileListener onGetFileListener) {
+        PhotonIMFileManager.getInstance().downloadFile(data.convertToIMMessage(), new PhotonIMFileManager.FileLoadListener() {
             @Override
-            public void onGetFile(String path) {
-                PhotonIMDatabase.getInstance().updateMessageLocalFile(data.getChatType(), data.getChatWith(), data.getMsgId(), savePath);
+            public void onLoad(int i, String s, String s1) {
+                if (i == 200) {
+                    PhotonIMDatabase.getInstance().updateMessageLocalFile(data.getChatType(), data.getChatWith(), data.getMsgId(), s1);
 
-                CustomRunnable customRunnable = new CustomRunnable.Builder()
-                        .runnable(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (onGetFileListener != null) {
-                                    onGetFileListener.onGetFile(path);
+                    CustomRunnable customRunnable = new CustomRunnable.Builder()
+                            .runnable(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (onGetFileListener != null) {
+                                        onGetFileListener.onGetFile(s1);
+                                    }
                                 }
-                            }
-                        }).build();
-                MainLooperExecuteUtil.getInstance().post(customRunnable);
+                            }).build();
+                    MainLooperExecuteUtil.getInstance().post(customRunnable);
+                } else {
+                    if (onGetFileListener != null) {
+                        onGetFileListener.onGetFile(null);
+                    }
+                }
             }
-        }));
+
+            @Override
+            public void onProgress(int i) {
+                if (onGetFileListener != null) {
+                    onGetFileListener.onProgress(data, i);
+                }
+            }
+        });
     }
 
     @Override
@@ -403,7 +427,7 @@ public class ChatModel extends IChatModel {
         TaskExecutor.getInstance().createAsycTask(new Callable() {
             @Override
             public Object call() throws Exception {
-                PhotonIMDatabase.getInstance().updataMessageStatus(chatType, chatWith, id, status);
+                PhotonIMDatabase.getInstance().updateMessageStatus(chatType, chatWith, id, status);
                 return null;
             }
         });
@@ -423,7 +447,7 @@ public class ChatModel extends IChatModel {
             public void onSent(int error, String msg, long retTime) {
                 LogUtils.log(TAG, String.format("send error:%d", error));
                 if (error == ChatModel.MSG_ERROR_CODE_SUCCESS) {
-                    PhotonIMDatabase.getInstance().updataMessageStatus(messageData.getChatType(), messageData.getChatWith(), messageData.getMsgId(), PhotonIMMessage.RECV_READ);
+                    PhotonIMDatabase.getInstance().updateMessageStatus(messageData.getChatType(), messageData.getChatWith(), messageData.getMsgId(), PhotonIMMessage.RECV_READ);
                 }
                 if (onSendReadListener != null) {
                     CustomRunnable customRunnable = new CustomRunnable.Builder()
@@ -462,9 +486,13 @@ public class ChatModel extends IChatModel {
         return null;
     }
 
-    private Object sendMsgInner(ChatData chatData, OnMsgSendListener onMsgSendListener) {
+    private Object sendMsgInner(boolean update, ChatData chatData, OnMsgSendListener onMsgSendListener) {
         PhotonIMMessage message = chatData.convertToIMMessage();
-        PhotonIMDatabase.getInstance().saveMessage(message);
+        if (update) {
+            PhotonIMDatabase.getInstance().updateMessage(message);
+        } else {
+            PhotonIMDatabase.getInstance().saveMessage(message);
+        }
 
         PhotonIMClient.getInstance().sendMessage(message, new PhotonIMClient.PhotonIMSendCallback() {
             @Override
@@ -474,6 +502,10 @@ public class ChatModel extends IChatModel {
         });
 
         return null;
+    }
+
+    private Object sendMsgInner(ChatData chatData, OnMsgSendListener onMsgSendListener) {
+        return sendMsgInner(false, chatData, onMsgSendListener);
     }
 
     @Override

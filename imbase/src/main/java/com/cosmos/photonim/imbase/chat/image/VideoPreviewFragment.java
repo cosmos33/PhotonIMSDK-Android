@@ -6,12 +6,11 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.R2;
 import com.cosmos.photonim.imbase.base.BaseFragment;
-import com.cosmos.photonim.imbase.chat.media.OnReturnFragmentListener;
+import com.cosmos.photonim.imbase.chat.media.video.VideoInfo;
 import com.cosmos.photonim.imbase.utils.ToastUtils;
 import com.cosmos.photonim.imbase.utils.Utils;
 import com.cosmos.photonim.imbase.utils.image.ImageLoaderUtils;
@@ -23,11 +22,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class VideoPreviewFragment extends BaseFragment {
-    public static final String BUNDLE_VIDEO_PATH = "BUNDLE_VIDEO_PATH";
-    public static final String BUNDLE_VIDEO_COVER_PATH = "BUNDLE_VIDEO_COVER_PATH";
-    public static final String BUNDLE_VIDEO_COVER_WIDTH = "BUNDLE_VIDEO_COVER_WIDTH";
-    public static final String BUNDLE_VIDEO_COVER_HEIGHT = "BUNDLE_VIDEO_COVER_HEIGHT";
-    public static final String BUNDLE_VIDEO_TIME = "BUNDLE_VIDEO_TIME";
+    public static final String BUNDLE_VIDEO = "BUNDLE_VIDEO";
 
     @BindView(R2.id.player)
     CosmosPlayer player;
@@ -35,21 +30,13 @@ public class VideoPreviewFragment extends BaseFragment {
     FrameLayout playerContainer;
     @BindView(R2.id.ivPlayIcon)
     ImageView ivPlayIcon;
-    @BindView(R2.id.tvTime)
-    TextView tvTime;
     @BindView(R2.id.progress)
     ProgressBar progressView;
 
-    private OnReturnFragmentListener onChangeFragmentListener;
-    private String videoPath;
-    private String videoCoverPath;
-    private long videoTime;
-
     private boolean startPlay;
-    private int width;
-    private int height;
     private CustomRunnable customRunnable;
     private int progress;
+    private VideoInfo videoInfo;
 
     @Override
     public int getLayoutId() {
@@ -63,42 +50,27 @@ public class VideoPreviewFragment extends BaseFragment {
             ToastUtils.showText("photo path maybe null");
             return;
         }
-        videoPath = arguments.getString(BUNDLE_VIDEO_PATH);
-        videoCoverPath = arguments.getString(BUNDLE_VIDEO_COVER_PATH);
-        width = arguments.getInt(BUNDLE_VIDEO_COVER_WIDTH);
-        height = arguments.getInt(BUNDLE_VIDEO_COVER_HEIGHT);
-        String time = arguments.getString(BUNDLE_VIDEO_TIME);
-        tvTime.setText(time);
+        videoInfo = (VideoInfo) arguments.getSerializable(BUNDLE_VIDEO);
 
         ViewGroup.LayoutParams layoutParams = playerContainer.getLayoutParams();
         int[] screenSize = Utils.getScreenSize(getContext());
         int layoutWidth = screenSize[0];
-        int layoutHeight = screenSize[1];
 
-        double coverRatio = width * 1. / height;
-        double layoutRatio = layoutWidth * 1. / layoutHeight;
-        if (coverRatio >= layoutRatio) {
-            if (layoutWidth > width) {
-                layoutWidth = width;
-            }
+        if (videoInfo.height != 0 && videoInfo.width != 0) {
+            double coverRatio = videoInfo.width * 1. / videoInfo.height;
             layoutParams.height = (int) (layoutWidth * 1. / coverRatio);
-        } else {
-            if (layoutHeight > height) {
-                layoutHeight = height;
-            }
-            layoutParams.width = (int) (layoutHeight * coverRatio);
+            playerContainer.setLayoutParams(layoutParams);
         }
-        playerContainer.setLayoutParams(layoutParams);
 
-        ImageLoaderUtils.getInstance().loadImage(getContext(), videoCoverPath, R.drawable.chat_placeholder, player.getCoverView());
+        ImageLoaderUtils.getInstance().loadImage(getContext(), videoInfo.videoCoverPath, R.drawable.chat_placeholder, player.getCoverView());
 
-        progressView.setProgress((int) (videoTime / 1000));
+        progressView.setMax((int) (videoInfo.videoTime));
     }
 
     @OnClick(R2.id.ivPlayIcon)
     public void onPlayIcon() {
         if (player.isPlaying()) {
-//            ivPlayIcon.setVisibility(View.VISIBLE);
+            ivPlayIcon.setVisibility(View.VISIBLE);
             player.pause();
             cancelProgress();
         } else {
@@ -106,8 +78,8 @@ public class VideoPreviewFragment extends BaseFragment {
             if (startPlay) {
                 player.resume();
             } else {
-//                ivPlayIcon.setVisibility(View.GONE);
-                player.playVideo(videoPath);
+                ivPlayIcon.setVisibility(View.GONE);
+                player.playVideo(videoInfo.path);
                 startPlay = true;
             }
         }
@@ -119,6 +91,9 @@ public class VideoPreviewFragment extends BaseFragment {
                     @Override
                     public void run() {
                         progressView.setProgress(++progress);
+                        if (progress >= videoInfo.videoTime) {
+                            progress = 0;
+                        }
                     }
                 })
                 .delayTime(1000)
@@ -131,15 +106,12 @@ public class VideoPreviewFragment extends BaseFragment {
         MainLooperExecuteUtil.getInstance().cancelRunnable(customRunnable);
     }
 
-    public void setOnChangeFragmentListener(OnReturnFragmentListener onChangeFragmentListener) {
-        this.onChangeFragmentListener = onChangeFragmentListener;
-    }
-
     @Override
     public void onDestroy() {
         if (player != null) {
             player.releaseVideo();
         }
+        cancelProgress();
         super.onDestroy();
     }
 }
