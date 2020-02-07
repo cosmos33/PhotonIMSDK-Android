@@ -2,12 +2,13 @@
     android:id="@+id/flVideo"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:visibility="gone">
+    android:visibility="visible">
 
     <ImageView
         android:id="@+id/ivCover"
         android:layout_width="@dimen/chat_content_pic_height"
         android:layout_height="@dimen/chat_content_pic_height"
+        android:background="@color/black"
         android:scaleType="centerCrop" />
 
     <LinearLayout
@@ -35,10 +36,10 @@
     </LinearLayout>
 
     <com.cosmos.photonim.imbase.view.DownLoadProgress
-        android:id="@+id/progress"
+        android:id="@+id/videoProgress"
         android:layout_width="50dp"
         android:layout_gravity="center"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_height="50dp" />
 
 </FrameLayout>

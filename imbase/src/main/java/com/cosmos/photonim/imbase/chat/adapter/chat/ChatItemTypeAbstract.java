@@ -90,7 +90,7 @@ public abstract class ChatItemTypeAbstract extends ItemTypeAbstract {
                 fileName.setText(chatData.getFileName());
                 TextView fileSize = (TextView) rvViewHolder.getView(R.id.tvFileSize);
                 fileSize.setText(chatData.getFileSize());
-                DownLoadProgress progress = (DownLoadProgress) rvViewHolder.getView(R.id.progress);
+                DownLoadProgress progress = (DownLoadProgress) rvViewHolder.getView(R.id.fileProgress);
                 if (chatData.isDownloading()) {
                     progress.setVisibility(View.VISIBLE);
                     progress.setCurrentProgress(chatData.getDownloadProgress());
@@ -105,13 +105,13 @@ public abstract class ChatItemTypeAbstract extends ItemTypeAbstract {
                 ivCover.setVisibility(View.VISIBLE);
                 ImageLoaderUtils.getInstance().loadImage(ivCover.getContext(), chatData.getVideoCover(), R.drawable.chat_placeholder, ivCover);
                 ((TextView) rvViewHolder.getView(R.id.tvVideoTime)).setText(chatData.getVideoTime());
-                progress = (DownLoadProgress) rvViewHolder.getView(R.id.progress);
-//                if (chatData.isDownloading()) {
+                progress = (DownLoadProgress) rvViewHolder.getView(R.id.videoProgress);
+                if (chatData.isDownloading()) {
                     progress.setVisibility(View.VISIBLE);
                     progress.setCurrentProgress(chatData.getDownloadProgress());
-//                } else {
-//                    progress.setVisibility(View.GONE);
-//                }
+                } else {
+                    progress.setVisibility(View.GONE);
+                }
                 break;
         }
         ImageLoaderUtils.getInstance().loadImage(view.getContext(), chatData.getIcon(), R.drawable.head_placeholder, (ImageView) rvViewHolder.getView(R.id.ivIcon));

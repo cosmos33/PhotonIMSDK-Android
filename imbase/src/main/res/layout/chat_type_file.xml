@@ -18,7 +18,7 @@
             android:id="@+id/tvFileName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh" />
+            android:text="hhhhhhhhhhhhhhhh" />
 
         <TextView
             android:id="@+id/tvFileSize"
@@ -36,7 +36,7 @@
         android:src="@drawable/chat_file" />
 
     <com.cosmos.photonim.imbase.view.DownLoadProgress
-        android:id="@+id/progress"
+        android:id="@+id/fileProgress"
         android:visibility="gone"
         android:layout_width="50dp"
         android:layout_gravity="center"
