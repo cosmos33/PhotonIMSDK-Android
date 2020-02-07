@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.cosmos.photon.im.PhotonIMMessage;
 import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.chat.ChatData;
+import com.cosmos.photonim.imbase.utils.Constants;
 import com.cosmos.photonim.imbase.utils.StringUtils;
 import com.cosmos.photonim.imbase.utils.image.ImageLoaderUtils;
 import com.cosmos.photonim.imbase.utils.recycleadapter.ItemData;
@@ -71,7 +72,7 @@ public abstract class ChatItemTypeAbstract extends ItemTypeAbstract {
                 if (!TextUtils.isEmpty(chatData.getLocalFile())) {
                     ImageLoaderUtils.getInstance().loadImage(pic.getContext(), chatData.getLocalFile(), R.drawable.chat_placeholder, pic);
                 } else {
-                    ImageLoaderUtils.getInstance().loadImage(pic.getContext(), chatData.getFileUrl(), R.drawable.chat_placeholder, pic);
+                    ImageLoaderUtils.getInstance().loadImage(pic.getContext(), Constants.getFlieUrl(chatData.getFileUrl()), R.drawable.chat_placeholder, pic);
                 }
                 break;
             case PhotonIMMessage.LOCATION:

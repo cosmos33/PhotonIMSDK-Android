@@ -72,7 +72,7 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
     private boolean lastLoadHistoryFromRemote = false;
     private boolean firstLoad = true;
     private HashMap<String, ChatData> downloadData;
-    private boolean loadAllHistoryFormServer = true;
+    private boolean loadAllHistoryFormServer = false;
 
     public ChatPresenter(IChatView iView) {
         super(iView);
@@ -197,8 +197,6 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
                 getiModel().sendTextMsg(chatData);
                 break;
             case PhotonIMMessage.IMAGE:
-                sendPicMsgInner(chatData);
-                break;
             case PhotonIMMessage.AUDIO:
             case PhotonIMMessage.FILE:
             case PhotonIMMessage.VIDEO:
@@ -651,11 +649,11 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
 
     @Override
     public void downLoadFile(ChatData chatData) {
-        String fileUrlName = getFileUrlName(chatData.getFileUrl());
-        if (fileUrlName == null) {
-            LogUtils.log(TAG, "fileurl == null");
-            return;
-        }
+//        String fileUrlName = getFileUrlName(chatData.getFileUrl());
+//        if (fileUrlName == null) {
+//            LogUtils.log(TAG, "fileurl == null");
+//            return;
+//        }
         if (downloadData != null && downloadData.get(chatData.getMsgId()) != null) {
             getIView().toast("下载中");
             return;

@@ -309,6 +309,7 @@ public class ChatData implements ItemData, Parcelable, Cloneable {
             case PhotonIMMessage.IMAGE:
                 PhotonIMImageBody imageBody = new PhotonIMImageBody();
                 imageBody.url = StringUtils.getTextContent(fileUrl);
+                imageBody.localFile = localFile;
                 photonIMMessage.body = imageBody;
                 break;
             case PhotonIMMessage.AUDIO:

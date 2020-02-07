@@ -9,8 +9,11 @@ import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.R2;
 import com.cosmos.photonim.imbase.base.BaseFragment;
 import com.cosmos.photonim.imbase.chat.ChatData;
+import com.cosmos.photonim.imbase.utils.Constants;
 import com.cosmos.photonim.imbase.utils.image.ImageLoaderUtils;
 import com.github.chrisbanes.photoview.PhotoView;
+
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -39,12 +42,12 @@ public class ImageFragment extends BaseFragment {
         if (!TextUtils.isEmpty(chatData.getLocalFile())) {
             url = chatData.getLocalFile();
         } else {
-            url = chatData.getFileUrl();
+            url = Constants.getFlieUrl(chatData.getFileUrl());
         }
         if (url != null && url.startsWith("http")) {
             ImageLoaderUtils.getInstance().loadImage(view.getContext(), url, R.drawable.head_placeholder, photoView);
         } else {
-            ImageLoaderUtils.getInstance().loadImageUri(view.getContext(), Uri.parse(url), R.drawable.head_placeholder, photoView);
+            ImageLoaderUtils.getInstance().loadImageUri(view.getContext(), Uri.fromFile(new File(url)), R.drawable.head_placeholder, photoView);
         }
     }
 

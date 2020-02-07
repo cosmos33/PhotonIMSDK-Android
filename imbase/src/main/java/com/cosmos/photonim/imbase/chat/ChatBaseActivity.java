@@ -338,11 +338,12 @@ public abstract class ChatBaseActivity extends IChatView {
             if (chatData.getFrom().equals(ImBaseBridge.getInstance().getUserId())) {
                 presenter.play(ChatBaseActivity.this, ((ChatData) data).getLocalFile());
             } else {
-                if (TextUtils.isEmpty(((ChatData) data).getLocalFile())) {
-                    ToastUtils.showText(ChatBaseActivity.this, "请稍后");
-                    return;
+                if (TextUtils.isEmpty(chatData.getLocalFile())) {
+                    toast("下载中...");
+                    presenter.downLoadFile(chatData);
+                } else {
+                    presenter.play(ChatBaseActivity.this, ((ChatData) data).getLocalFile());
                 }
-                presenter.play(ChatBaseActivity.this, ((ChatData) data).getLocalFile());
             }
         } else if (viewId == R.id.ivWarn) {
             presenter.removeData(chatData);
