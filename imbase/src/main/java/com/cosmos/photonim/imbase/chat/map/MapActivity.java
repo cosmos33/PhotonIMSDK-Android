@@ -66,7 +66,7 @@ public class MapActivity extends BaseActivity {
             mapFragment.setArguments(bundle);
             titleBar.setRightImageEvent(R.drawable.map_relay, v -> {
                 // TODO: 2020-01-07 转发
-                ImBaseBridge.getInstance().onRelayClick(MapActivity.this, chatData);
+                ImBaseBridge.getInstance().onForwardClick(MapActivity.this, chatData);
             });
         } else {
             titleBar.setRightTextEvent("发送", 0xffffffff, R.drawable.drawable_map_send, v -> {

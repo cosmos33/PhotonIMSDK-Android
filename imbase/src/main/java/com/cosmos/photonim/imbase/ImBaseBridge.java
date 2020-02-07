@@ -66,9 +66,9 @@ public class ImBaseBridge {
         }
     }
 
-    public void onRelayClick(Activity chatBaseActivity, ChatData data) {
+    public void onForwardClick(Activity chatBaseActivity, ChatData data) {
         if (businessListener != null) {
-            businessListener.onRelayClick(chatBaseActivity, data);
+            businessListener.onForwardClick(chatBaseActivity, data);
         }
     }
 
@@ -183,7 +183,7 @@ public class ImBaseBridge {
 
     public interface BusinessListener {
         //转发
-        void onRelayClick(Activity activity, ChatData chatData);
+        void onForwardClick(Activity activity, ChatData chatData);
 
         //获取用户icon
         void getUserIcon(String userId, OnGetUserIconListener onGetUserIconListener);

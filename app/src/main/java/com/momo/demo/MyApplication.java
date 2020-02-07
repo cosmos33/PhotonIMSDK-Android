@@ -154,7 +154,7 @@ public class MyApplication extends Application {
             private IUserInfoModel iUserInfoModel;
 
             @Override
-            public void onRelayClick(Activity activity, ChatData chatData) {
+            public void onForwardClick(Activity activity, ChatData chatData) {
                 ForwardActivity.startActivity(activity, chatData);
             }
 

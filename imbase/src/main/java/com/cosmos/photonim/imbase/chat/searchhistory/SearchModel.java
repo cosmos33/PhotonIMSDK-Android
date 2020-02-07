@@ -17,7 +17,7 @@ public class SearchModel extends ISearchHistoryModel {
 
     private static final String MATCH_PREFIX_PATTERN = "\\[\\(\\*\\.\\.";
     private static final String MATCH_POSTFIX_PATTERN = "\\.\\.\\*\\)\\]";
-    private static final int MATCH_MAXLENGTH = 50;
+    private static final int MATCH_MAXLENGTH = 20;
     private Callable callable;
 
     @Override

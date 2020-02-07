@@ -37,6 +37,7 @@
 
     <com.cosmos.photonim.imbase.view.DownLoadProgress
         android:id="@+id/progress"
+        android:visibility="gone"
         android:layout_width="50dp"
         android:layout_gravity="center"
         android:layout_height="50dp" />

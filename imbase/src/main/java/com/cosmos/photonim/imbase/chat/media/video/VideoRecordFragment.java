@@ -89,7 +89,7 @@ public class VideoRecordFragment extends BaseFragment {
         touchTextView.setOnTouchListener(new TouchTextView.OnTouchListener() {
             @Override
             public void onTouch(boolean start) {
-                tvTime.setText(String.format("%d:%d(最长录制3分钟)", 0, 0));
+                tvTime.setText("00:00(最长录制3分钟)");
                 if (start) {
                     setEnable(false);
                     timeCount = 0;
@@ -123,7 +123,7 @@ public class VideoRecordFragment extends BaseFragment {
                 }
             }
         });
-        tvTime.setText(String.format("%d:%d(最长录制3分钟)", 0, 0));
+        tvTime.setText("00:00(最长录制3分钟)");
     }
 
     private void createRecorder() {

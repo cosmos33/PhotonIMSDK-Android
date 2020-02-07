@@ -10,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.R2;
 import com.cosmos.photonim.imbase.base.BaseActivity;
+import com.cosmos.photonim.imbase.chat.ChatData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,10 +25,10 @@ public class ImageCheckActivity extends BaseActivity {
 
     private ImageCheckFragmentAdapter adapter;
     private List<Fragment> fragments;
-    private List<String> chatDataList;
+    private List<ChatData> chatDataList;
     private int currentPosition;
 
-    public static void startActivity(Activity context, ArrayList<String> chatDatas, int currentPosition) {
+    public static void startActivity(Activity context, ArrayList<ChatData> chatDatas, int currentPosition) {
         Intent intent = new Intent(context, ImageCheckActivity.class);
         intent.putExtra(EXTRA_CHATDATA, chatDatas);
         intent.putExtra(EXTRA_CHATDATA_CURRENT, currentPosition);
@@ -43,7 +44,7 @@ public class ImageCheckActivity extends BaseActivity {
     }
 
     private void initView() {
-        chatDataList = (List<String>) getIntent().getExtras().get(EXTRA_CHATDATA);
+        chatDataList = (List<ChatData>) getIntent().getExtras().get(EXTRA_CHATDATA);
 //        current = (ChatData) getIntent().getExtras().get(EXTRA_CHATDATA_CURRENT);
         currentPosition = (int) getIntent().getIntExtra(EXTRA_CHATDATA_CURRENT, 0);
         fragments = new ArrayList<>();

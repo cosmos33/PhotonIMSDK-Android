@@ -398,7 +398,7 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
     }
 
     @Override
-    public int getImageUrls(ChatData chatData, ArrayList<String> urls) {
+    public int getImageUrls(ChatData chatData, ArrayList<ChatData> urls) {
         ChatData chatDataTemp;
         int currentPosition = 0;
         for (int i = 0; i < chatMsg.size(); i++) {
@@ -406,7 +406,7 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
             if (chatDataTemp.getMsgType() != PhotonIMMessage.IMAGE) {
                 continue;
             }
-            urls.add(TextUtils.isEmpty(chatDataTemp.getLocalFile()) ? chatDataTemp.getFileUrl() : chatDataTemp.getLocalFile());
+            urls.add(chatDataTemp);
             if (chatData.getMsgId().equals(chatDataTemp.getMsgId())) {
                 currentPosition = urls.size() - 1;
             }

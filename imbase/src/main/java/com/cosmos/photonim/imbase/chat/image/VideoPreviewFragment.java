@@ -7,9 +7,11 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.cosmos.photonim.imbase.ImBaseBridge;
 import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.R2;
 import com.cosmos.photonim.imbase.base.BaseFragment;
+import com.cosmos.photonim.imbase.chat.ChatData;
 import com.cosmos.photonim.imbase.chat.media.video.VideoInfo;
 import com.cosmos.photonim.imbase.utils.ToastUtils;
 import com.cosmos.photonim.imbase.utils.Utils;
@@ -36,6 +38,7 @@ public class VideoPreviewFragment extends BaseFragment {
     private boolean startPlay;
     private CustomRunnable customRunnable;
     private int progress;
+    private ChatData chatData;
     private VideoInfo videoInfo;
 
     @Override
@@ -50,7 +53,14 @@ public class VideoPreviewFragment extends BaseFragment {
             ToastUtils.showText("photo path maybe null");
             return;
         }
-        videoInfo = (VideoInfo) arguments.getSerializable(BUNDLE_VIDEO);
+        chatData = (ChatData) arguments.getParcelable(BUNDLE_VIDEO);
+
+        videoInfo = new VideoInfo();
+        videoInfo.path = chatData.getLocalFile();
+        videoInfo.videoTime = chatData.getVideoTimeL();
+        videoInfo.videoCoverPath = chatData.getVideoCover();
+        videoInfo.height = 1;
+        videoInfo.width = (int) (chatData.getVideowhRatio() * videoInfo.height);
 
         ViewGroup.LayoutParams layoutParams = playerContainer.getLayoutParams();
         int[] screenSize = Utils.getScreenSize(getContext());
@@ -83,6 +93,18 @@ public class VideoPreviewFragment extends BaseFragment {
                 startPlay = true;
             }
         }
+    }
+
+    @OnClick(R2.id.ivClose)
+    public void onCloseClick() {
+        if (getActivity() != null) {
+            getActivity().finish();
+        }
+    }
+
+    @OnClick(R2.id.tvForward)
+    public void onForwardClick() {
+        ImBaseBridge.getInstance().onForwardClick(getActivity(), chatData);
     }
 
     private void startProgress() {

@@ -196,7 +196,7 @@ public abstract class IChatPresenter<V extends IChatView, M extends IChatModel> 
 
     public abstract void removeData(ChatData chatData);
 
-    public abstract int getImageUrls(ChatData chatData, ArrayList<String> urls);
+    public abstract int getImageUrls(ChatData chatData, ArrayList<ChatData> urls);
 
     public abstract void sendText(String content);
 

@@ -22,7 +22,6 @@ import com.cosmos.photonim.imbase.chat.ichat.IChatView;
 import com.cosmos.photonim.imbase.chat.image.ImageCheckActivity;
 import com.cosmos.photonim.imbase.chat.image.VideoPreviewActivity;
 import com.cosmos.photonim.imbase.chat.map.MapActivity;
-import com.cosmos.photonim.imbase.chat.media.video.VideoInfo;
 import com.cosmos.photonim.imbase.utils.AtEditText;
 import com.cosmos.photonim.imbase.utils.OpenFileUtils;
 import com.cosmos.photonim.imbase.utils.ToastUtils;
@@ -352,7 +351,7 @@ public abstract class ChatBaseActivity extends IChatView {
             resendMsg(chatData);
         } else if (viewId == R.id.ivPic) {
             // TODO: 2019-08-19 图片的获取移到其他位置获取
-            ArrayList<String> urls = new ArrayList<>();
+            ArrayList<ChatData> urls = new ArrayList<>();
             int currentPosition = presenter.getImageUrls(chatData, urls);
             ImageCheckActivity.startActivity(ChatBaseActivity.this, urls, currentPosition);
         } else if (viewId == R.id.llLocation) {
@@ -363,13 +362,7 @@ public abstract class ChatBaseActivity extends IChatView {
                 toast("下载中...");
                 presenter.downLoadFile(chatData);
             } else {
-                VideoInfo videoInfo = new VideoInfo();
-                videoInfo.path = chatData.getLocalFile();
-                videoInfo.videoTime = chatData.getVideoTimeL();
-                videoInfo.videoCoverPath = chatData.getVideoCover();
-                videoInfo.height = 1;
-                videoInfo.width = (int) (chatData.getVideowhRatio() * videoInfo.height);
-                VideoPreviewActivity.startActivity(ChatBaseActivity.this, videoInfo);
+                VideoPreviewActivity.startActivity(ChatBaseActivity.this, chatData);
             }
         } else if (viewId == R.id.llFileContainer) {
             if (TextUtils.isEmpty(chatData.getLocalFile())) {
@@ -403,7 +396,7 @@ public abstract class ChatBaseActivity extends IChatView {
 
             @Override
             public void onRelayClick() {
-                ImBaseBridge.getInstance().onRelayClick(ChatBaseActivity.this, data);
+                ImBaseBridge.getInstance().onForwardClick(ChatBaseActivity.this, data);
             }
 
             @Override

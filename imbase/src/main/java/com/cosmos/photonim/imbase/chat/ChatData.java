@@ -767,6 +767,32 @@ public class ChatData implements ItemData, Parcelable, Cloneable {
     }
 
     @Override
+    protected ChatData clone() throws CloneNotSupportedException {
+        return (new Builder()
+                .msgStatus(PhotonIMMessage.SENDING)
+                .itemType(Constants.ITEM_TYPE_CHAT_NORMAL_RIGHT)
+                .icon(ImBaseBridge.getInstance().getMyIcon())
+                .voiceDuration(mediaTime)
+                .msgType(msgType)
+                .chatType(chatType)
+                .chatWith(chatWith)
+                .content(content)
+                .from(from)
+                .to(to)
+                .fileUrl(fileUrl)
+                .time(time)
+                .localFile(localFile)
+                .msgId(msgId)
+//                .fileSize(fileSize)
+                .fileName(fileName)
+                .detailAddress(location == null ? null : location.detailedAddress)
+                .address(location == null ? null : location.address)
+                .lat(location == null ? 0 : location.lat)
+                .lng(location == null ? 0 : location.lng)
+                .build());
+    }
+
+    @Override
     public int describeContents() {
         return 0;
     }
@@ -799,6 +825,13 @@ public class ChatData implements ItemData, Parcelable, Cloneable {
         dest.writeParcelable(this.location, flags);
         dest.writeString(this.fileName);
         dest.writeString(this.fileSize);
+        dest.writeLong(this.fileSizeL);
+        dest.writeLong(this.videoTimeL);
+        dest.writeString(this.videoTime);
+        dest.writeString(this.videoCover);
+        dest.writeInt(this.downloadProgress);
+        dest.writeDouble(this.videowhRatio);
+        dest.writeByte(this.downloading ? (byte) 1 : (byte) 0);
     }
 
     protected ChatData(Parcel in) {
@@ -828,6 +861,13 @@ public class ChatData implements ItemData, Parcelable, Cloneable {
         this.location = in.readParcelable(Location.class.getClassLoader());
         this.fileName = in.readString();
         this.fileSize = in.readString();
+        this.fileSizeL = in.readLong();
+        this.videoTimeL = in.readLong();
+        this.videoTime = in.readString();
+        this.videoCover = in.readString();
+        this.downloadProgress = in.readInt();
+        this.videowhRatio = in.readDouble();
+        this.downloading = in.readByte() != 0;
     }
 
     public static final Creator<ChatData> CREATOR = new Creator<ChatData>() {
@@ -841,30 +881,4 @@ public class ChatData implements ItemData, Parcelable, Cloneable {
             return new ChatData[size];
         }
     };
-
-    @Override
-    protected ChatData clone() throws CloneNotSupportedException {
-        return (new Builder()
-                .msgStatus(PhotonIMMessage.SENDING)
-                .itemType(Constants.ITEM_TYPE_CHAT_NORMAL_RIGHT)
-                .icon(ImBaseBridge.getInstance().getMyIcon())
-                .voiceDuration(mediaTime)
-                .msgType(msgType)
-                .chatType(chatType)
-                .chatWith(chatWith)
-                .content(content)
-                .from(from)
-                .to(to)
-                .fileUrl(fileUrl)
-                .time(time)
-                .localFile(localFile)
-                .msgId(msgId)
-//                .fileSize(fileSize)
-                .fileName(fileName)
-                .detailAddress(location == null ? null : location.detailedAddress)
-                .address(location == null ? null : location.address)
-                .lat(location == null ? 0 : location.lat)
-                .lng(location == null ? 0 : location.lng)
-                .build());
-    }
 }

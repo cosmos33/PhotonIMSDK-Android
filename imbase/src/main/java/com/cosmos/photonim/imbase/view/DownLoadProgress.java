@@ -8,6 +8,8 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.cosmos.photonim.imbase.utils.LogUtils;
+
 public class DownLoadProgress extends View {
     private int maxProgress = 100;
     private int currentProgress = 0;
@@ -60,10 +62,14 @@ public class DownLoadProgress extends View {
     }
 
     public void setCurrentProgress(int currentProgress) {
+        if (currentProgress > maxProgress) {
+            currentProgress = maxProgress;
+        }
         if (this.currentProgress >= currentProgress) {
             return;
         }
+        LogUtils.log("ssssssssssss " + currentProgress);
         this.currentProgress = currentProgress;
-        postInvalidate();
+        invalidate();
     }
 }

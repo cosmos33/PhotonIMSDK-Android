@@ -243,6 +243,24 @@ public class Utils {
     }
 
     public static String videoTime(long time) {
-        return String.format("%d:%d", time / 60, time % 60);
+        String min;
+        int minI = (int) (time / 60);
+        if (minI == 0) {
+            min = "00";
+        } else if (minI < 10) {
+            min = "0" + minI;
+        } else {
+            min = String.valueOf(minI);
+        }
+        String second;
+        int secondI = (int) (time % 60);
+        if (secondI == 0) {
+            second = "00";
+        } else if (secondI < 10) {
+            second = "0" + secondI;
+        } else {
+            second = String.valueOf(secondI);
+        }
+        return String.format("%s:%s", min, second);
     }
 }
