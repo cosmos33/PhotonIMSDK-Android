@@ -43,7 +43,7 @@ public class ListDialogFragment extends DialogFragment implements ICreateRv {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_session, container);
-        getDialog().getWindow().setBackgroundDrawableResource(R.color.transparent);
+//        getDialog().getWindow().setBackgroundDrawableResource(R.color.transparent);
         ButterKnife.bind(this, view);
         new CreateRvHelper.Builder(this).build();
         return view;

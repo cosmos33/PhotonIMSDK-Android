@@ -17,6 +17,7 @@ import com.cosmos.photonim.imbase.utils.dbhelper.DBHelperUtils;
 import com.cosmos.photonim.imbase.utils.dbhelper.profile.Profile;
 import com.cosmos.photonim.imbase.utils.event.ChatDataWrapper;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonContactRecent;
+import com.cosmos.photonim.imbase.utils.task.AsycTaskUtil;
 import com.cosmos.photonim.imbase.utils.task.TaskExecutor;
 
 import org.greenrobot.eventbus.EventBus;
@@ -127,6 +128,25 @@ public class SessionModel extends ISessionModel {
         TaskExecutor.getInstance().createAsycTask(() -> {
             PhotonIMDatabase.getInstance().updateSessionAtType(sessionData.getChatType(), sessionData.getChatWith(), PhotonIMSession.SESSION_NO_AT);
             return null;
+        });
+    }
+
+    @Override
+    public void setSessionUnRead(SessionData data, OnSetUnreadListener onSetUnreadListener) {
+        TaskExecutor.getInstance().createAsycTask(() -> {
+            if (data.getUnreadCount() == 0) {
+                PhotonIMDatabase.getInstance().setSessionUnread(data.getChatType(), data.getChatWith());
+            } else {
+                PhotonIMDatabase.getInstance().setSessionRead(data.getChatType(), data.getChatWith());
+            }
+            return null;
+        }, new AsycTaskUtil.OnTaskListener() {
+            @Override
+            public void onTaskFinished(Object result) {
+                if (onSetUnreadListener != null) {
+                    onSetUnreadListener.onSetResult();
+                }
+            }
         });
     }
 

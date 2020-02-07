@@ -195,6 +195,11 @@ public class SessionFragment extends ISessionView {
                     } else {
                         itemContent.add("取消置顶");
                     }
+                    if (sessionData.getUnreadCount() == 0) {
+                        itemContent.add("标为未读");
+                    } else {
+                        itemContent.add("标为已读");
+                    }
                     sessionDialogFragment = ListDialogFragment.getInstance(new ListDialogFragment.OnHandleListener() {
                         @Override
                         public void onItemClick(int positon) {
@@ -205,6 +210,10 @@ public class SessionFragment extends ISessionView {
                                 case 1:
 //                                    presenter.clearSession((SessionData) data);
                                     presenter.changeSessionTopStatus(sessionData.getChatType(), sessionData.getChatWith(), isTopStatus);
+                                    break;
+                                case 2:
+                                    presenter.setSessionUnRead((SessionData) data);
+                                    dismissSessionDialog();
                                     break;
                             }
 
@@ -226,6 +235,11 @@ public class SessionFragment extends ISessionView {
     @Override
     public void notifyItemInserted(int position) {
         sessionAdapter.notifyItemInserted(position);
+    }
+
+    @Override
+    public void notifyItemChanged(int position) {
+        sessionAdapter.notifyItemChanged(position);
     }
 
     @Override

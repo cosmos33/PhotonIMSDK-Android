@@ -85,10 +85,11 @@ public class ChatNormalLeftItem extends ChatItemTypeAbstract {
     }
 
     private boolean loadFile(ItemData data) {
-        return (chatData.getMsgType() == PhotonIMMessage.AUDIO
-//                || chatData.getMsgType() == PhotonIMMessage.FILE
-        )
-                && TextUtils.isEmpty(((ChatData) data).getLocalFile());
+//        return (chatData.getMsgType() == PhotonIMMessage.AUDIO
+////                || chatData.getMsgType() == PhotonIMMessage.FILE
+//        )
+//                && TextUtils.isEmpty(((ChatData) data).getLocalFile());
+        return false;
     }
 
     @Override

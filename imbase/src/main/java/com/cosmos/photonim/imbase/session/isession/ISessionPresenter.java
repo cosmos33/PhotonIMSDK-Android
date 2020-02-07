@@ -44,6 +44,11 @@ public abstract class ISessionPresenter<V extends ISessionView, M extends ISessi
             }
 
             @Override
+            public void notifyItemChanged(int position) {
+
+            }
+
+            @Override
             public void notifyDataSetChanged() {
 
             }
@@ -92,4 +97,6 @@ public abstract class ISessionPresenter<V extends ISessionView, M extends ISessi
     public abstract ArrayList<SessionData> initData();
 
     public abstract void changeSessionTopStatus(int chatType, String id, boolean isTopStatus);
+
+    public abstract void setSessionUnRead(SessionData data);
 }

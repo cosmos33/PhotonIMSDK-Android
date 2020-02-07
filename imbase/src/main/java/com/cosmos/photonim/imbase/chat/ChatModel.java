@@ -6,6 +6,7 @@ import com.cosmos.photon.im.PhotonIMFileManager;
 import com.cosmos.photon.im.PhotonIMMessage;
 import com.cosmos.photonim.imbase.ImBaseBridge;
 import com.cosmos.photonim.imbase.chat.ichat.IChatModel;
+import com.cosmos.photonim.imbase.utils.CollectionUtils;
 import com.cosmos.photonim.imbase.utils.Constants;
 import com.cosmos.photonim.imbase.utils.LogUtils;
 import com.cosmos.photonim.imbase.utils.TimeUtils;
@@ -173,7 +174,7 @@ public class ChatModel extends IChatModel {
 
     @Override
     public void loadAllHistory(int chatType, String chatWith, int size, long beginTimeStamp, OnLoadHistoryListener listener) {
-        TaskExecutor.getInstance().createAsycTask(() -> getAllHistory(chatType, chatWith, size, beginTimeStamp),
+        TaskExecutor.getInstance().createAsycTask(() -> getAllHistoryFromServer(chatType, chatWith, size, beginTimeStamp),
                 result -> {
                     if (listener == null) {
                         return;
@@ -189,7 +190,7 @@ public class ChatModel extends IChatModel {
 
     @Override
     public void loadAllHistory(int chatType, String chatWith, int size, long beginTimeStamp, long endTimeStamp, OnLoadHistoryListener listener) {
-        TaskExecutor.getInstance().createAsycTask(() -> getAllHistory(chatType, chatWith, size, beginTimeStamp, endTimeStamp),
+        TaskExecutor.getInstance().createAsycTask(() -> getAllHistoryFromServer(chatType, chatWith, size, beginTimeStamp, endTimeStamp),
                 result -> {
                     if (listener == null) {
                         return;
@@ -203,7 +204,7 @@ public class ChatModel extends IChatModel {
                 });
     }
 
-    private Object getAllHistory(int chatType, String chatWith, int size, long beginTimeStamp) {
+    private Object getAllHistoryFromServer(int chatType, String chatWith, int size, long beginTimeStamp) {
         ArrayList<PhotonIMMessage> resultList = new ArrayList<>();
         PhotonIMDatabase.SyncHistoryResult result = PhotonIMDatabase.getInstance().syncHistoryMessagesFromServer(chatType, chatWith, size, 0);
         if (result == null) {
@@ -215,15 +216,17 @@ public class ChatModel extends IChatModel {
         return convertMap(resultList);
     }
 
-    private Object getAllHistory(int chatType, String chatWith, int size, long beginTimeStamp, long endTimeStamp) {
+    private Object getAllHistoryFromServer(int chatType, String chatWith, int size, long beginTimeStamp, long endTimeStamp) {
         ArrayList<PhotonIMMessage> resultList = new ArrayList<>();
         PhotonIMDatabase.SyncHistoryResult result = PhotonIMDatabase.getInstance().syncHistoryMessagesFromServer(chatType, chatWith, "", size, beginTimeStamp, endTimeStamp);
         if (result == null) {
             return null;
         }
         if (result.ec == 0) {
-            PhotonIMDatabase.getInstance().saveMessageBatch(chatType, chatWith, result.syncMsgList);
-            resultList.addAll(result.syncMsgList);
+            if (!CollectionUtils.isEmpty(result.syncMsgList)) {
+                PhotonIMDatabase.getInstance().saveMessageBatch(chatType, chatWith, result.syncMsgList);
+                resultList.addAll(result.syncMsgList);
+            }
         }
         return convertMap(resultList);
     }

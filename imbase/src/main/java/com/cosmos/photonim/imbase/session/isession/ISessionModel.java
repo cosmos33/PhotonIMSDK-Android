@@ -24,6 +24,8 @@ public abstract class ISessionModel implements IModel {
 
     public abstract void updateSessionAtType(SessionData sessionData);
 
+    public abstract void setSessionUnRead(SessionData data, OnSetUnreadListener onSetUnreadListener);
+
 
     public interface OnLoadHistoryListener {
         void onLoadHistory(List<SessionData> sessionData);
@@ -35,6 +37,10 @@ public abstract class ISessionModel implements IModel {
 
     public interface OnDeleteSessionListener {
         void onDeleteSession();
+    }
+
+    public interface OnSetUnreadListener {
+        void onSetResult();
     }
 
 

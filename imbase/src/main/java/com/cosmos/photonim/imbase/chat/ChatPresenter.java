@@ -72,6 +72,7 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
     private boolean lastLoadHistoryFromRemote = false;
     private boolean firstLoad = true;
     private HashMap<String, ChatData> downloadData;
+    private boolean loadAllHistoryFormServer = true;
 
     public ChatPresenter(IChatView iView) {
         super(iView);
@@ -121,15 +122,21 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
     }
 
     private void onloadHistoryResult(List<ChatData> chatData, Map<String, ChatData> chatDataMap, boolean search) {
+//        if(!loadAllHistoryFormServer){
         if (lastLoadHistoryFromRemote) {//服务器没有历史消息了需要加载本地
-            if (chatMsg.size() > 0) {
-                ChatData chatDataTemp = chatMsg.get(0);
-                getHistory(false, 0L, chatDataTemp.getMsgId());
+            if (loadAllHistoryFormServer) {
+                getHistory(false, 0L, chatMsg.size() == 0 ? "" : chatMsg.get(0).getMsgId());
             } else {
-                getHistory(false, 0L, "");
+                if (chatMsg.size() > 0) {
+                    ChatData chatDataTemp = chatMsg.get(0);
+                    getHistory(false, 0L, chatDataTemp.getMsgId());
+                } else {
+                    getHistory(false, 0L, "");
+                }
             }
             return;
         }
+//        }
         getIView().setRefreshing(false);
         if (CollectionUtils.isEmpty(chatData)) {
 //            presenter.loadRemoteHistory();
@@ -353,7 +360,11 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
     @Override
     public void loadHistory() {
         if (searchMsgId == null) {
-            getHistory(false, 0L, "");
+            if (loadAllHistoryFormServer) {
+                getHistory(true, System.currentTimeMillis(), "");//全部从服务器获取消息
+            } else {
+                getHistory(false, 0L, "");
+            }
         } else {
             getHistory();
         }
@@ -363,13 +374,21 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
     public void loadMore() {
         if (chatMsg.size() > 0) {
             ChatData chatData = chatMsg.get(0);
-            if (!getIView().isGroup() && chatMsg.size() >= LIMIT_LOADREMOTE) {//单人消息从本地拉取LIMIT_LOADREMOTE条之后，从服务器拉取
+            if (loadAllHistoryFormServer) {
                 getHistory(true, chatData.getTime(), chatData.getMsgId());
             } else {
-                getHistory(chatData.isRemainHistory(), chatData.getTime(), chatData.getMsgId());
+                if (!getIView().isGroup() && chatMsg.size() >= LIMIT_LOADREMOTE) {//单人消息从本地拉取LIMIT_LOADREMOTE条之后，从服务器拉取
+                    getHistory(true, chatData.getTime(), chatData.getMsgId());
+                } else {
+                    getHistory(chatData.isRemainHistory(), chatData.getTime(), chatData.getMsgId());
+                }
             }
         } else {
-            getHistory(false, 0L, "");
+            if (loadAllHistoryFormServer) {
+                getHistory(true, 0L, "");
+            } else {
+                getHistory(false, 0L, "");
+            }
         }
     }
 

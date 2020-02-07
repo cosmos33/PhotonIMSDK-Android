@@ -8,7 +8,6 @@
         android:id="@+id/ivCover"
         android:layout_width="@dimen/chat_content_pic_height"
         android:layout_height="@dimen/chat_content_pic_height"
-        android:background="@color/black"
         android:scaleType="centerCrop" />
 
     <LinearLayout

@@ -16,6 +16,8 @@ public abstract class ISessionView extends IRvBaseFragmentView<ISessionPresenter
 
     public abstract void notifyItemInserted(int position);
 
+    public abstract void notifyItemChanged(int position);
+
     public abstract void notifyDataSetChanged();
 
     public abstract void setNoMsgViewVisibility(boolean b);

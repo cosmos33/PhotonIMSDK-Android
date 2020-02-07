@@ -183,6 +183,17 @@ public class SessionPresenter extends ISessionPresenter<ISessionView, ISessionMo
     }
 
     @Override
+    public void setSessionUnRead(SessionData data) {
+        getiModel().setSessionUnRead(data, new ISessionModel.OnSetUnreadListener() {
+
+            @Override
+            public void onSetResult() {
+//                getIView().notifyItemChanged(data.getItemPosition());
+            }
+        });
+    }
+
+    @Override
     public void loadHistoryFromRemote() {
         getiModel().loadHistoryFromRemote(new ISessionModel.OnLoadHistoryFromRemoteListener() {
             @Override
