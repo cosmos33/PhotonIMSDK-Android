@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.cosmos.photonim.imbase.ImBaseBridge;
 import com.cosmos.photonim.imbase.R;
@@ -34,6 +35,10 @@ public class VideoPreviewFragment extends BaseFragment {
     ImageView ivPlayIcon;
     @BindView(R2.id.progress)
     ProgressBar progressView;
+    @BindView(R2.id.ivPlay)
+    ImageView ivPlay;
+    @BindView(R2.id.tvTime)
+    TextView tvTime;
 
     private boolean startPlay;
     private CustomRunnable customRunnable;
@@ -81,6 +86,7 @@ public class VideoPreviewFragment extends BaseFragment {
     public void onPlayIcon() {
         if (player.isPlaying()) {
             ivPlayIcon.setVisibility(View.VISIBLE);
+            ivPlay.setImageResource(R.drawable.video_preview_play);
             player.pause();
             cancelProgress();
         } else {
@@ -88,11 +94,17 @@ public class VideoPreviewFragment extends BaseFragment {
             if (startPlay) {
                 player.resume();
             } else {
-                ivPlayIcon.setVisibility(View.GONE);
                 player.playVideo(videoInfo.path);
                 startPlay = true;
             }
+            ivPlayIcon.setVisibility(View.GONE);
+            ivPlay.setImageResource(R.drawable.video_preview_pause);
         }
+    }
+
+    @OnClick(R2.id.ivPlay)
+    public void onBottomPlayClick() {
+        onPlayIcon();
     }
 
     @OnClick(R2.id.ivClose)
@@ -113,6 +125,7 @@ public class VideoPreviewFragment extends BaseFragment {
                     @Override
                     public void run() {
                         progressView.setProgress(++progress);
+                        tvTime.setText(Utils.videoTime(progress));
                         if (progress >= videoInfo.videoTime) {
                             progress = 0;
                         }

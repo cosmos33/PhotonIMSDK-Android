@@ -11,13 +11,13 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="84dp"
+        android:layout_height="64dp"
         android:layout_gravity="bottom"
         android:background="#67000000"
         android:paddingLeft="8dp"
-        android:paddingTop="20dp"
+        android:paddingTop="10dp"
         android:paddingRight="8dp"
-        android:paddingBottom="20dp">
+        android:paddingBottom="10dp">
 
         <CheckBox
             android:id="@+id/cbCheck"
