@@ -309,7 +309,6 @@ public class ChatModel extends IChatModel {
                     public void onLoad(int i, String s, PhotonIMMessage photonIMMessage) {
                         if (i == 200) {
                             if (onFileUploadListener != null) {
-                                chatData.setFileUrl(s);
                                 onFileUploadListener.onFileUpload(true, chatData, photonIMMessage);
                             }
                         } else if (i != 202) {

@@ -8,6 +8,8 @@ import android.text.TextUtils;
 
 import com.cosmos.maplib.map.MyLocation;
 import com.cosmos.photon.im.PhotonIMMessage;
+import com.cosmos.photon.im.messagebody.PhotonIMAudioBody;
+import com.cosmos.photon.im.messagebody.PhotonIMFileBody;
 import com.cosmos.photon.im.messagebody.PhotonIMImageBody;
 import com.cosmos.photon.im.messagebody.PhotonIMVideoBody;
 import com.cosmos.photonim.imbase.ImBaseBridge;
@@ -240,10 +242,20 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
             case PhotonIMMessage.IMAGE:
                 PhotonIMImageBody imageBody = (PhotonIMImageBody) photonIMMessage.body;
                 chatData.setThumbnailUrl(imageBody.thumbUrl);
+                chatData.setFileUrl(imageBody.url);
                 break;
             case PhotonIMMessage.VIDEO:
                 PhotonIMVideoBody body = (PhotonIMVideoBody) photonIMMessage.body;
                 chatData.setVideoCover(body.coverUrl);
+                chatData.setFileUrl(body.url);
+                break;
+            case PhotonIMMessage.AUDIO:
+                PhotonIMAudioBody audioBody = (PhotonIMAudioBody) photonIMMessage.body;
+                chatData.setFileUrl(audioBody.url);
+                break;
+            case PhotonIMMessage.FILE:
+                PhotonIMFileBody fileBody = (PhotonIMFileBody) photonIMMessage.body;
+                chatData.setFileUrl(fileBody.url);
                 break;
         }
     }
@@ -575,7 +587,6 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
     }
 
 
-
     @Override
     public void revertMsg(ChatData data) {
         getiModel().revertMsg(data, (data1, error, msg) -> getIView().onRevertResult(data1, error, msg));
@@ -793,6 +804,7 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
             sendMsg(chatDataBuild);
         }
     }
+
     private void sendMap(Intent data) {
         MyLocation result = (MyLocation) data.getSerializableExtra(MapActivity.MAP_LOCATION);
         if (result == null) {

@@ -20,6 +20,7 @@ import com.cosmos.photonim.imbase.utils.image.ImageLoaderUtils;
 import com.cosmos.photonim.imbase.utils.looperexecute.CustomRunnable;
 import com.cosmos.photonim.imbase.utils.looperexecute.MainLooperExecuteUtil;
 import com.immomo.media_cosmos.CosmosPlayer;
+import com.mm.player.ICosPlayer;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -81,7 +82,15 @@ public class VideoPreviewFragment extends BaseFragment {
 
         progressView.setMax((int) (videoInfo.videoTime));
         player.setLoopPlay(false);
-
+        player.setOnStateChangedListener(new ICosPlayer.OnStateChangedListener() {
+            @Override
+            public void onStateChanged(int i) {
+                if (i == ICosPlayer.STATE_ENDED) {
+                    ivPlayIcon.setVisibility(View.VISIBLE);
+                    ivPlay.setImageResource(R.drawable.video_preview_play);
+                }
+            }
+        });
     }
 
     @OnClick(R2.id.ivPlayIcon)
@@ -130,6 +139,7 @@ public class VideoPreviewFragment extends BaseFragment {
                         tvTime.setText(Utils.videoTime(progress));
                         if (progress >= videoInfo.videoTime) {
                             progress = 0;
+                            customRunnable.setCanceled(true);
                         }
                     }
                 })

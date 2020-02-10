@@ -10,6 +10,7 @@ import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.R2;
 import com.cosmos.photonim.imbase.base.BaseFragment;
 import com.cosmos.photonim.imbase.chat.ChatData;
+import com.cosmos.photonim.imbase.utils.Constants;
 import com.cosmos.photonim.imbase.utils.ToastUtils;
 import com.cosmos.photonim.imbase.utils.image.IImageLoader;
 import com.cosmos.photonim.imbase.utils.image.ImageLoaderUtils;
@@ -78,12 +79,12 @@ public class ImageFragment extends BaseFragment {
 
     @OnClick(R2.id.tvPreviewOrigin)
     public void onCheckOriginClick() {
-        ImageLoaderUtils.getInstance().loadImage(getContext(), chatData.getFileUrl(), R.drawable.head_placeholder, photoView);
+        ImageLoaderUtils.getInstance().loadImage(getContext(), Constants.getFlieUrl(chatData.getFileUrl()), R.drawable.head_placeholder, photoView);
     }
 
     @OnClick(R2.id.tvDown)
     public void onDownClick() {
-        ImageLoaderUtils.getInstance().downloadImage(getContext(), chatData.getFileUrl(), new IImageLoader.OnDownloadImageListener() {
+        ImageLoaderUtils.getInstance().downloadImage(getContext(), Constants.getFlieUrl(chatData.getFileUrl()), new IImageLoader.OnDownloadImageListener() {
             @Override
             public void onDownload(String path) {
                 ToastUtils.showText(String.format("保存位置：%s", path));
