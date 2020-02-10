@@ -9,7 +9,6 @@ import android.widget.TextView;
 import com.cosmos.photon.im.PhotonIMMessage;
 import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.chat.ChatData;
-import com.cosmos.photonim.imbase.utils.Constants;
 import com.cosmos.photonim.imbase.utils.StringUtils;
 import com.cosmos.photonim.imbase.utils.image.ImageLoaderUtils;
 import com.cosmos.photonim.imbase.utils.recycleadapter.ItemData;
@@ -72,7 +71,7 @@ public abstract class ChatItemTypeAbstract extends ItemTypeAbstract {
                 if (!TextUtils.isEmpty(chatData.getLocalFile())) {
                     ImageLoaderUtils.getInstance().loadImage(pic.getContext(), chatData.getLocalFile(), R.drawable.chat_placeholder, pic);
                 } else {
-                    ImageLoaderUtils.getInstance().loadImage(pic.getContext(), Constants.getFlieUrl(chatData.getFileUrl()), R.drawable.chat_placeholder, pic);
+                    ImageLoaderUtils.getInstance().loadImage(pic.getContext(), chatData.getThumbnailUrl(), R.drawable.chat_placeholder, pic);
                 }
                 break;
             case PhotonIMMessage.LOCATION:
@@ -92,9 +91,9 @@ public abstract class ChatItemTypeAbstract extends ItemTypeAbstract {
                 TextView fileSize = (TextView) rvViewHolder.getView(R.id.tvFileSize);
                 fileSize.setText(chatData.getFileSize());
                 DownLoadProgress progress = (DownLoadProgress) rvViewHolder.getView(R.id.fileProgress);
-                if (chatData.isDownloading()) {
+                if (chatData.isShowProgress()) {
                     progress.setVisibility(View.VISIBLE);
-                    progress.setCurrentProgress(chatData.getDownloadProgress());
+                    progress.setCurrentProgress(chatData.getProgress());
                 } else {
                     progress.setVisibility(View.GONE);
                 }
@@ -107,9 +106,9 @@ public abstract class ChatItemTypeAbstract extends ItemTypeAbstract {
                 ImageLoaderUtils.getInstance().loadImage(ivCover.getContext(), chatData.getVideoCover(), R.drawable.chat_placeholder, ivCover);
                 ((TextView) rvViewHolder.getView(R.id.tvVideoTime)).setText(chatData.getVideoTime());
                 progress = (DownLoadProgress) rvViewHolder.getView(R.id.videoProgress);
-                if (chatData.isDownloading()) {
+                if (chatData.isShowProgress()) {
                     progress.setVisibility(View.VISIBLE);
-                    progress.setCurrentProgress(chatData.getDownloadProgress());
+                    progress.setCurrentProgress(chatData.getProgress());
                 } else {
                     progress.setVisibility(View.GONE);
                 }

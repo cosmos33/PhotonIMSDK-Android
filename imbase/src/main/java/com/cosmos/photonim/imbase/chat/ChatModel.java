@@ -303,24 +303,27 @@ public class ChatModel extends IChatModel {
             public Object call() throws Exception {
                 PhotonIMMessage message = chatData.convertToIMMessage();
                 PhotonIMDatabase.getInstance().saveMessage(message);
-                PhotonIMFileManager.getInstance().uploadFile(message, new PhotonIMFileManager.FileLoadListener() {
+                PhotonIMFileManager.getInstance().uploadFile(message, new PhotonIMFileManager.FileUpLoadListener() {
+
                     @Override
-                    public void onLoad(int i, String s, String s1) {
+                    public void onLoad(int i, String s, PhotonIMMessage photonIMMessage) {
                         if (i == 200) {
                             if (onFileUploadListener != null) {
-                                chatData.setFileUrl(s1);
-                                onFileUploadListener.onFileUpload(true, chatData);
+                                chatData.setFileUrl(s);
+                                onFileUploadListener.onFileUpload(true, chatData, photonIMMessage);
                             }
                         } else if (i != 202) {
                             if (onFileUploadListener != null) {
-                                onFileUploadListener.onFileUpload(false, chatData);
+                                onFileUploadListener.onFileUpload(false, chatData, photonIMMessage);
                             }
                         }
                     }
 
                     @Override
                     public void onProgress(int i) {
-
+                        if (onFileUploadListener != null) {
+                            onFileUploadListener.onProgress(chatData, i);
+                        }
                     }
                 });
                 return null;
@@ -375,7 +378,7 @@ public class ChatModel extends IChatModel {
 
     @Override
     public void getFile(ChatData data, String savePath, OnGetFileListener onGetFileListener) {
-        PhotonIMFileManager.getInstance().downloadFile(data.convertToIMMessage(), new PhotonIMFileManager.FileLoadListener() {
+        PhotonIMFileManager.getInstance().downloadFile(data.convertToIMMessage(), new PhotonIMFileManager.FileDownloadListener() {
             @Override
             public void onLoad(int i, String s, String s1) {
                 if (i == 200) {

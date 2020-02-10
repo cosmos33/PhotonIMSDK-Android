@@ -63,9 +63,11 @@ public class ChatData implements ItemData, Parcelable, Cloneable {
     private long videoTimeL;
     private String videoTime;
     private String videoCover;
-    private int downloadProgress;
+    private int progress;
     private double videowhRatio;
-    private boolean downloading;
+    private boolean showProgress;
+
+    private String thumbnailUrl;
 
 //    private MsgExtra extra;
 
@@ -106,6 +108,7 @@ public class ChatData implements ItemData, Parcelable, Cloneable {
         videoTimeL = builder.videoTimeL;
         videoTime = Utils.videoTime(videoTimeL);
         videoCover = builder.videoCover;
+        thumbnailUrl = builder.thumbnailUrl;
     }
 
 //    public static ChatData getForwardChatData(ChatData chatData) {
@@ -278,12 +281,24 @@ public class ChatData implements ItemData, Parcelable, Cloneable {
         return videoCover;
     }
 
-    public int getDownloadProgress() {
-        return downloadProgress;
+    public void setVideoCover(String videoCover) {
+        this.videoCover = videoCover;
     }
 
-    public void setDownloadProgress(int downloadProgress) {
-        this.downloadProgress = downloadProgress;
+    public void setThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
+    }
+
+    public int getProgress() {
+        return progress;
+    }
+
+    public void setProgress(int downloadProgress) {
+        this.progress = downloadProgress;
+    }
+
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
     }
 
     public PhotonIMMessage convertToIMMessage() {
@@ -310,6 +325,7 @@ public class ChatData implements ItemData, Parcelable, Cloneable {
                 PhotonIMImageBody imageBody = new PhotonIMImageBody();
                 imageBody.url = StringUtils.getTextContent(fileUrl);
                 imageBody.localFile = localFile;
+                imageBody.thumbUrl = thumbnailUrl;
                 photonIMMessage.body = imageBody;
                 break;
             case PhotonIMMessage.AUDIO:
@@ -431,12 +447,12 @@ public class ChatData implements ItemData, Parcelable, Cloneable {
         return videowhRatio;
     }
 
-    public boolean isDownloading() {
-        return downloading;
+    public boolean isShowProgress() {
+        return showProgress;
     }
 
-    public void setDownloading(boolean downloading) {
-        this.downloading = downloading;
+    public void setShowProgress(boolean showProgress) {
+        this.showProgress = showProgress;
     }
 
     public static final class Builder implements Serializable {
@@ -472,6 +488,8 @@ public class ChatData implements ItemData, Parcelable, Cloneable {
         private long videoTimeL;
         private String videoCover;
         private double videowhRatio;
+
+        private String thumbnailUrl;
 
 //        private MsgExtra extra;
 
@@ -593,6 +611,11 @@ public class ChatData implements ItemData, Parcelable, Cloneable {
             return this;
         }
 
+        public Builder thumbnailUrl(String var) {
+            thumbnailUrl = var;
+            return this;
+        }
+
         public ChatData build() {
             if (body != null) {
                 switch (msgType) {
@@ -608,6 +631,7 @@ public class ChatData implements ItemData, Parcelable, Cloneable {
                         PhotonIMImageBody imageBody = (PhotonIMImageBody) body;
                         this.fileUrl = imageBody.url;
                         this.localFile = imageBody.localFile;
+                        this.thumbnailUrl = imageBody.thumbUrl;
                         break;
                     case PhotonIMMessage.AUDIO:
                         PhotonIMAudioBody audioBody = (PhotonIMAudioBody) body;
@@ -830,9 +854,10 @@ public class ChatData implements ItemData, Parcelable, Cloneable {
         dest.writeLong(this.videoTimeL);
         dest.writeString(this.videoTime);
         dest.writeString(this.videoCover);
-        dest.writeInt(this.downloadProgress);
+        dest.writeInt(this.progress);
         dest.writeDouble(this.videowhRatio);
-        dest.writeByte(this.downloading ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.showProgress ? (byte) 1 : (byte) 0);
+        dest.writeString(this.thumbnailUrl);
     }
 
     protected ChatData(Parcel in) {
@@ -866,9 +891,10 @@ public class ChatData implements ItemData, Parcelable, Cloneable {
         this.videoTimeL = in.readLong();
         this.videoTime = in.readString();
         this.videoCover = in.readString();
-        this.downloadProgress = in.readInt();
+        this.progress = in.readInt();
         this.videowhRatio = in.readDouble();
-        this.downloading = in.readByte() != 0;
+        this.showProgress = in.readByte() != 0;
+        this.thumbnailUrl = in.readString();
     }
 
     public static final Creator<ChatData> CREATOR = new Creator<ChatData>() {

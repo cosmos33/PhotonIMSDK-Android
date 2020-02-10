@@ -1,5 +1,6 @@
 package com.cosmos.photonim.imbase.chat.ichat;
 
+import com.cosmos.photon.im.PhotonIMMessage;
 import com.cosmos.photonim.imbase.base.mvp.base.IModel;
 import com.cosmos.photonim.imbase.chat.ChatData;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;
@@ -83,7 +84,9 @@ public abstract class IChatModel implements IModel {
     }
 
     public interface OnFileUploadListener {
-        void onFileUpload(boolean success, ChatData chatData);
+        void onFileUpload(boolean success, ChatData chatData, PhotonIMMessage photonIMMessage);
+
+        void onProgress(ChatData chatData, int progress);
     }
 
     public interface OnRevertListener {

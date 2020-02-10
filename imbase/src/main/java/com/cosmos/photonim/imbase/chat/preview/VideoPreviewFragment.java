@@ -80,6 +80,8 @@ public class VideoPreviewFragment extends BaseFragment {
         ImageLoaderUtils.getInstance().loadImage(getContext(), videoInfo.videoCoverPath, R.drawable.chat_placeholder, player.getCoverView());
 
         progressView.setMax((int) (videoInfo.videoTime));
+        player.setLoopPlay(false);
+
     }
 
     @OnClick(R2.id.ivPlayIcon)

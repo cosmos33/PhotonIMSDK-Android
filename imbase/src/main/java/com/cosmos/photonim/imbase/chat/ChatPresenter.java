@@ -8,6 +8,8 @@ import android.text.TextUtils;
 
 import com.cosmos.maplib.map.MyLocation;
 import com.cosmos.photon.im.PhotonIMMessage;
+import com.cosmos.photon.im.messagebody.PhotonIMImageBody;
+import com.cosmos.photon.im.messagebody.PhotonIMVideoBody;
 import com.cosmos.photonim.imbase.ImBaseBridge;
 import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.chat.album.AlbumFragment;
@@ -207,22 +209,56 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
     }
 
     private void sendFile(ChatData chatData) {
+        chatData.setShowProgress(true);
         EventBus.getDefault().post(new ChatDataWrapper(chatData, PhotonIMMessage.SENDING, null));
         if (TextUtils.isEmpty(chatData.getFileUrl())) {// TODO: 2020-02-05 maybe judge file is exist?
             getiModel().uploadFile(chatData, new IChatModel.OnFileUploadListener() {
                 @Override
-                public void onFileUpload(boolean success, ChatData chatData) {
+                public void onFileUpload(boolean success, ChatData chatData, PhotonIMMessage photonIMMessage) {
                     if (success) {
+                        chatData.setShowProgress(false);
+                        handleChatData(chatData, photonIMMessage);
                         getiModel().updateAndsendMsg(chatData, null);
                     } else {
                         getiModel().updateStatus(chatData.getChatType(), chatData.getChatWith(), chatData.getMsgId(), PhotonIMMessage.SEND_FAILED);
                         EventBus.getDefault().post(new ChatDataWrapper(chatData, ChatModel.MSG_ERROR_CODE_UPLOAD_PIC_FAILED, "上传失败"));
                     }
                 }
+
+                @Override
+                public void onProgress(ChatData chatData, int progress) {
+                    notifyItemPorgress(chatData, progress);
+                }
             });
         } else {
             getiModel().updateAndsendMsg(chatData, null);
         }
+    }
+
+    private void handleChatData(ChatData chatData, PhotonIMMessage photonIMMessage) {
+        switch (chatData.getMsgType()) {
+            case PhotonIMMessage.IMAGE:
+                PhotonIMImageBody imageBody = (PhotonIMImageBody) photonIMMessage.body;
+                chatData.setThumbnailUrl(imageBody.thumbUrl);
+                break;
+            case PhotonIMMessage.VIDEO:
+                PhotonIMVideoBody body = (PhotonIMVideoBody) photonIMMessage.body;
+                chatData.setVideoCover(body.coverUrl);
+                break;
+        }
+    }
+
+    private void notifyItemPorgress(ChatData chatData, int progress) {
+        chatData.setProgress(progress);
+        LogUtils.log(String.format("progress %d", progress));
+        CustomRunnable customRunnable = new CustomRunnable.Builder()
+                .runnable(new Runnable() {
+                    @Override
+                    public void run() {
+                        getIView().notifyItemChanged(chatData.getListPostion());
+                    }
+                }).build();
+        MainLooperExecuteUtil.getInstance().post(customRunnable);
     }
 
     @Override
@@ -664,13 +700,13 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
         downloadData.put(chatData.getMsgId(), chatData);
 //        File file = new File(Environment.getExternalStorageDirectory(), FileUtils.VOICE_PATH_RECEIVE + fileUrlName);
 //        FileUtils.createFile(file);
-        chatData.setDownloading(true);
+        chatData.setShowProgress(true);
         getIView().notifyItemChanged(chatData.getListPostion());
         getiModel().getFile(chatData, null, new IChatModel.OnGetFileListener() {
             @Override
             public void onGetFile(String path) {
                 downloadData.remove(chatData.getMsgId());
-                chatData.setDownloading(false);
+                chatData.setShowProgress(false);
                 if (TextUtils.isEmpty(path)) {
                     getIView().toast("下载失败");
                     return;
@@ -680,16 +716,7 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
 
             @Override
             public void onProgress(ChatData chatData, int progress) {
-                chatData.setDownloadProgress(progress);
-                LogUtils.log(String.format("download progress %d", progress));
-                CustomRunnable customRunnable = new CustomRunnable.Builder()
-                        .runnable(new Runnable() {
-                            @Override
-                            public void run() {
-                                getIView().notifyItemChanged(chatData.getListPostion());
-                            }
-                        }).build();
-                MainLooperExecuteUtil.getInstance().post(customRunnable);
+                notifyItemPorgress(chatData, progress);
             }
         });
     }

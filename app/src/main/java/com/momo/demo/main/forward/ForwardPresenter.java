@@ -83,13 +83,18 @@ public class ForwardPresenter extends IForwardPresenter<IForwardView, IChatModel
         if (TextUtils.isEmpty(sendDatum.getFileUrl())) {// TODO: 2020-02-05 maybe judge file is exist?
             getiModel().uploadFile(sendDatum, new IChatModel.OnFileUploadListener() {// TODO: 2020-02-07 文件不需要重复上传
                 @Override
-                public void onFileUpload(boolean success, ChatData chatData) {
+                public void onFileUpload(boolean success, ChatData chatData, PhotonIMMessage photonIMMessage) {
                     if (success) {
                         getiModel().updateAndsendMsg(chatData, null);
                     } else {
                         getiModel().updateStatus(chatData.getChatType(), chatData.getChatWith(), chatData.getMsgId(), PhotonIMMessage.SEND_FAILED);
                         EventBus.getDefault().post(new ChatDataWrapper(chatData, ChatModel.MSG_ERROR_CODE_UPLOAD_PIC_FAILED, "上传失败"));
                     }
+                }
+
+                @Override
+                public void onProgress(ChatData chatData, int progress) {
+
                 }
             });
         } else {

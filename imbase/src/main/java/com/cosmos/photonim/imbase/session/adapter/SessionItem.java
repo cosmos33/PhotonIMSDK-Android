@@ -53,7 +53,7 @@ public class SessionItem extends ItemTypeAbstract {
         }
         sessionData.setItemPosition(position);
         if (!TextUtils.isEmpty(sessionData.getNickName())) {
-            ((TextView) rvViewHolder.getView(R.id.tvNickName)).setText(sessionData.getNickName());
+            ((TextView) rvViewHolder.getView(R.id.tvNickName)).setText(getNickName(sessionData.getNickName()));
         } else {
             ((TextView) rvViewHolder.getView(R.id.tvNickName)).setText(sessionData.getChatWith());
         }
@@ -94,6 +94,10 @@ public class SessionItem extends ItemTypeAbstract {
             }
         }
 
+    }
+
+    private String getNickName(String nickName) {
+        return nickName.length() > 15 ? String.format("%s...", nickName.substring(0, 15)) : nickName;
     }
 
     protected CharSequence getMsgContent(SessionData sessionData) {
