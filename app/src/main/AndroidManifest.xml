@@ -50,7 +50,7 @@
             android:name="com.cosmos.photonim.imbase.chat.chatset.ChatSetActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.cosmos.photonim.imbase.chat.image.ImageCheckActivity"
+            android:name="com.cosmos.photonim.imbase.chat.preview.ImageCheckActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".SplashActivity">
             <intent-filter>

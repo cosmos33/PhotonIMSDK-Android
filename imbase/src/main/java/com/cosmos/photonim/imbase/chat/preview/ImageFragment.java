@@ -1,8 +1,9 @@
-package com.cosmos.photonim.imbase.chat.image;
+package com.cosmos.photonim.imbase.chat.preview;
 
 import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.TextView;
 
 import com.cosmos.photonim.imbase.ImBaseBridge;
 import com.cosmos.photonim.imbase.R;
@@ -10,6 +11,8 @@ import com.cosmos.photonim.imbase.R2;
 import com.cosmos.photonim.imbase.base.BaseFragment;
 import com.cosmos.photonim.imbase.chat.ChatData;
 import com.cosmos.photonim.imbase.utils.Constants;
+import com.cosmos.photonim.imbase.utils.ToastUtils;
+import com.cosmos.photonim.imbase.utils.image.IImageLoader;
 import com.cosmos.photonim.imbase.utils.image.ImageLoaderUtils;
 import com.github.chrisbanes.photoview.PhotoView;
 
@@ -22,6 +25,11 @@ import butterknife.OnClick;
 public class ImageFragment extends BaseFragment {
     @BindView(R2.id.photoView)
     PhotoView photoView;
+    @BindView(R2.id.tvPreviewOrigin)
+    TextView tvPreviewOrigin;
+    @BindView(R2.id.tvDown)
+    TextView tvDown;
+
     private ChatData chatData;
 
     public static ImageFragment getInstance(ChatData imageUrl) {
@@ -46,11 +54,17 @@ public class ImageFragment extends BaseFragment {
         }
         if (url != null && url.startsWith("http")) {
             ImageLoaderUtils.getInstance().loadImage(view.getContext(), url, R.drawable.head_placeholder, photoView);
+            setVisible(View.VISIBLE);
         } else {
             ImageLoaderUtils.getInstance().loadImageUri(view.getContext(), Uri.fromFile(new File(url)), R.drawable.head_placeholder, photoView);
+            setVisible(View.GONE);
         }
     }
 
+    private void setVisible(int visible) {
+        tvDown.setVisibility(visible);
+        tvPreviewOrigin.setVisibility(visible);
+    }
     @OnClick(R2.id.ivClose)
     public void onCloseClick() {
         if (getActivity() != null) {
@@ -61,5 +75,20 @@ public class ImageFragment extends BaseFragment {
     @OnClick(R2.id.tvForward)
     public void onForwardClick() {
         ImBaseBridge.getInstance().onForwardClick(getActivity(), chatData);
+    }
+
+    @OnClick(R2.id.tvPreviewOrigin)
+    public void onCheckOriginClick() {
+        ImageLoaderUtils.getInstance().loadImage(getContext(), Constants.getFlieUrl(chatData.getFileUrl()), R.drawable.head_placeholder, photoView);
+    }
+
+    @OnClick(R2.id.tvDown)
+    public void onDownClick() {
+        ImageLoaderUtils.getInstance().downloadImage(getContext(), Constants.getFlieUrl(chatData.getFileUrl()), new IImageLoader.OnDownloadImageListener() {
+            @Override
+            public void onDownload(String path) {
+                ToastUtils.showText(String.format("保存位置：%s", path));
+            }
+        });
     }
 }

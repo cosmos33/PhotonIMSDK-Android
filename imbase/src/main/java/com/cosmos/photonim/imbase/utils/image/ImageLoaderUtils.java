@@ -38,4 +38,9 @@ public class ImageLoaderUtils implements IImageLoader {
     public void loadResImage(Context context, int resId, ImageView imageView) {
         imageLoader.loadResImage(context, resId, imageView);
     }
+
+    @Override
+    public void downloadImage(Context context, String url, OnDownloadImageListener onDownloadImageListener) {
+        imageLoader.downloadImage(context, url, onDownloadImageListener);
+    }
 }

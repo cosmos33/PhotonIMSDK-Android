@@ -10,4 +10,11 @@ public interface IImageLoader {
     void loadImageUri(Context context, Uri uri, int placeHolderResId, ImageView imageView);
 
     void loadResImage(Context context, int resid, ImageView imageView);
+
+    void downloadImage(Context context, String url, OnDownloadImageListener onDownloadImageListener);
+
+
+    interface OnDownloadImageListener {
+        void onDownload(String path);
+    }
 }

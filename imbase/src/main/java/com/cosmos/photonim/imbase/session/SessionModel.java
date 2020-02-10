@@ -177,7 +177,7 @@ public class SessionModel extends ISessionModel {
         ArrayList<SessionData> result = new ArrayList<>(sessionList.size());
         SessionData sessionData;
         ArrayList<SessionData> sticker = new ArrayList<>();
-        String tempContent;
+        String tempContent = "";
         boolean showAtMsg;
         String lastMsgFrName;
         String icon;
@@ -231,7 +231,7 @@ public class SessionModel extends ISessionModel {
                     }
                     break;
                 default:
-                    tempContent = "[未知消息]";
+//                    tempContent = "[未知消息]";
             }
             boolean isAtMeMsg = false;
             Profile profile = DBHelperUtils.getInstance().findProfile(photonIMSession.chatWith);

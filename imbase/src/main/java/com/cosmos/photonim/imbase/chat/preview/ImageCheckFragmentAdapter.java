@@ -1,4 +1,4 @@
-package com.cosmos.photonim.imbase.chat.image;
+package com.cosmos.photonim.imbase.chat.preview;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

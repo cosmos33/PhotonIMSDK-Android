@@ -11,7 +11,7 @@
 
     <application>
         <activity
-            android:name=".chat.image.ImageCheckActivity"
+            android:name=".chat.preview.ImageCheckActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".chat.chatset.ChatSetActivity"
@@ -32,7 +32,7 @@
         <activity android:name=".chat.album.AlbumActivity" />
         <activity android:name=".chat.album.preview.ImagePreviewActivity" />
         <activity android:name=".chat.file.FileActivity" />
-        <activity android:name=".chat.image.VideoPreviewActivity" />
+        <activity android:name=".chat.preview.VideoPreviewActivity" />
 
         <provider
             android:name=".utils.GenericFileProvider"

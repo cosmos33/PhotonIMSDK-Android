@@ -1,4 +1,4 @@
-package com.cosmos.photonim.imbase.chat.image;
+package com.cosmos.photonim.imbase.chat.preview;
 
 import android.app.Activity;
 import android.content.Intent;

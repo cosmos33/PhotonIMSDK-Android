@@ -6,6 +6,7 @@ import android.os.Environment;
 import android.text.TextUtils;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -19,6 +20,7 @@ public class FileUtils {
     public static final String PHOTO_PATH = IM_DEOM_ROOT + "/" + "takephoto/";
     public static final String VIDEO_PATH = IM_DEOM_ROOT + "/" + "video/";
     public static final String VIDEO_COVER_PATH = VIDEO_PATH + "/" + "cover/";
+    public static final String VIDEO_IMAGE_ORIGIN_PATH = IM_DEOM_ROOT + "/" + "imageorigin/";
 
     public static boolean createFile(File file) {
         if (file == null) {
@@ -49,6 +51,10 @@ public class FileUtils {
 
     public static String getVideoCoverPath() {
         return getPath(VIDEO_COVER_PATH);
+    }
+
+    public static String getImageOriginPath() {
+        return getPath(VIDEO_IMAGE_ORIGIN_PATH);
     }
 
     public static String getPath(String path) {
@@ -113,5 +119,31 @@ public class FileUtils {
         }
         String[] split = path.split("/");
         return split[split.length - 1];
+    }
+
+    public static void copy(File source, File target) {
+        FileInputStream fileInputStream = null;
+        FileOutputStream fileOutputStream = null;
+        try {
+            fileInputStream = new FileInputStream(source);
+            fileOutputStream = new FileOutputStream(target);
+            byte[] buffer = new byte[1024];
+            while (fileInputStream.read(buffer) > 0) {
+                fileOutputStream.write(buffer);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (fileInputStream != null) {
+                    fileInputStream.close();
+                }
+                if (fileOutputStream != null) {
+                    fileOutputStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

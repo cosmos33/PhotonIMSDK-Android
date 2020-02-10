@@ -25,7 +25,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:text=""
+            android:textColor="@color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="选择"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="28dp"
             android:textColor="@color/white" />
 
         <TextView

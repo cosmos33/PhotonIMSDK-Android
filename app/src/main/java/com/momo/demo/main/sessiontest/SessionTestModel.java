@@ -259,7 +259,7 @@ public class SessionTestModel extends ISessionTestModel {
         }
         ArrayList<SessionTestData> result = new ArrayList<>(allSessionTest.size());
         SessionTestData sessionTestData;
-        String tempContent;
+        String tempContent = "";
         String lastMsgFrName;
         boolean updateFromInfo;
         for (PhotonIMSession photonIMSession : sessionList) {
@@ -295,7 +295,7 @@ public class SessionTestModel extends ISessionTestModel {
                     tempContent = "[自定义消息]" + photonIMSession.lastMsgContent;
                     break;
                 default:
-                    tempContent = "[未知消息]";
+//                    tempContent = "[未知消息]";
             }
             if (photonIMSession.lastMsgFr != null
                     && !photonIMSession.lastMsgFr.equals(ImBaseBridge.getInstance().getUserId())

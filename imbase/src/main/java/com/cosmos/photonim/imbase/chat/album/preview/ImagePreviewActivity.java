@@ -12,7 +12,7 @@ import com.cosmos.photonim.imbase.R2;
 import com.cosmos.photonim.imbase.base.BaseActivity;
 import com.cosmos.photonim.imbase.chat.album.AlbumPresenter;
 import com.cosmos.photonim.imbase.chat.album.adapter.CategoryFile;
-import com.cosmos.photonim.imbase.chat.image.ImageCheckFragmentAdapter;
+import com.cosmos.photonim.imbase.chat.preview.ImageCheckFragmentAdapter;
 import com.cosmos.photonim.imbase.utils.Constants;
 import com.cosmos.photonim.imbase.utils.ToastUtils;
 
