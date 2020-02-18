@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 public class SessionModel extends ISessionModel {
+    public static final String DRAFT = "[草稿]";
     @Override
     public void loadLocalHostoryMsg(OnLoadHistoryListener onLoadHistoryListener) {
         TaskExecutor.getInstance().createAsycTask(() -> getLocalHistoryMsg(),
@@ -248,6 +249,10 @@ public class SessionModel extends ISessionModel {
             } else {
                 icon = profile == null ? "" : profile.getIcon();
                 nickName = profile == null ? "" : profile.getName();
+            }
+            String sessionDraft = PhotonIMDatabase.getInstance().getSessionDraft(photonIMSession.chatType, photonIMSession.chatWith);
+            if (!TextUtils.isEmpty(sessionDraft)) {
+                tempContent = String.format("%s%s", DRAFT, sessionDraft);
             }
             sessionData = new SessionData.Builder()
                     .chatType(photonIMSession.chatType)

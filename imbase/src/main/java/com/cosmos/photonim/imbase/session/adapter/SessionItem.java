@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.cosmos.photon.im.PhotonIMMessage;
 import com.cosmos.photonim.imbase.ImBaseBridge;
 import com.cosmos.photonim.imbase.R;
+import com.cosmos.photonim.imbase.session.SessionModel;
 import com.cosmos.photonim.imbase.utils.Constants;
 import com.cosmos.photonim.imbase.utils.image.ImageLoaderUtils;
 import com.cosmos.photonim.imbase.utils.recycleadapter.ItemData;
@@ -104,7 +105,7 @@ public class SessionItem extends ItemTypeAbstract {
         if (sessionData.isShowAtTip()) {
             return sessionData.getAtMsg();
         } else {
-            if (TextUtils.isEmpty(sessionData.getLastMsgFrName())) {
+            if (TextUtils.isEmpty(sessionData.getLastMsgFrName()) || sessionData.getLastMsgContent().startsWith(SessionModel.DRAFT)) {
                 return sessionData.getLastMsgContent();
             } else {
                 return String.format("%s:%s", sessionData.getLastMsgFrName(), sessionData.getLastMsgContent());

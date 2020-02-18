@@ -79,6 +79,7 @@ public abstract class ChatBaseActivity extends IChatView {
 
     private int chatType;
     protected String chatWith;
+    private String lastDraft;
 
 
     public static void startActivity(Activity from, int chatType, String chatWith, String myIcon,
@@ -130,6 +131,7 @@ public abstract class ChatBaseActivity extends IChatView {
                 getIntent().getStringExtra(EXTRA_SEARCHID));
 
         presenter.loadHistory();
+        presenter.getDraft();
         initView();
     }
 
@@ -432,6 +434,9 @@ public abstract class ChatBaseActivity extends IChatView {
     protected void onDestroy() {
         TestSendManager.getInstance().unBind();
         EventBus.getDefault().post(new ClearUnReadStatus(chatType, chatWith));
+        if (!extraFragment.getContent().trim().equals(lastDraft)) {
+            presenter.onSaveDraft(extraFragment.getContent().trim());
+        }
         presenter.onDestory();
         super.onDestroy();
     }
@@ -500,5 +505,12 @@ public abstract class ChatBaseActivity extends IChatView {
     @Override
     public ArrayList<AtEditText.Entity> getAtList() {
         return extraFragment.getAtList();
+    }
+
+    public void onGetDraft(String draft) {
+        lastDraft = draft;
+        if (extraFragment != null) {
+            extraFragment.setDraft(draft);
+        }
     }
 }

@@ -156,6 +156,11 @@ public abstract class IChatPresenter<V extends IChatView, M extends IChatModel> 
             }
 
             @Override
+            public void onGetDraft(String draft) {
+
+            }
+
+            @Override
             public IPresenter getIPresenter() {
                 return null;
             }
@@ -201,4 +206,9 @@ public abstract class IChatPresenter<V extends IChatView, M extends IChatModel> 
     public abstract void sendText(String content);
 
     public abstract void onWindowFocusChanged(boolean hasFocus);
+
+    public abstract void onSaveDraft(String trim);
+
+    public abstract void getDraft();
+
 }

@@ -161,6 +161,12 @@ public class ChatExtraFragment extends RvBaseFragment {
                 setControlEnable(true);
             }
         });
+
+        getDraft();
+    }
+
+    private void getDraft() {
+
     }
 
     @OnClick(R2.id.ivVoice)
@@ -338,5 +344,12 @@ public class ChatExtraFragment extends RvBaseFragment {
 
     public void setOnVoiceEventListener(OnVoiceEventListener onVoiceEventListener) {
         this.onVoiceEventListener = onVoiceEventListener;
+    }
+
+    public void setDraft(String draft) {
+        if (TextUtils.isEmpty(draft)) {
+            return;
+        }
+        etInput.setText(draft);
     }
 }

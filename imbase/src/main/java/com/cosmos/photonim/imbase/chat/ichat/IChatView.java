@@ -40,4 +40,6 @@ public abstract class IChatView extends RvBaseActivity<IChatPresenter> {
     public abstract boolean isGroup();
 
     public abstract ArrayList<AtEditText.Entity> getAtList();
+
+    public abstract void onGetDraft(String draft);
 }

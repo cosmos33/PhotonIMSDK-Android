@@ -522,6 +522,30 @@ public class ChatModel extends IChatModel {
         });
     }
 
+    @Override
+    public void saveDraft(int chatType, String chatWith, String trim) {
+        TaskExecutor.getInstance().createAsycTask(new Callable() {
+                                                      @Override
+                                                      public Object call() throws Exception {
+                                                          PhotonIMDatabase.getInstance().updateSessionDraft(chatType, chatWith, trim);
+                                                          return null;
+                                                      }
+                                                  }
+        );
+    }
+
+    @Override
+    public void getDraft(int chatType, String chatWith, OnGetDraftLitener onGetDraftLitener) {
+        TaskExecutor.getInstance().createAsycTask(() -> {
+                    return PhotonIMDatabase.getInstance().getSessionDraft(chatType, chatWith);
+                }, result -> {
+                    if (onGetDraftLitener != null) {
+                        onGetDraftLitener.onGetDraft((String) result);
+                    }
+                }
+        );
+    }
+
     private Object clearSessionInner(int chatType, String chatWith) {
         PhotonIMDatabase.getInstance().clearMessage(chatType, chatWith);
         return null;

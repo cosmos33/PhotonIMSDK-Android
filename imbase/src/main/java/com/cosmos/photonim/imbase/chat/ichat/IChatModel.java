@@ -67,6 +67,10 @@ public abstract class IChatModel implements IModel {
 
     public abstract void clearChatContent(int chatType, String chatWith, OnClearChatContentListener onClearSessionListener);
 
+    public abstract void saveDraft(int chatType, String chatWith, String trim);
+
+    public abstract void getDraft(int chatType, String chatWith, OnGetDraftLitener onGetDraftLitener);
+
     public interface OnLoadHistoryListener {
         void onLoadHistory(List<ChatData> chatData, Map<String, ChatData> chatDataMap);
     }
@@ -109,6 +113,10 @@ public abstract class IChatModel implements IModel {
 
     public interface OnClearChatContentListener {
         void onClearChatContent();
+    }
+
+    public interface OnGetDraftLitener {
+        void onGetDraft(String draft);
     }
 
 }

@@ -516,6 +516,21 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
         }
     }
 
+    @Override
+    public void onSaveDraft(String trim) {
+        getiModel().saveDraft(chatType, chatWith, trim);
+    }
+
+    @Override
+    public void getDraft() {
+        getiModel().getDraft(chatType, chatWith, new IChatModel.OnGetDraftLitener() {
+            @Override
+            public void onGetDraft(String draft) {
+                getIView().onGetDraft(draft);
+            }
+        });
+    }
+
     private void addNewMsg(ChatData chatData) {
         chatData.setTimeContent(getTimeContent(chatData.getTime()));
         chatMsg.add(chatData);
