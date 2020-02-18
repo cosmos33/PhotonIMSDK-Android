@@ -158,6 +158,8 @@ public class ForwardPresenter extends IForwardPresenter<IForwardView, IChatModel
                     .videoCover(chatData.getVideoCover())
                     .videoTime(chatData.getVideoTimeL())
                     .videowhRatio(chatData.getVideowhRatio())
+
+                    .thumbnailUrl(chatData.getThumbnailUrl())
                     .build());
         }
         return result;
