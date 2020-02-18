@@ -104,6 +104,9 @@ public class VideoRecordFragment extends BaseFragment {
                                         customRunnable.setCanceled(true);
                                         stopRecord();
                                     }
+                                    if (customRunnable.isCanceled()) {
+                                        tvTime.setText("00:00(最长录制3分钟)");
+                                    }
                                 }
                             })
                             .delayTime(1000)
