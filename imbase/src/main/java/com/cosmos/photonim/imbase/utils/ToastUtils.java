@@ -16,13 +16,9 @@ public class ToastUtils {
     private static ReuseRunnable reuseRunnable;
 
     public static void showText(final String content) {
-        showText(null, content);
-    }
-
-    public static void showText(Context context, final String content) {
         //TODO 是否可以公用一个toast
         if (Looper.myLooper() != null && Looper.myLooper().equals(Looper.getMainLooper())) {
-            showTextInner(ImBaseBridge.getInstance().getApplication(), content);
+            showTextInner(ContextHolder.getContext(), content);
         } else {
             if (handler == null) {
                 handler = new Handler(Looper.getMainLooper());

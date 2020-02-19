@@ -56,7 +56,7 @@ import top.oply.opuslib.OpusRecorder;
 public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
     private static final int IMAGE_MAX_SIZE = 10 * 1024 * 1024;
     private static final int LIMIT_LOADREMOTE = 200;
-    private static final int PAGE_ONE = 50;
+    private static int PAGE_ONE = 50;
     private static final String TAG = "ChatSetPresenter";
     protected static final String AT_ALL_CONTENT = "所有人 ";
 
@@ -76,10 +76,15 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
     private boolean lastLoadHistoryFromRemote = false;
     private boolean firstLoad = true;
     private HashMap<String, ChatData> downloadData;
-    private boolean loadAllHistoryFormServer = false;
+
+    private RoamData roamData;//漫游
 
     public ChatPresenter(IChatView iView) {
         super(iView);
+        roamData = ImBaseBridge.getInstance().getRoamData();
+        if (roamData != null && roamData.roamOpen) {
+            PAGE_ONE = roamData.count;
+        }
     }
 
     @Override
@@ -117,9 +122,8 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
                 });
     }
 
-    @Override
-    public void loadAllHistory(int size, long beginTimeStamp, long endTimeStamp) {
-        getiModel().loadAllHistory(chatType, chatWith, size, beginTimeStamp, endTimeStamp,
+    public void loadAllHistory(String anchor, int size, long beginTimeStamp, long endTimeStamp) {
+        getiModel().loadAllHistory(chatType, chatWith, anchor, size, beginTimeStamp, endTimeStamp,
                 (chatData, chatDataMap) -> {
                     onloadHistoryResult(chatData, chatDataMap, false);
                 });
@@ -128,8 +132,8 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
     private void onloadHistoryResult(List<ChatData> chatData, Map<String, ChatData> chatDataMap, boolean search) {
 //        if(!loadAllHistoryFormServer){
         if (lastLoadHistoryFromRemote) {//服务器没有历史消息了需要加载本地
-            if (loadAllHistoryFormServer) {
-                getHistory(false, 0L, chatMsg.size() == 0 ? "" : chatMsg.get(0).getMsgId());
+            if (roamData != null && roamData.roamOpen) {
+                getHistory(false, roamData.startTime, roamData.endTime, chatMsg.size() == 0 ? "" : chatMsg.get(0).getMsgId());
             } else {
                 if (chatMsg.size() > 0) {
                     ChatData chatDataTemp = chatMsg.get(0);
@@ -163,10 +167,14 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
     }
 
     private void getHistory(boolean loadFromRemote, long endTimeStamp, String anchorMsgId) {
+        getHistory(loadFromRemote, 0, endTimeStamp, anchorMsgId);
+    }
+
+    private void getHistory(boolean loadFromRemote, long startTime, long endTimeStamp, String anchorMsgId) {
         if (loadFromRemote) {
             lastLoadHistoryFromRemote = true;
 //            presenter.loadAllHistory(chatType, chatWith, PAGE_ONE, beginTimeStamp);
-            loadAllHistory(PAGE_ONE, 0, endTimeStamp);
+            loadAllHistory(anchorMsgId, PAGE_ONE, startTime, endTimeStamp);
         } else {
             lastLoadHistoryFromRemote = false;
             loadLocalHistory(anchorMsgId, true, false,
@@ -406,8 +414,8 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
     @Override
     public void loadHistory() {
         if (searchMsgId == null) {
-            if (loadAllHistoryFormServer) {
-                getHistory(true, System.currentTimeMillis(), "");//全部从服务器获取消息
+            if (roamData != null && roamData.roamOpen) {
+                getHistory(true, roamData.startTime, roamData.endTime, "");//全部从服务器获取消息
             } else {
                 getHistory(false, 0L, "");
             }
@@ -420,8 +428,8 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
     public void loadMore() {
         if (chatMsg.size() > 0) {
             ChatData chatData = chatMsg.get(0);
-            if (loadAllHistoryFormServer) {
-                getHistory(true, chatData.getTime(), chatData.getMsgId());
+            if (roamData != null && roamData.roamOpen) {
+                getHistory(true, roamData.startTime, roamData.endTime, chatData.getMsgId());
             } else {
                 if (!getIView().isGroup() && chatMsg.size() >= LIMIT_LOADREMOTE) {//单人消息从本地拉取LIMIT_LOADREMOTE条之后，从服务器拉取
                     getHistory(true, chatData.getTime(), chatData.getMsgId());
@@ -430,8 +438,8 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
                 }
             }
         } else {
-            if (loadAllHistoryFormServer) {
-                getHistory(true, 0L, "");
+            if (roamData != null && roamData.roamOpen) {
+                getHistory(true, roamData.startTime, roamData.endTime, "");
             } else {
                 getHistory(false, 0L, "");
             }

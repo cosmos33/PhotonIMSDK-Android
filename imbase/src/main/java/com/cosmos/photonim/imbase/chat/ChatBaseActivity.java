@@ -214,7 +214,7 @@ public abstract class ChatBaseActivity extends IChatView {
 
     @Override
     public void onRecordFailed() {
-        ToastUtils.showText(this, "录制失败，请重试");
+        ToastUtils.showText("录制失败，请重试");
         presenter.stopRecord();
     }
 
@@ -245,7 +245,7 @@ public abstract class ChatBaseActivity extends IChatView {
             chatAdapter.notifyItemChanged(data.getListPostion());
             return;
         }
-        ToastUtils.showText(this, String.format("操作失败：%s", msg));
+        ToastUtils.showText(String.format("操作失败：%s", msg));
     }
 
     @Override

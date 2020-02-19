@@ -92,6 +92,28 @@
                 android:src="@drawable/arrow_right" />
         </FrameLayout>
 
+        <FrameLayout
+            android:id="@+id/flRoam"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/white"
+            android:layout_marginTop="8dp"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="漫游消息" />
+
+            <ImageView
+                android:layout_width="@dimen/arrow_size"
+                android:layout_height="@dimen/arrow_size"
+                android:layout_gravity="right"
+                android:src="@drawable/arrow_right" />
+        </FrameLayout>
+
+
         <TextView
             android:id="@+id/tvLogout"
             android:layout_width="match_parent"

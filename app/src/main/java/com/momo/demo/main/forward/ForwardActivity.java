@@ -94,7 +94,7 @@ public class ForwardActivity extends IForwardView {
     @OnClick(R2.id.tvConfirm)
     public void onConfirmClick() {
         if (selectedData.size() <= 0) {
-            ToastUtils.showText(this, "请至少选择一个人");
+            ToastUtils.showText("请至少选择一个人");
             return;
         }
         if (forSessionTest) {

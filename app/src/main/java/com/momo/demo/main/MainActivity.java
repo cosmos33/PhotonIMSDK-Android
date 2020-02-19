@@ -193,7 +193,7 @@ public class MainActivity extends BaseActivity {
     public void onReceiveMsg(PhotonIMMessage msg) {
         if (msg.chatType == PhotonIMMessage.CUSTOMMSG) {
             PhotonIMCustomBody body = (PhotonIMCustomBody) msg.body;
-            ToastUtils.showText(this, String.format("收到自定义消息：customArg1:%d,customArg2:%d", body.arg1, body.arg2));
+            ToastUtils.showText(String.format("收到自定义消息：customArg1:%d,customArg2:%d", body.arg1, body.arg2));
         }
     }
 
@@ -227,7 +227,7 @@ public class MainActivity extends BaseActivity {
         if (requestCode == Permission_RequestCode) {
             for (int i = 0; i < grantResults.length; i++) {
                 if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
-                    ToastUtils.showText(this, "没有给权限啊好难🤯");
+                    ToastUtils.showText("没有给权限啊好难🤯");
                     break;
                 }
             }

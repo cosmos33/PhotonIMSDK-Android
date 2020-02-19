@@ -190,6 +190,10 @@ public class VideoRecordFragment extends BaseFragment {
                 recorder.release();
                 if (onChangeFragmentListener != null) {
                     BmpInfo bmpInfo = (BmpInfo) result;
+                    if (bmpInfo == null) {
+                        ToastUtils.showText("封面生成失败");
+                        return;
+                    }
                     Bundle bundle = new Bundle();
                     VideoInfo videoInfo = new VideoInfo();
                     videoInfo.videoTime = timeCount;

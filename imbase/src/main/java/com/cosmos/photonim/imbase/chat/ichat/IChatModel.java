@@ -16,7 +16,7 @@ public abstract class IChatModel implements IModel {
     public abstract void loadAfterSearchMsgId(int chatType, String chatWith, String anchorMsgId, boolean beforeAuthor, boolean asc, int size, OnLoadHistoryListener listener);
     public abstract void loadAllHistory(int chatType, String chatWith, int size, long beginTimeStamp, OnLoadHistoryListener listener);
 
-    public abstract void loadAllHistory(int chatType, String chatWith, int size, long beginTimeStamp, long endTimeStamp, OnLoadHistoryListener listener);
+    public abstract void loadAllHistory(int chatType, String chatWith, String anchor, int size, long beginTimeStamp, long endTimeStamp, OnLoadHistoryListener listener);
 //    public abstract void loadRemoteHistorey(OnLoadHistoryListener listener);
 
 //    public abstract void sendTextMsg(int chatType, String messagId, String content, String chatWith, String fromId, String toId,

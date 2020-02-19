@@ -29,7 +29,7 @@ public abstract class IChatPresenter<V extends IChatView, M extends IChatModel> 
 
     public abstract void loadAllHistory(int size, long beginTimeStamp);
 
-    public abstract void loadAllHistory(int size, long beginTimeStamp, long endTimeStamp);
+    public abstract void loadAllHistory(String anchor, int size, long beginTimeStamp, long endTimeStamp);
 //    public abstract void loadRemoteHistory();
 
 //    public abstract void sendText(int chatType, String content, String chatWith, String fromId, String toId, String icon);

@@ -141,7 +141,7 @@ public class LoginActivity extends ILoginView implements MyApplication.PushToken
                 finish();
                 break;
             case PhotonIMClient.IM_STATE_AUTH_FAILED:
-                ToastUtils.showText(this, "鉴权失败");
+                ToastUtils.showText("鉴权失败");
                 break;
         }
     }
@@ -152,11 +152,11 @@ public class LoginActivity extends ILoginView implements MyApplication.PushToken
 
     @Override
     public void onReceiveToken(String token) {
-        ToastUtils.showText(this, "token" + token);
+        ToastUtils.showText("token" + token);
     }
 
     @Override
     public void onReceiveMessage(MoMessage moMessage) {
-        ToastUtils.showText(this, "偷穿消息" + moMessage.text);
+        ToastUtils.showText("偷穿消息" + moMessage.text);
     }
 }

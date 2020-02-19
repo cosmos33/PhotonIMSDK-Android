@@ -15,7 +15,6 @@ import com.cosmos.photonim.imbase.utils.http.HttpUtils;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonUploadImage;
 import com.cosmos.photonim.imbase.utils.task.TaskExecutor;
-import com.momo.demo.MyApplication;
 import com.momo.demo.main.forward.iforward.IForwardPresenter;
 import com.momo.demo.main.forward.iforward.IForwardView;
 
@@ -50,7 +49,7 @@ public class ForwardPresenter extends IForwardPresenter<IForwardView, IChatModel
                                 if (((JsonResult) result).success()) {
                                     getiModel().sendMsgMulti(getChatData(chatData, selectedData, ((JsonUploadImage) ((JsonResult) result).get()).getData().getUrl()), null);
                                 } else {
-                                    ToastUtils.showText(MyApplication.getApplication(), "发送失败");
+                                    ToastUtils.showText("发送失败");
                                 }
                             });
                 } else {

@@ -189,8 +189,8 @@ public class ChatModel extends IChatModel {
     }
 
     @Override
-    public void loadAllHistory(int chatType, String chatWith, int size, long beginTimeStamp, long endTimeStamp, OnLoadHistoryListener listener) {
-        TaskExecutor.getInstance().createAsycTask(() -> getAllHistoryFromServer(chatType, chatWith, size, beginTimeStamp, endTimeStamp),
+    public void loadAllHistory(int chatType, String chatWith, String anchor, int size, long beginTimeStamp, long endTimeStamp, OnLoadHistoryListener listener) {
+        TaskExecutor.getInstance().createAsycTask(() -> getAllHistoryFromServer(chatType, chatWith, anchor, size, beginTimeStamp, endTimeStamp),
                 result -> {
                     if (listener == null) {
                         return;
@@ -206,7 +206,7 @@ public class ChatModel extends IChatModel {
 
     private Object getAllHistoryFromServer(int chatType, String chatWith, int size, long beginTimeStamp) {
         ArrayList<PhotonIMMessage> resultList = new ArrayList<>();
-        PhotonIMDatabase.SyncHistoryResult result = PhotonIMDatabase.getInstance().syncHistoryMessagesFromServer(chatType, chatWith, size, 0);
+        PhotonIMDatabase.SyncHistoryResult result = PhotonIMDatabase.getInstance().syncHistoryMessagesFromServer(chatType, chatWith, size, beginTimeStamp);
         if (result == null) {
             return null;
         }
@@ -216,9 +216,9 @@ public class ChatModel extends IChatModel {
         return convertMap(resultList);
     }
 
-    private Object getAllHistoryFromServer(int chatType, String chatWith, int size, long beginTimeStamp, long endTimeStamp) {
+    private Object getAllHistoryFromServer(int chatType, String chatWith, String anchor, int size, long beginTimeStamp, long endTimeStamp) {
         ArrayList<PhotonIMMessage> resultList = new ArrayList<>();
-        PhotonIMDatabase.SyncHistoryResult result = PhotonIMDatabase.getInstance().syncHistoryMessagesFromServer(chatType, chatWith, "", size, beginTimeStamp, endTimeStamp);
+        PhotonIMDatabase.SyncHistoryResult result = PhotonIMDatabase.getInstance().syncHistoryMessagesFromServer(chatType, chatWith, anchor, size, beginTimeStamp, endTimeStamp);
         if (result == null) {
             return null;
         }
@@ -377,7 +377,7 @@ public class ChatModel extends IChatModel {
 
     @Override
     public void getFile(ChatData data, String savePath, OnGetFileListener onGetFileListener) {
-        PhotonIMFileManager.getInstance().downloadFile(data.convertToIMMessage(), new PhotonIMFileManager.FileDownloadListener() {
+        PhotonIMFileManager.getInstance().downloadFile(null, data.convertToIMMessage(), new PhotonIMFileManager.FileDownloadListener() {
             @Override
             public void onLoad(int i, String s, String s1) {
                 if (i == 200) {

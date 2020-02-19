@@ -116,7 +116,7 @@ public class RegistActivity extends IRegistView {
 
     @Override
     public void onRegistResult(JsonResult result) {
-        ToastUtils.showText(this, String.format("注册:%s", result.success() ? "成功" : "失败"));
+        ToastUtils.showText(String.format("注册:%s", result.success() ? "成功" : "失败"));
 
         if (result.success()) {
             Intent intent = new Intent(this, LoginActivity.class);

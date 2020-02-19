@@ -19,6 +19,8 @@ import com.cosmos.photon.push.msg.MoMessage;
 import com.cosmos.photon.push.notification.MoNotify;
 import com.cosmos.photonim.imbase.ImBaseBridge;
 import com.cosmos.photonim.imbase.chat.ChatData;
+import com.cosmos.photonim.imbase.chat.RoamData;
+import com.cosmos.photonim.imbase.utils.ContextHolder;
 import com.cosmos.photonim.imbase.utils.ToastUtils;
 import com.cosmos.photonim.imbase.utils.http.HttpUtils;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonContactRecent;
@@ -31,6 +33,7 @@ import com.momo.demo.main.contacts.single.userinfo.iuserinfo.IUserInfoModel;
 import com.momo.demo.main.forward.ForwardActivity;
 import com.momo.demo.main.groupinfo.GroupInfoActivity;
 import com.momo.demo.main.groupmemberselected.GroupMemberSelectActivity;
+import com.momo.demo.main.me.RoamInfo;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -54,6 +57,8 @@ public class MyApplication extends Application {
         pushInit();
         mediaInit();
         imInit();
+
+        ContextHolder.init(this);
     }
 
     private void imInit() {
@@ -181,7 +186,7 @@ public class MyApplication extends Application {
                 PhotonPushManager.getInstance().unRegister();
                 ImBaseBridge.getInstance().logout();
 
-                ToastUtils.showText(activity, "服务器强制下线");
+                ToastUtils.showText("服务器强制下线");
                 Intent intent = new Intent(activity, LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 activity.startActivity(intent);
@@ -247,6 +252,16 @@ public class MyApplication extends Application {
             @Override
             public String getTokenId() {
                 return LoginInfo.getInstance().getToken();
+            }
+
+            @Override
+            public RoamData getRoamData() {
+                RoamData roamData = new RoamData();
+                roamData.roamOpen = RoamInfo.openRoam();
+                roamData.startTime = RoamInfo.getStartTime();
+                roamData.endTime = RoamInfo.getEndTime();
+                roamData.count = RoamInfo.getCount();
+                return roamData;
             }
         };
     }

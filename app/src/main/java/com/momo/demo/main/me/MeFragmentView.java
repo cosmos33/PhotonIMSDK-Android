@@ -18,6 +18,7 @@ import com.momo.demo.login.LoginActivity;
 import com.momo.demo.login.LoginInfo;
 import com.momo.demo.main.me.ime.IMeViewView;
 import com.momo.demo.view.ChangeNickNameDialog;
+import com.momo.demo.view.RoamDialog;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -35,7 +36,7 @@ public class MeFragmentView extends IMeViewView {
     private ChangeNickNameDialog dialog;
     private String nickName;
 
-
+    private RoamDialog roamDialog;
 
     @Override
     public int getLayoutId() {
@@ -62,9 +63,9 @@ public class MeFragmentView extends IMeViewView {
             @Override
             public void onComplete(String nickName) {
                 if (TextUtils.isEmpty(nickName.trim())) {
-                    ToastUtils.showText(getContext(), "昵称不能为空");
+                    ToastUtils.showText("昵称不能为空");
                 } else if (MeFragmentView.this.nickName != null && MeFragmentView.this.nickName.equals(nickName.trim())) {
-                    ToastUtils.showText(getContext(), "昵称未改变");
+                    ToastUtils.showText("昵称未改变");
                 } else {
                     presenter.changeNickName(nickName);
                 }
@@ -90,7 +91,7 @@ public class MeFragmentView extends IMeViewView {
     public void onChangeNickName(JsonSetNickName jsonResult) {
         if (jsonResult.success()) {
             presenter.getMyInfo();
-            ToastUtils.showText(getContext(), "修改成功");
+            ToastUtils.showText("修改成功");
             if (dialog != null) {
                 dialog.dismiss();
                 dialog = null;
@@ -116,12 +117,18 @@ public class MeFragmentView extends IMeViewView {
             ImBaseBridge.getInstance().setGids(jsonResult.getData().getJoinedGids());
             ImageLoaderUtils.getInstance().loadImage(getContext(), avatar, R.drawable.head_placeholder, ivIcon);
         } else {
-            ToastUtils.showText(getContext(), "获取个人信息失败");
+            ToastUtils.showText("获取个人信息失败");
         }
     }
 
     @Override
     public IPresenter getIPresenter() {
         return new MePresenter(this);
+    }
+
+    @OnClick(R.id.flRoam)
+    public void onRoamClick() {
+        roamDialog = RoamDialog.getInstance();
+        roamDialog.show(getFragmentManager(), "");
     }
 }

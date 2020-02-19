@@ -9,6 +9,7 @@ import com.cosmos.photon.im.PhotonIMClient;
 import com.cosmos.photonim.imbase.base.BaseActivity;
 import com.cosmos.photonim.imbase.chat.ChatData;
 import com.cosmos.photonim.imbase.chat.ChatGroupActivity;
+import com.cosmos.photonim.imbase.chat.RoamData;
 import com.cosmos.photonim.imbase.chat.emoji.EmojiUtils;
 import com.cosmos.photonim.imbase.utils.LocalRestoreUtils;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonContactRecent;
@@ -118,6 +119,10 @@ public class ImBaseBridge {
         return businessListener == null ? null : businessListener.getRecentUser();
     }
 
+    public RoamData getRoamData() {
+        return businessListener == null ? null : businessListener.getRoamData();
+    }
+
     public static class ImBaseInitHolder {
         public static ImBaseBridge imBaseBridge = new ImBaseBridge();
     }
@@ -225,6 +230,8 @@ public class ImBaseBridge {
 
         //返回tokenId
         String getTokenId();
+
+        RoamData getRoamData();
     }
 
 

@@ -112,7 +112,7 @@ public class ChatSetActivity extends IChatSetView {
 
     @Override
     public void onIgnoreChangeStatusResult(boolean success) {
-        ToastUtils.showText(this, success ? "成功" : "失败");
+        ToastUtils.showText(success ? "成功" : "失败");
         if (!success) {
             sBan.setChecked(!sBan.isChecked());
         }
@@ -121,7 +121,7 @@ public class ChatSetActivity extends IChatSetView {
     @Override
     public void onGetIgnoreStatus(JsonResult result) {
         if (!result.success()) {
-            ToastUtils.showText(this, "获取勿扰设置失败");
+            ToastUtils.showText("获取勿扰设置失败");
             return;
         }
         JsonGetIgnoreInfo ignoreInfo = (JsonGetIgnoreInfo) result.get();

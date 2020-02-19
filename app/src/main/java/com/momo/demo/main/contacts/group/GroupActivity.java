@@ -83,10 +83,10 @@ public class GroupActivity extends IGroupView {
             ImBaseBridge.getInstance().addJoindGId(groupData.getGroupId());
             groupData.setInGroup(true);
             adapter.notifyDataSetChanged();
-            ToastUtils.showText(this, "加入成功");
+            ToastUtils.showText("加入成功");
             enterGroup(groupData);
         } else {
-            ToastUtils.showText(this, "加入失败");
+            ToastUtils.showText("加入失败");
         }
     }
 

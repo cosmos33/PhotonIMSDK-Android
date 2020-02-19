@@ -25,7 +25,7 @@ public class CheckAudioPermission {
     public static boolean isHasPermission(final Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (context.checkSelfPermission(Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_DENIED) {
-                ToastUtils.showText(context, "没有麦克风权限，好难啊！");
+                ToastUtils.showText("没有麦克风权限，好难啊！");
                 return false;
             }
             return true;

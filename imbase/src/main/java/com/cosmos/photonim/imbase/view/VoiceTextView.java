@@ -60,7 +60,7 @@ public class VoiceTextView extends AppCompatTextView {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 if (System.currentTimeMillis() - lastDownTime < FRQUENT_DURATION) {
-                    ToastUtils.showText(getContext(), "操作太频繁");
+                    ToastUtils.showText("操作太频繁");
                     return false;
                 }
                 lastDownTime = System.currentTimeMillis();
