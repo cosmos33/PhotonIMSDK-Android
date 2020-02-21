@@ -3,6 +3,7 @@ package com.cosmos.photonim.imbase.chat.adapter.chat;
 import android.support.annotation.CallSuper;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,6 +29,15 @@ public abstract class ChatItemTypeAbstract extends ItemTypeAbstract {
             R.id.llFileContainer,
             R.id.flVideo,
             R.id.tvContent};
+    private CheckStatusChangeCallback checkStatusChangeCallback;
+
+    public ChatItemTypeAbstract(CheckStatusChangeCallback checkStatusChangeCallback) {
+        this.checkStatusChangeCallback = checkStatusChangeCallback;
+    }
+
+    public interface CheckStatusChangeCallback {
+        boolean checkStatus();
+    }
 
     @CallSuper
     @Override
@@ -41,6 +51,14 @@ public abstract class ChatItemTypeAbstract extends ItemTypeAbstract {
         } else {
             view.setVisibility(View.GONE);
         }
+        if (checkStatusChangeCallback != null && checkStatusChangeCallback.checkStatus()) {
+            CheckBox cbCheck = (CheckBox) rvViewHolder.getView(R.id.cbCheck);
+            cbCheck.setVisibility(View.VISIBLE);
+            cbCheck.setChecked(chatData.isChecked());
+        } else {
+            rvViewHolder.getView(R.id.cbCheck).setVisibility(View.GONE);
+        }
+
     }
 
     protected void fillMsgContent(RvViewHolder rvViewHolder) {
@@ -126,4 +144,6 @@ public abstract class ChatItemTypeAbstract extends ItemTypeAbstract {
             }
         }
     }
+
+
 }

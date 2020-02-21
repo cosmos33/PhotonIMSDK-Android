@@ -17,6 +17,14 @@
         android:layout_marginRight="@dimen/chat_item_margin"
         android:gravity="left">
 
+        <CheckBox
+            android:id="@+id/cbCheck"
+            style="@style/checkboxStyle_forward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="8dp" />
+
         <ImageView
             android:id="@+id/ivIcon"
             android:layout_width="@dimen/chat_icon"

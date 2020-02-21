@@ -68,6 +68,7 @@ public class ChatData implements ItemData, Parcelable, Cloneable {
     private boolean showProgress;
 
     private String thumbnailUrl;
+    private boolean isChecked;
 
 //    private MsgExtra extra;
 
@@ -453,6 +454,14 @@ public class ChatData implements ItemData, Parcelable, Cloneable {
 
     public void setShowProgress(boolean showProgress) {
         this.showProgress = showProgress;
+    }
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
     }
 
     public static final class Builder implements Serializable {

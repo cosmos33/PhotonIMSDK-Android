@@ -31,6 +31,7 @@ public class ChatPopupWindow extends PopupWindow implements View.OnClickListener
         TextView tvRelay = view.findViewById(R.id.tvRelay);
         TextView tvRevert = view.findViewById(R.id.tvRevert);
         TextView tvDelete = view.findViewById(R.id.tvDelete);
+        TextView tvMultiSelect = view.findViewById(R.id.tvMultiSelect);
         if (!showRevert) {
             view.findViewById(R.id.divider_revert).setVisibility(View.GONE);
             tvRevert.setVisibility(View.GONE);
@@ -44,6 +45,7 @@ public class ChatPopupWindow extends PopupWindow implements View.OnClickListener
         tvRelay.setOnClickListener(this);
         tvRevert.setOnClickListener(this);
         tvDelete.setOnClickListener(this);
+        tvMultiSelect.setOnClickListener(this);
     }
 
     @Override
@@ -58,6 +60,8 @@ public class ChatPopupWindow extends PopupWindow implements View.OnClickListener
                 onMenuClick.onRevertClick();
             } else if (i == R.id.tvDelete) {
                 onMenuClick.onDeleteClick();
+            } else if (i == R.id.tvMultiSelect) {
+                onMenuClick.onMultiClick();
             }
         }
         dismiss();
@@ -102,5 +106,7 @@ public class ChatPopupWindow extends PopupWindow implements View.OnClickListener
         void onRevertClick();
 
         void onDeleteClick();
+
+        void onMultiClick();
     }
 }

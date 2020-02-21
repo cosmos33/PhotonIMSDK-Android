@@ -76,6 +76,7 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
     private boolean lastLoadHistoryFromRemote = false;
     private boolean firstLoad = true;
     private HashMap<String, ChatData> downloadData;
+    private HashMap<String, ChatData> checkedData;
 
     private RoamData roamData;//漫游
 
@@ -305,12 +306,48 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
     public void deleteMsg(ChatData data) {
         getiModel().deleteMsg(data, new IChatModel.OnDeleteMsgListener() {
             @Override
-            public void onDeletemsgResult(ChatData data, String error) {
+            public void onDeletemsgResult(ArrayList<ChatData> data, String error) {
                 if (!TextUtils.isEmpty(error)) {
                     getIView().toast(error);
                 }
             }
         });
+    }
+
+    @Override
+    public void deleteMultiClick() {
+        if (checkedData == null || checkedData.size() == 0) {
+            getIView().toast("未选中");
+            return;
+        }
+        ArrayList<ChatData> chatData = new ArrayList<>(checkedData.size());
+        chatData.addAll(checkedData.values());
+        getiModel().deleteMsgs(chatData, new IChatModel.OnDeleteMsgListener() {
+            @Override
+            public void onDeletemsgResult(ArrayList<ChatData> data, String error) {
+                if (!TextUtils.isEmpty(error)) {
+                    getIView().toast(error);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void checkItem(boolean checked, ChatData chatData) {
+        chatData.setChecked(checked);
+        initCheckedData();
+        if (checked) {
+            checkedData.put(chatData.getMsgId(), chatData);
+        } else {
+            checkedData.remove(chatData.getMsgId());
+        }
+        getIView().notifyDataSetChanged();
+    }
+
+    private void initCheckedData() {
+        if (checkedData == null) {
+            checkedData = new HashMap<>();
+        }
     }
 
     @Override
@@ -448,10 +485,24 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
 
     @Override
     public void onSendChatData(ChatDataWrapper chatDataWrapper) {
+        if (chatDataWrapper.status == ChatDataWrapper.STATUS_DELETE) {
+            if (chatDataWrapper.chatData != null) {
+                if (!chatDataWrapper.chatData.getChatWith().equals(chatWith)) {
+                    return;
+                }
+                onDeleteMsgResult(chatDataWrapper.chatData);
+            } else {
+                ChatData chatData = chatDataWrapper.chatDataList.get(0);
+                if (!chatData.getChatWith().equals(chatWith)) {
+                    return;
+                }
+                onDeleteMsgsResult(chatDataWrapper.chatDataList);
+            }
+            return;
+        }
         if (!chatDataWrapper.chatData.getChatWith().equals(chatWith)) {
             return;
         }
-
         switch (chatDataWrapper.code) {
             case PhotonIMMessage.SENDING:
                 addNewMsg(chatDataWrapper.chatData);
@@ -460,7 +511,7 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
                 getIView().toast(R.string.chat_revoke_failed);
                 break;
             default:
-                changeDataStatus(chatDataWrapper.chatData, chatDataWrapper.code, chatDataWrapper.msg, chatDataWrapper.status);
+                changeDataStatus(chatDataWrapper);
         }
     }
 
@@ -539,6 +590,7 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
         });
     }
 
+
     private void addNewMsg(ChatData chatData) {
         chatData.setTimeContent(getTimeContent(chatData.getTime()));
         chatMsg.add(chatData);
@@ -548,7 +600,11 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
         getIView().scrollToPosition(chatMsg.size() - 1);
     }
 
-    private void changeDataStatus(ChatData chatData, int code, String msg, int status) {
+    private void changeDataStatus(ChatDataWrapper chatDataWrapper) {
+        ChatData chatData = chatDataWrapper.chatData;
+        int code = chatDataWrapper.code;
+        String msg = chatDataWrapper.msg;
+        int status = chatDataWrapper.status;
         ChatData temp = chatMsgMap.get(chatData.getMsgId());
         if (temp == null) {
             LogUtils.log(TAG, "chatData is null");
@@ -583,12 +639,9 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
                 temp.setNotic(msg);
 
         }
-        if (status == ChatDataWrapper.STATUS_DELETE) {
-            onDeleteMsgResult(chatData);
-        } else {
-            //需要从chatMsgMap读取：有可能是退出聊天再次进入
-            getIView().notifyItemChanged(temp.getListPostion());
-        }
+
+        //需要从chatMsgMap读取：有可能是退出聊天再次进入
+        getIView().notifyItemChanged(temp.getListPostion());
     }
 
     private String getMsgID() {
@@ -914,6 +967,12 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
     public void onDeleteMsgResult(ChatData chatData) {
         chatMsg.remove(chatData.getListPostion());
         chatMsgMap.remove(chatData.getMsgId());
+        getIView().notifyDataSetChanged();//全部更新一下，要不然chatData里边的listposition就不对了
+    }
+
+    public void onDeleteMsgsResult(ArrayList<ChatData> chatData) {
+        chatMsg.removeAll(chatData);
+        chatMsgMap.values().removeAll(chatData);
         getIView().notifyDataSetChanged();//全部更新一下，要不然chatData里边的listposition就不对了
     }
 }

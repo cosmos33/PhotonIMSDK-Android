@@ -13,7 +13,9 @@ import com.cosmos.photonim.imbase.utils.recycleadapter.RvViewHolder;
 public class ChatNormalRightItem extends ChatItemTypeAbstract {
     private boolean group;
 
-    public ChatNormalRightItem(boolean group) {
+    public ChatNormalRightItem(CheckStatusChangeCallback checkStatusChangeCallback
+            , boolean group) {
+        super(checkStatusChangeCallback);
         this.group = group;
     }
 
@@ -83,7 +85,7 @@ public class ChatNormalRightItem extends ChatItemTypeAbstract {
 
     @Override
     public int[] getOnClickViews() {
-        return new int[]{R.id.tvContent, R.id.llVoice, R.id.ivWarn, R.id.ivPic, R.id.llLocation, R.id.flVideo, R.id.llFileContainer};
+        return new int[]{R.id.tvContent, R.id.llVoice, R.id.ivWarn, R.id.ivPic, R.id.llLocation, R.id.flVideo, R.id.llFileContainer, R.id.cbCheck};
     }
 
     @Override

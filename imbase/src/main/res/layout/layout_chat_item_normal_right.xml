@@ -46,6 +46,14 @@
             android:minWidth="@dimen/chat_icon"
             android:layout_marginLeft="4dp"
             android:src="@drawable/head_placeholder" />
+
+        <CheckBox
+            android:id="@+id/cbCheck"
+            style="@style/checkboxStyle_forward"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical" />
     </LinearLayout>
 
     <TextView

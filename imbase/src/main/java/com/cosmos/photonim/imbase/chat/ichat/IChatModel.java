@@ -5,6 +5,7 @@ import com.cosmos.photonim.imbase.base.mvp.base.IModel;
 import com.cosmos.photonim.imbase.chat.ChatData;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -46,6 +47,8 @@ public abstract class IChatModel implements IModel {
     public abstract void sendTextMsg(ChatData chatData);
 
     public abstract void deleteMsg(ChatData chatData, OnDeleteMsgListener onDeleteMsgListener);
+
+    public abstract void deleteMsgs(ArrayList<ChatData> chatData, OnDeleteMsgListener onDeleteMsgListener);
 
     public abstract void updateAndsendMsg(ChatData chatData, OnMsgSendListener onMsgSendListener);
 
@@ -108,7 +111,7 @@ public abstract class IChatModel implements IModel {
     }
 
     public interface OnDeleteMsgListener {
-        void onDeletemsgResult(ChatData data, String error);
+        void onDeletemsgResult(ArrayList<ChatData> data, String error);
     }
 
     public interface OnClearChatContentListener {

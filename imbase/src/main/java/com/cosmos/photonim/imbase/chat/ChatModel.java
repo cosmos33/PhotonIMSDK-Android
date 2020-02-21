@@ -245,15 +245,32 @@ public class ChatModel extends IChatModel {
 
     @Override
     public void deleteMsg(ChatData chatData, OnDeleteMsgListener onDeleteMsgListener) {
+        ArrayList<ChatData> list = new ArrayList<>(1);
+        list.add(chatData);
+        deleteMsgs(list, onDeleteMsgListener);
+    }
+
+    @Override
+    public void deleteMsgs(ArrayList<ChatData> chatData, OnDeleteMsgListener onDeleteMsgListener) {
         TaskExecutor.getInstance().createAsycTask(() -> {
-                    ArrayList<String> msgs = new ArrayList<>(1);
-                    msgs.add(chatData.getMsgId());
-                    PhotonIMClient.getInstance().sendDeleteMessage(chatData.getChatType(), chatData.getChatWith(), msgs,
+                    if (chatData == null || chatData.size() == 0) {
+                        return null;
+                    }
+                    ArrayList<String> msgs = new ArrayList<>(chatData.size());
+                    ChatData temp = chatData.get(0);
+                    int chatType = temp.getChatType();
+                    String chatWith = temp.getChatWith();
+                    for (ChatData chatDatum : chatData) {
+                        msgs.add(chatDatum.getMsgId());
+                    }
+                    PhotonIMClient.getInstance().sendDeleteMessage(chatType, chatWith, msgs,
                             new PhotonIMClient.PhotonIMSendCallback() {
                                 @Override
                                 public void onSent(int code, String msg, long time) {
                                     if (code == 0) {
-                                        PhotonIMDatabase.getInstance().deleteMessage(chatData.getChatType(), chatData.getChatWith(), chatData.getMsgId());
+                                        for (ChatData chatDatum : chatData) {
+                                            PhotonIMDatabase.getInstance().deleteMessage(chatType, chatWith, chatDatum.getMsgId());
+                                        }
                                         EventBus.getDefault().post(new ChatDataWrapper(chatData, code, msg, ChatDataWrapper.STATUS_DELETE));
                                     } else {
                                         onDeleteMsgListener.onDeletemsgResult(chatData, msg);

@@ -6,6 +6,7 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/llChatContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
@@ -72,6 +73,16 @@
             android:layout_marginLeft="4dp"
             android:src="@drawable/chat_extra" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvDeleteMulti"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/chat_send_height"
+        android:gravity="center"
+        android:visibility="gone"
+        android:padding="@dimen/activity_padding"
+        android:text="删除" />
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"

@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.CheckBox;
 
 import com.cosmos.photon.im.PhotonIMMessage;
 import com.cosmos.photonim.imbase.ImBaseBridge;
@@ -18,6 +19,7 @@ import com.cosmos.photonim.imbase.R;
 import com.cosmos.photonim.imbase.R2;
 import com.cosmos.photonim.imbase.base.mvp.base.IPresenter;
 import com.cosmos.photonim.imbase.chat.adapter.chat.ChatAdapter;
+import com.cosmos.photonim.imbase.chat.adapter.chat.ChatItemTypeAbstract;
 import com.cosmos.photonim.imbase.chat.ichat.IChatView;
 import com.cosmos.photonim.imbase.chat.map.MapActivity;
 import com.cosmos.photonim.imbase.chat.preview.ImageCheckActivity;
@@ -80,6 +82,7 @@ public abstract class ChatBaseActivity extends IChatView {
     private int chatType;
     protected String chatWith;
     private String lastDraft;
+    private boolean checkStatus;
 
 
     public static void startActivity(Activity from, int chatType, String chatWith, String myIcon,
@@ -191,6 +194,13 @@ public abstract class ChatBaseActivity extends IChatView {
             }
         });
 
+        extraFragment.setOnDeleteMultiClickListener(new ChatExtraFragment.OnDeleteMultiClickListener() {
+            @Override
+            public void onDeleteMultiClick() {
+                presenter.deleteMultiClick();
+            }
+        });
+
         ((TouchRecycleView) recyclerView).setOnRecycleViewClickListener(() -> {
             Utils.keyBoard(this, extraFragment.getInput(), false);
         });
@@ -240,8 +250,9 @@ public abstract class ChatBaseActivity extends IChatView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onSendChatData(ChatDataWrapper chatDataWrapper) {
+        checkStatus = false;
         presenter.onSendChatData(chatDataWrapper);
-
+        extraFragment.showChatContainer(false);
     }
 
     @Override
@@ -308,7 +319,12 @@ public abstract class ChatBaseActivity extends IChatView {
     @Override
     public RvBaseAdapter getAdapter() {
         if (chatAdapter == null) {
-            chatAdapter = new ChatAdapter(presenter.initData(), (chatData) -> {
+            chatAdapter = new ChatAdapter(presenter.initData(), new ChatItemTypeAbstract.CheckStatusChangeCallback() {
+                @Override
+                public boolean checkStatus() {
+                    return checkStatus;
+                }
+            }, (chatData) -> {
                 // TODO: 2019-08-17 已经下载中的无需下载
                 presenter.downLoadFile(chatData);
             }, data -> presenter.sendReadMsg(data), chatData -> {
@@ -381,6 +397,9 @@ public abstract class ChatBaseActivity extends IChatView {
             } else {
                 OpenFileUtils.openFile(this, chatData.getLocalFile());
             }
+        } else if (viewId == R.id.cbCheck) {
+            CheckBox checkBox = (CheckBox) view;
+            presenter.checkItem(checkBox.isChecked(), chatData);
         }
     }
 
@@ -418,6 +437,14 @@ public abstract class ChatBaseActivity extends IChatView {
             public void onDeleteClick() {
                 presenter.deleteMsg(data);
             }
+
+            @Override
+            public void onMultiClick() {
+                checkStatus = true;
+                chatAdapter.notifyDataSetChanged();
+                extraFragment.showChatContainer(true);
+
+            }
         });
         chatPopupWindow.show(((TouchRecycleView) recyclerView).getLastPoint(), recyclerView);
     }
@@ -450,6 +477,12 @@ public abstract class ChatBaseActivity extends IChatView {
 
     @Override
     public void onBackPressed() {
+        if (checkStatus) {
+            checkStatus = false;
+            extraFragment.showChatContainer(false);
+            chatAdapter.notifyDataSetChanged();
+            return;
+        }
         if (extraFragment.getLLExtraVisibility() == View.VISIBLE) {
             dismissExtraLayout();
         } else {

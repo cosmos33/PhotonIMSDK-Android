@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewStub;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cosmos.photonim.imbase.R;
@@ -59,6 +60,10 @@ public class ChatExtraFragment extends RvBaseFragment {
     TextView tvSendMsg;
     @BindView(R2.id.vsEmoji)
     ViewStub vsEmoji;
+    @BindView(R2.id.llChatContainer)
+    LinearLayout llChatContainer;
+    @BindView(R2.id.tvDeleteMulti)
+    TextView tvDeleteMultil;
 
     private RecyclerView recyclerView;
     private ChatExtraAdapter chatExtraAdapter;
@@ -71,6 +76,7 @@ public class ChatExtraFragment extends RvBaseFragment {
     private View rootView;
     private OnAtCharacterInputListener onAtCharacterInputListener;
     private boolean setDraft;
+    private OnDeleteMultiClickListener onDeleteMultiClickListener;
 
     @Override
     public int getLayoutId() {
@@ -287,8 +293,8 @@ public class ChatExtraFragment extends RvBaseFragment {
         return voiceFile.getAbsolutePath();
     }
 
-    public void addAtContent(Object o, String atAllContent) {
-        etInput.addAtContent(null, atAllContent);
+    public void addAtContent(String atAllId, String atAllContent) {
+        etInput.addAtContent(atAllId, atAllContent);
     }
 
     @Override
@@ -330,6 +336,27 @@ public class ChatExtraFragment extends RvBaseFragment {
         return chatExtraAdapter;
     }
 
+    public void showChatContainer(boolean show) {
+        if (show) {
+            Utils.keyBoard(getContext(), etInput, false);
+            tvDeleteMultil.setVisibility(View.VISIBLE);
+            llChatContainer.setVisibility(View.GONE);
+            if (emojiRoot != null) {
+                emojiRoot.setVisibility(View.GONE);
+            }
+        } else {
+            llChatContainer.setVisibility(View.VISIBLE);
+            tvDeleteMultil.setVisibility(View.GONE);
+        }
+    }
+
+    @OnClick(R2.id.tvDeleteMulti)
+    public void onDeleteMutilClick() {
+        if (onDeleteMultiClickListener != null) {
+            onDeleteMultiClickListener.onDeleteMultiClick();
+        }
+    }
+
     private class EditFilter implements InputFilter {
 
         @Override
@@ -350,6 +377,10 @@ public class ChatExtraFragment extends RvBaseFragment {
         void onAtCharacterInput();
     }
 
+    public interface OnDeleteMultiClickListener {
+        void onDeleteMultiClick();
+    }
+
     public void setOnVoiceEventListener(OnVoiceEventListener onVoiceEventListener) {
         this.onVoiceEventListener = onVoiceEventListener;
     }
@@ -365,5 +396,9 @@ public class ChatExtraFragment extends RvBaseFragment {
         }
         etInput.setText(draft);
         setDraft = true;
+    }
+
+    public void setOnDeleteMultiClickListener(OnDeleteMultiClickListener onDeleteMultiClickListener) {
+        this.onDeleteMultiClickListener = onDeleteMultiClickListener;
     }
 }

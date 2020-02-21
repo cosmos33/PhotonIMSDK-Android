@@ -211,4 +211,7 @@ public abstract class IChatPresenter<V extends IChatView, M extends IChatModel> 
 
     public abstract void getDraft();
 
+    public abstract void deleteMultiClick();
+
+    public abstract void checkItem(boolean checked, ChatData chatData);
 }

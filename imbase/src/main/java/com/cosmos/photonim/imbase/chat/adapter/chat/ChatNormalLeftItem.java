@@ -16,9 +16,11 @@ public class ChatNormalLeftItem extends ChatItemTypeAbstract {
     private OnReceiveReadListener onReceiveReadListener;
     private OnGetIconListener onGetInfoListener;
 
-    public ChatNormalLeftItem(OnGetVoiceFileListener onGetVoiceFileListener,
+    public ChatNormalLeftItem(CheckStatusChangeCallback checkStatusChangeCallback,
+                              OnGetVoiceFileListener onGetVoiceFileListener,
                               OnReceiveReadListener onReceiveReadListener,
                               OnGetIconListener onGetInfoListener) {
+        super(checkStatusChangeCallback);
         this.onGetVoiceFileListener = onGetVoiceFileListener;
         this.onReceiveReadListener = onReceiveReadListener;
         this.onGetInfoListener = onGetInfoListener;
@@ -94,7 +96,7 @@ public class ChatNormalLeftItem extends ChatItemTypeAbstract {
 
     @Override
     public int[] getOnClickViews() {
-        return new int[]{R.id.tvContent, R.id.llVoice, R.id.ivPic, R.id.llLocation, R.id.flVideo, R.id.llFileContainer};
+        return new int[]{R.id.tvContent, R.id.llVoice, R.id.ivPic, R.id.llLocation, R.id.flVideo, R.id.llFileContainer, R.id.cbCheck};
     }
 
     @Override
