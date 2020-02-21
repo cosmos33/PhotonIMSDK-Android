@@ -58,7 +58,7 @@ public class RoamDialog extends DialogFragment {
     @OnClick(R.id.tvComplete)
     public void onCompleteClick() {
         RoamInfo.setRoamOpen(open.isChecked());
-        if (checkData()) {
+        if (!checkData()) {
             ToastUtils.showText("输入有误");
             return;
         }
@@ -69,15 +69,16 @@ public class RoamDialog extends DialogFragment {
     }
 
     private boolean checkData() {
-        String startTime = etStartTime.getText().toString();
-        if (startTime.length() != 13) {
-            return false;
-        }
-        if (etEndTime.getText().toString().length() != 13) {
-            return false;
-        }
+        String startTime = etStartTime.getText().toString().trim();
+        String endTime = etEndTime.getText().toString().trim();
 
         try {
+            if (startTime.length() != 13 && Integer.valueOf(startTime) != 0) {
+                return false;
+            }
+            if (endTime.length() != 13 && Integer.valueOf(endTime) != 0) {
+                return false;
+            }
             Integer.valueOf(etCount.getText().toString());
         } catch (Exception e) {
             return false;

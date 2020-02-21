@@ -102,10 +102,12 @@ public class SessionItem extends ItemTypeAbstract {
     }
 
     protected CharSequence getMsgContent(SessionData sessionData) {
-        if (sessionData.isShowAtTip()) {
+        if (sessionData.getLastMsgContent().startsWith(SessionModel.DRAFT)) {
+            return sessionData.getLastMsgContent();
+        } else if (sessionData.isShowAtTip()) {
             return sessionData.getAtMsg();
         } else {
-            if (TextUtils.isEmpty(sessionData.getLastMsgFrName()) || sessionData.getLastMsgContent().startsWith(SessionModel.DRAFT)) {
+            if (TextUtils.isEmpty(sessionData.getLastMsgFrName())) {
                 return sessionData.getLastMsgContent();
             } else {
                 return String.format("%s:%s", sessionData.getLastMsgFrName(), sessionData.getLastMsgContent());

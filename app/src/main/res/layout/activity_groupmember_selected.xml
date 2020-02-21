@@ -2,6 +2,7 @@
 <com.cosmos.photonim.imbase.view.SwipeFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <com.cosmos.photonim.imbase.view.TitleBar

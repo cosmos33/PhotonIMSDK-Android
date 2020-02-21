@@ -184,6 +184,13 @@ public abstract class ChatBaseActivity extends IChatView {
             }
         });
 
+        extraFragment.setOnAtCharacterInputListener(new ChatExtraFragment.OnAtCharacterInputListener() {
+            @Override
+            public void onAtCharacterInput() {
+                ChatBaseActivity.this.onAtCharacterInput();
+            }
+        });
+
         ((TouchRecycleView) recyclerView).setOnRecycleViewClickListener(() -> {
             Utils.keyBoard(this, extraFragment.getInput(), false);
         });

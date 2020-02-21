@@ -69,6 +69,8 @@ public class ChatExtraFragment extends RvBaseFragment {
     private File voiceFile;
     private OnVoiceEventListener onVoiceEventListener;
     private View rootView;
+    private OnAtCharacterInputListener onAtCharacterInputListener;
+    private boolean setDraft;
 
     @Override
     public int getLayoutId() {
@@ -114,7 +116,9 @@ public class ChatExtraFragment extends RvBaseFragment {
         etInput.setOnAtInputListener(new AtEditText.OnAtInputListener() {
             @Override
             public void onAtCharacterInput() {
-                this.onAtCharacterInput();
+                if (setDraft && onAtCharacterInputListener != null) {
+                    onAtCharacterInputListener.onAtCharacterInput();
+                }
             }
         });
 
@@ -342,14 +346,24 @@ public class ChatExtraFragment extends RvBaseFragment {
         void onVoiceStop();
     }
 
+    public interface OnAtCharacterInputListener {
+        void onAtCharacterInput();
+    }
+
     public void setOnVoiceEventListener(OnVoiceEventListener onVoiceEventListener) {
         this.onVoiceEventListener = onVoiceEventListener;
     }
 
+    public void setOnAtCharacterInputListener(OnAtCharacterInputListener onAtCharacterInputListener) {
+        this.onAtCharacterInputListener = onAtCharacterInputListener;
+    }
+
     public void setDraft(String draft) {
         if (TextUtils.isEmpty(draft)) {
+            setDraft = true;
             return;
         }
         etInput.setText(draft);
+        setDraft = true;
     }
 }
