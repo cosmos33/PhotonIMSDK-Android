@@ -14,6 +14,7 @@ import com.cosmos.photonim.imbase.R2;
 import com.cosmos.photonim.imbase.base.BaseFragment;
 import com.cosmos.photonim.imbase.chat.ChatData;
 import com.cosmos.photonim.imbase.chat.media.video.VideoInfo;
+import com.cosmos.photonim.imbase.utils.LogUtils;
 import com.cosmos.photonim.imbase.utils.ToastUtils;
 import com.cosmos.photonim.imbase.utils.Utils;
 import com.cosmos.photonim.imbase.utils.image.ImageLoaderUtils;
@@ -26,6 +27,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class VideoPreviewFragment extends BaseFragment {
+    private static final String TAG = "VideoPreviewFragment";
     public static final String BUNDLE_VIDEO = "BUNDLE_VIDEO";
 
     @BindView(R2.id.player)
@@ -85,9 +87,12 @@ public class VideoPreviewFragment extends BaseFragment {
         player.setOnStateChangedListener(new ICosPlayer.OnStateChangedListener() {
             @Override
             public void onStateChanged(int i) {
+                LogUtils.log(TAG, i + "");
                 if (i == ICosPlayer.STATE_ENDED) {
                     ivPlayIcon.setVisibility(View.VISIBLE);
                     ivPlay.setImageResource(R.drawable.video_preview_play);
+                } else if (i == ICosPlayer.STATE_PREPARED) {
+                    startProgress();
                 }
             }
         });
@@ -101,7 +106,6 @@ public class VideoPreviewFragment extends BaseFragment {
             player.pause();
             cancelProgress();
         } else {
-            startProgress();
             if (startPlay) {
                 player.resume();
             } else {

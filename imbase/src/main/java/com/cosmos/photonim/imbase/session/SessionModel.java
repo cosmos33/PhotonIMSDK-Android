@@ -187,6 +187,7 @@ public class SessionModel extends ISessionModel {
         for (PhotonIMSession photonIMSession : sessionList) {
             lastMsgFrName = "";
             icon = "";
+            tempContent = "";
             updateFromInfo = false;
             switch (photonIMSession.lastMsgType) {
                 case PhotonIMMessage.AUDIO:

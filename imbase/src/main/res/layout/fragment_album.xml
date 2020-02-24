@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:layout_marginLeft="14dp"
-                android:text="预览"
+                android:text="原图"
                 android:textColor="@color/white" />
 
         </LinearLayout>

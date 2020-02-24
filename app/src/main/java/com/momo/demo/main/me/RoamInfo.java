@@ -9,7 +9,7 @@ public class RoamInfo {
     private static final String ROAM_COUNT = "ROAM_COUNT";
 
     public static boolean openRoam() {
-        return LocalStorage.get(ROAM_OPEN, false);
+        return LocalStorage.get(ROAM_OPEN, true);
     }
 
     public static long getStartTime() {
@@ -21,7 +21,7 @@ public class RoamInfo {
     }
 
     public static int getCount() {
-        return LocalStorage.get(ROAM_COUNT, 50);
+        return LocalStorage.get(ROAM_COUNT, 20);
     }
 
     public static void setRoamOpen(boolean open) {

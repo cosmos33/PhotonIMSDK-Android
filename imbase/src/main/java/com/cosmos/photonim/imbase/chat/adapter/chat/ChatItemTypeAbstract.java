@@ -51,12 +51,14 @@ public abstract class ChatItemTypeAbstract extends ItemTypeAbstract {
         } else {
             view.setVisibility(View.GONE);
         }
-        if (checkStatusChangeCallback != null && checkStatusChangeCallback.checkStatus()) {
-            CheckBox cbCheck = (CheckBox) rvViewHolder.getView(R.id.cbCheck);
-            cbCheck.setVisibility(View.VISIBLE);
-            cbCheck.setChecked(chatData.isChecked());
-        } else {
-            rvViewHolder.getView(R.id.cbCheck).setVisibility(View.GONE);
+        if (checkStatusChangeCallback != null) {
+            if (checkStatusChangeCallback.checkStatus()) {
+                CheckBox cbCheck = (CheckBox) rvViewHolder.getView(R.id.cbCheck);
+                cbCheck.setVisibility(View.VISIBLE);
+                cbCheck.setChecked(chatData.isChecked());
+            } else {
+                rvViewHolder.getView(R.id.cbCheck).setVisibility(View.GONE);
+            }
         }
 
     }
