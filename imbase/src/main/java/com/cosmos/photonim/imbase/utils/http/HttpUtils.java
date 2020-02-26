@@ -19,8 +19,7 @@ import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonSaveGroupIgnoreInfo;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonSaveIgnoreInfo;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonSetNickName;
-import com.cosmos.photonim.imbase.utils.http.jsons.JsonUploadImage;
-import com.cosmos.photonim.imbase.utils.http.jsons.JsonUploadVoice;
+import com.cosmos.photonim.imbase.utils.http.jsons.JsonUploadFile;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -110,7 +109,7 @@ public class HttpUtils {
         map.put("fileUpload", absolutePath);
         Map<String, String> headMap = new HashMap<>();
         headMap.put("Cookie", String.format("sessionId=%s;userId=%s", sessionId, userId));
-        return iHttpHelper.post(HttpContants.URL_UPLOAD_IMG_, absolutePath, map, headMap, JsonUploadImage.class);
+        return iHttpHelper.post(HttpContants.URL_UPLOAD_IMG_, absolutePath, map, headMap, JsonUploadFile.class);
     }
 
     public Object sendVoiceFile(String absolutePath, String sessionId, String userId) {
@@ -118,7 +117,7 @@ public class HttpUtils {
         map.put("fileUpload", absolutePath);
         Map<String, String> headMap = new HashMap<>();
         headMap.put("Cookie", String.format("sessionId=%s;userId=%s", sessionId, userId));
-        return iHttpHelper.post(HttpContants.URL_UPLOAD_AUDIO_, absolutePath, map, headMap, JsonUploadVoice.class);
+        return iHttpHelper.post(HttpContants.URL_UPLOAD_AUDIO_, absolutePath, map, headMap, JsonUploadFile.class);
     }
 
     public Object getOthersInfo(String[] otherId, String sessionId, String userId) {

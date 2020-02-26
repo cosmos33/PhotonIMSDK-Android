@@ -2,9 +2,10 @@ package com.cosmos.photonim.imbase.chat;
 
 import com.cosmos.photon.im.PhotonIMClient;
 import com.cosmos.photon.im.PhotonIMDatabase;
-import com.cosmos.photon.im.PhotonIMFileManager;
 import com.cosmos.photon.im.PhotonIMMessage;
 import com.cosmos.photonim.imbase.ImBaseBridge;
+import com.cosmos.photonim.imbase.chat.filehandler.HttpFileHandler;
+import com.cosmos.photonim.imbase.chat.filehandler.IFileHandler;
 import com.cosmos.photonim.imbase.chat.ichat.IChatModel;
 import com.cosmos.photonim.imbase.utils.CollectionUtils;
 import com.cosmos.photonim.imbase.utils.Constants;
@@ -13,8 +14,6 @@ import com.cosmos.photonim.imbase.utils.TimeUtils;
 import com.cosmos.photonim.imbase.utils.dbhelper.DBHelperUtils;
 import com.cosmos.photonim.imbase.utils.dbhelper.profile.Profile;
 import com.cosmos.photonim.imbase.utils.event.ChatDataWrapper;
-import com.cosmos.photonim.imbase.utils.http.HttpUtils;
-import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;
 import com.cosmos.photonim.imbase.utils.looperexecute.CustomRunnable;
 import com.cosmos.photonim.imbase.utils.looperexecute.MainLooperExecuteUtil;
 import com.cosmos.photonim.imbase.utils.task.TaskExecutor;
@@ -39,6 +38,11 @@ public class ChatModel extends IChatModel {
     public static final int MSG_ERROR_CODE_CANT_REVOKE = 1004;//消息不可撤回
     public static final int MSG_ERROR_CODE_UPLOAD_PIC_FAILED = 2000;//图片上传失败  自己定义，非服务器返回
     public static final int MSG_ERROR_CODE_TIME_OUT = -1; // 发送超时，java层定义，非服务器返回
+    private IFileHandler iFileHandler;
+
+    public ChatModel() {
+        iFileHandler = new HttpFileHandler();
+    }
 
     @Override
     public void loadLocalHistory(int chatType, String chatWith, String anchorMsgId, boolean beforeAuthor, boolean asc, int size, String myId, OnLoadHistoryListener listener) {
@@ -289,76 +293,11 @@ public class ChatModel extends IChatModel {
         TaskExecutor.getInstance().createAsycTaskChat(() -> sendMsgInner(chatData, null));
     }
 
-
-    @Override
-    public void uploadPic(ChatData chatData, OnPicUploadListener onPicUploadListener) {
-        uploadPicInner(chatData, onPicUploadListener);
-    }
-
-    private void uploadPicInner(ChatData chatData, OnPicUploadListener onPicUploadListener) {
-        EventBus.getDefault().post(new ChatDataWrapper(chatData, PhotonIMMessage.SENDING, null));
-        TaskExecutor.getInstance().createAsycTask(() -> {
-            PhotonIMMessage message = chatData.convertToIMMessage();
-//            PhotonIMDatabase.getInstance().saveMessage(message);
-            return ImBaseBridge.getInstance().sendPic(chatData.getLocalFile());
-        }, result -> {
-            if (onPicUploadListener != null) {
-                onPicUploadListener.onPicUpload(chatData, (JsonResult) result);
-            }
-        });
-    }
-
-    @Override
-    public void uploadVoiceFile(ChatData chatData, OnVoiceUploadListener onVoiceUploadListener) {
-        uploadVoiceFileInner(chatData, onVoiceUploadListener);
-    }
-
     @Override
     public void uploadFile(ChatData chatData, OnFileUploadListener onFileUploadListener) {
-        TaskExecutor.getInstance().createAsycTask(new Callable() {
-            @Override
-            public Object call() throws Exception {
-                PhotonIMMessage message = chatData.convertToIMMessage();
-                PhotonIMDatabase.getInstance().saveMessage(message);
-                PhotonIMFileManager.getInstance().uploadFile(message, new PhotonIMFileManager.FileUpLoadListener() {
-
-                    @Override
-                    public void onLoad(int i, String s, PhotonIMMessage photonIMMessage) {
-                        if (i == 200) {
-                            if (onFileUploadListener != null) {
-                                onFileUploadListener.onFileUpload(true, chatData, photonIMMessage);
-                            }
-                        } else if (i != 202) {
-                            if (onFileUploadListener != null) {
-                                onFileUploadListener.onFileUpload(false, chatData, photonIMMessage);
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onProgress(int i) {
-                        if (onFileUploadListener != null) {
-                            onFileUploadListener.onProgress(chatData, i);
-                        }
-                    }
-                });
-                return null;
-            }
-        });
+        iFileHandler.uploadFile(chatData, onFileUploadListener);
     }
 
-    private void uploadVoiceFileInner(ChatData chatData, OnVoiceUploadListener onVoiceUploadListener) {
-        EventBus.getDefault().post(new ChatDataWrapper(chatData, PhotonIMMessage.SENDING, null));
-        TaskExecutor.getInstance().createAsycTask(() -> {
-            PhotonIMMessage message = chatData.convertToIMMessage();
-            PhotonIMDatabase.getInstance().saveMessage(message);
-            return ImBaseBridge.getInstance().sendVoiceFile(chatData.getLocalFile());
-        }, result -> {
-            if (onVoiceUploadListener != null) {
-                onVoiceUploadListener.onVoiceFileUpload(chatData, (JsonResult) result);
-            }
-        });
-    }
 
     @Override
     public void updateAndsendMsg(ChatData chatData, OnMsgSendListener onMsgSendListener) {
@@ -394,36 +333,7 @@ public class ChatModel extends IChatModel {
 
     @Override
     public void getFile(ChatData data, String savePath, OnGetFileListener onGetFileListener) {
-        PhotonIMFileManager.getInstance().downloadFile(null, data.convertToIMMessage(), new PhotonIMFileManager.FileDownloadListener() {
-            @Override
-            public void onLoad(int i, String s, String s1) {
-                if (i == 200) {
-                    PhotonIMDatabase.getInstance().updateMessageLocalFile(data.getChatType(), data.getChatWith(), data.getMsgId(), s1);
-
-                    CustomRunnable customRunnable = new CustomRunnable.Builder()
-                            .runnable(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (onGetFileListener != null) {
-                                        onGetFileListener.onGetFile(s1);
-                                    }
-                                }
-                            }).build();
-                    MainLooperExecuteUtil.getInstance().post(customRunnable);
-                } else {
-                    if (onGetFileListener != null) {
-                        onGetFileListener.onGetFile(null);
-                    }
-                }
-            }
-
-            @Override
-            public void onProgress(int i) {
-                if (onGetFileListener != null) {
-                    onGetFileListener.onProgress(data, i);
-                }
-            }
-        });
+        iFileHandler.downloadFile(data, savePath, onGetFileListener);
     }
 
     @Override
@@ -454,12 +364,6 @@ public class ChatModel extends IChatModel {
             }
         });
     }
-
-    private Object getVoiceFileInner(ChatData data, String fileUrl, String savePath, OnGetFileListener onGetFileListener) {
-        JsonResult jsonResult = (JsonResult) HttpUtils.getInstance().getFile(fileUrl, savePath, onGetFileListener);
-        return null;
-    }
-
     private Object sendReadMsgInner(ChatData messageData, OnSendReadListener onSendReadListener) {
         List<String> msgList = new ArrayList<>();
         msgList.add(messageData.getMsgId());

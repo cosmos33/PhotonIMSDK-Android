@@ -35,7 +35,6 @@ import com.cosmos.photonim.imbase.utils.ToastUtils;
 import com.cosmos.photonim.imbase.utils.VoiceHelper;
 import com.cosmos.photonim.imbase.utils.event.ChatDataWrapper;
 import com.cosmos.photonim.imbase.utils.event.ClearUnReadStatus;
-import com.cosmos.photonim.imbase.utils.http.jsons.JsonUploadImage;
 import com.cosmos.photonim.imbase.utils.looperexecute.CustomRunnable;
 import com.cosmos.photonim.imbase.utils.looperexecute.MainLooperExecuteUtil;
 import com.cosmos.photonim.imbase.view.ChatToastUtils;
@@ -226,8 +225,8 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
             getiModel().uploadFile(chatData, new IChatModel.OnFileUploadListener() {
                 @Override
                 public void onFileUpload(boolean success, ChatData chatData, PhotonIMMessage photonIMMessage) {
+                    chatData.setShowProgress(false);
                     if (success) {
-                        chatData.setShowProgress(false);
                         handleChatData(chatData, photonIMMessage);
                         getiModel().updateAndsendMsg(chatData, null);
                     } else {
@@ -247,6 +246,8 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
     }
 
     private void handleChatData(ChatData chatData, PhotonIMMessage photonIMMessage) {
+        if (photonIMMessage == null)
+            return;
         switch (chatData.getMsgType()) {
             case PhotonIMMessage.IMAGE:
                 PhotonIMImageBody imageBody = (PhotonIMImageBody) photonIMMessage.body;
@@ -292,8 +293,6 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
                 getiModel().sendTextMsg(chatData);
                 break;
             case PhotonIMMessage.IMAGE:
-                sendPicMsgInner(chatData);
-                break;
             case PhotonIMMessage.AUDIO:
             case PhotonIMMessage.VIDEO:
             case PhotonIMMessage.FILE:
@@ -648,19 +647,19 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
         return UUID.randomUUID().toString();
     }
 
-    private void sendPicMsgInner(ChatData chatDataTemp) {
-        getiModel().uploadPic(chatDataTemp, (chatData, result) -> {
-            if (result != null && result.success()) {
-                JsonUploadImage jsonUploadImage = (JsonUploadImage) result.get();
-                String url = jsonUploadImage.getData().getUrl();
-                chatData.setFileUrl(url);
-                getiModel().updateAndsendMsg(chatData, null);
-            } else {
-                getiModel().updateStatus(chatData.getChatType(), chatData.getChatWith(), chatData.getMsgId(), PhotonIMMessage.SEND_FAILED);
-                EventBus.getDefault().post(new ChatDataWrapper(chatData, ChatModel.MSG_ERROR_CODE_UPLOAD_PIC_FAILED, "上传图片失败"));
-            }
-        });
-    }
+//    private void sendPicMsgInner(ChatData chatDataTemp) {
+//        getiModel().uploadPic(chatDataTemp, (chatData, result) -> {
+//            if (result != null && result.success()) {
+//                JsonUploadFile jsonUploadImage = (JsonUploadFile) result.get();
+//                String url = jsonUploadImage.getData().getUrl();
+//                chatData.setFileUrl(url);
+//                getiModel().updateAndsendMsg(chatData, null);
+//            } else {
+//                getiModel().updateStatus(chatData.getChatType(), chatData.getChatWith(), chatData.getMsgId(), PhotonIMMessage.SEND_FAILED);
+//                EventBus.getDefault().post(new ChatDataWrapper(chatData, ChatModel.MSG_ERROR_CODE_UPLOAD_PIC_FAILED, "上传图片失败"));
+//            }
+//        });
+//    }
 
 
     @Override

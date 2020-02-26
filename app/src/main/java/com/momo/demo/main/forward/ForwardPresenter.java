@@ -9,12 +9,8 @@ import com.cosmos.photonim.imbase.chat.ChatModel;
 import com.cosmos.photonim.imbase.chat.ichat.IChatModel;
 import com.cosmos.photonim.imbase.utils.CollectionUtils;
 import com.cosmos.photonim.imbase.utils.Constants;
-import com.cosmos.photonim.imbase.utils.ToastUtils;
 import com.cosmos.photonim.imbase.utils.event.ChatDataWrapper;
-import com.cosmos.photonim.imbase.utils.http.HttpUtils;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;
-import com.cosmos.photonim.imbase.utils.http.jsons.JsonUploadImage;
-import com.cosmos.photonim.imbase.utils.task.TaskExecutor;
 import com.momo.demo.main.forward.iforward.IForwardPresenter;
 import com.momo.demo.main.forward.iforward.IForwardView;
 
@@ -41,21 +37,6 @@ public class ForwardPresenter extends IForwardPresenter<IForwardView, IChatModel
         }
         switch (chatData.getMsgType()) {
             case PhotonIMMessage.IMAGE:
-                if (TextUtils.isEmpty(chatData.getFileUrl())) {
-                    TaskExecutor.getInstance().createAsycTask(() ->
-                                    HttpUtils.getInstance().sendPic(chatData.getLocalFile(),
-                                            com.momo.demo.login.LoginInfo.getInstance().getSessionId(), com.momo.demo.login.LoginInfo.getInstance().getUserId())
-                            , result -> {
-                                if (((JsonResult) result).success()) {
-                                    getiModel().sendMsgMulti(getChatData(chatData, selectedData, ((JsonUploadImage) ((JsonResult) result).get()).getData().getUrl()), null);
-                                } else {
-                                    ToastUtils.showText("发送失败");
-                                }
-                            });
-                } else {
-                    getiModel().sendMsgMulti(getChatData(chatData, selectedData, null), null);
-                }
-                break;
             case PhotonIMMessage.AUDIO:
             case PhotonIMMessage.FILE:
             case PhotonIMMessage.VIDEO:

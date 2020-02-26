@@ -32,7 +32,7 @@ public abstract class IChatModel implements IModel {
 //    public abstract void uploadPic(int chatType, String messageId, String absolutePath, String icon, String chatWith, String from,
 //                                   String to, OnMsgSendListener onMsgSendListener, OnPicUploadListener onPicUploadListener);
 
-    public abstract void uploadPic(ChatData chatData, OnPicUploadListener onPicUploadListener);
+//    public abstract void uploadPic(ChatData chatData, OnPicUploadListener onPicUploadListener);
 
 //    public abstract void uploadVoiceFile(int chatType, String absolutePath, long time, String icon, String chatWith,
 //                                         String from, String to, OnMsgSendListener onMsgSendListener, OnVoiceUploadListener onVoiceUploadListener);
@@ -40,7 +40,7 @@ public abstract class IChatModel implements IModel {
 //    public abstract void uploadVoiceFile(int chatType, String msgId, String absolutePath, long time, String icon, String chatWith,
 //                                         String from, String to, OnMsgSendListener onMsgSendListener, OnVoiceUploadListener onVoiceUploadListener);
 
-    public abstract void uploadVoiceFile(ChatData chatData, OnVoiceUploadListener onVoiceUploadListener);
+//    public abstract void uploadVoiceFile(ChatData chatData, OnVoiceUploadListener onVoiceUploadListener);
 
     public abstract void uploadFile(ChatData chatData, OnFileUploadListener onFileUploadListener);
 

@@ -1,6 +1,6 @@
 package com.cosmos.photonim.imbase.utils.http.jsons;
 
-public class JsonUploadImage implements JsonRequestResult {
+public class JsonUploadFile implements JsonRequestResult {
 
     private int ec;
     private String em;
@@ -84,7 +84,7 @@ public class JsonUploadImage implements JsonRequestResult {
 
     @Override
     public String toString() {
-        return "JsonUploadImage{" +
+        return "JsonUploadFile{" +
                 "ec=" + ec +
                 ", em='" + em + '\'' +
                 ", errcode=" + errcode +
