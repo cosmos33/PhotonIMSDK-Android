@@ -40,6 +40,7 @@ import butterknife.OnClick;
 
 public class VideoRecordFragment extends BaseFragment {
     private static final int RECORD_MAX_TIME = 3 * 60 * 1000;
+    private static final int INTERVAL = 1000;
     @BindView(R2.id.tvTime)
     TextView tvTime;
     @BindView(R2.id.surfaceView)
@@ -58,6 +59,8 @@ public class VideoRecordFragment extends BaseFragment {
     private ProcessDialogFragment processDialogFragment;
     private String time;
     private int timeCount;
+    private long lastPressTime;
+    private boolean finishRecord;
 
     @Override
     public int getLayoutId() {
@@ -74,6 +77,7 @@ public class VideoRecordFragment extends BaseFragment {
 
             @Override
             public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+                finishRecord = false;
                 createRecorder();
                 recorder.setVisualSize(width, height);
                 recorder.setPreviewDisplay(holder);
@@ -89,6 +93,14 @@ public class VideoRecordFragment extends BaseFragment {
         touchTextView.setOnTouchListener(new TouchTextView.OnTouchListener() {
             @Override
             public void onTouch(boolean start) {
+                if (start && finishRecord) {
+                    return;
+                }
+                if (start && (System.currentTimeMillis() - lastPressTime < INTERVAL)) {
+                    ToastUtils.showText("操作太频繁");
+                    return;
+                }
+                lastPressTime = System.currentTimeMillis();
                 tvTime.setText("00:00(最长录制3分钟)");
                 if (start) {
                     setEnable(false);
@@ -121,8 +133,10 @@ public class VideoRecordFragment extends BaseFragment {
                     recorder.startRecord();
                 } else {
                     setEnable(true);
-                    customRunnable.setCanceled(true);
-                    stopRecord();
+                    if (recorder.isRecording()) {
+                        customRunnable.setCanceled(true);
+                        stopRecord();
+                    }
                 }
             }
         });
@@ -152,6 +166,7 @@ public class VideoRecordFragment extends BaseFragment {
                     ToastUtils.showText(error);
                 } else {
                     ToastUtils.showText("保存成功");
+                    finishRecord = true;
                     getVideoCover();
                 }
             }
