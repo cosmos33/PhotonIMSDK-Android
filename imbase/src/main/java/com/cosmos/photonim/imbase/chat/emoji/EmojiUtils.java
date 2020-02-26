@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.text.style.ImageSpan;
 
 import com.cosmos.photonim.imbase.ImBaseBridge;
-import com.cosmos.photonim.imbase.utils.LogUtils;
 import com.cosmos.photonim.imbase.utils.Utils;
 import com.cosmos.photonim.imbase.utils.task.TaskExecutor;
 import com.google.gson.Gson;
@@ -225,7 +224,7 @@ public class EmojiUtils {
                 contentShow.setSpan(imageSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
         }
-        LogUtils.log(TAG, String.format("generateEmojiSpan time:%d", System.currentTimeMillis() - time));
+//        LogUtils.log(TAG, String.format("generateEmojiSpan time:%d", System.currentTimeMillis() - time));
         return contentShow;
     }
 
@@ -250,7 +249,7 @@ public class EmojiUtils {
                 content.setSpan(imageSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
         }
-        LogUtils.log(TAG, String.format("generateEmojiSpan time:%d", System.currentTimeMillis() - time));
+//        LogUtils.log(TAG, String.format("generateEmojiSpan time:%d", System.currentTimeMillis() - time));
         return content;
     }
 }

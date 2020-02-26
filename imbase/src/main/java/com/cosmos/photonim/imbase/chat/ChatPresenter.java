@@ -55,10 +55,10 @@ import top.oply.opuslib.OpusRecorder;
 public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
     private static final int IMAGE_MAX_SIZE = 10 * 1024 * 1024;
     private static final int LIMIT_LOADREMOTE = 200;
-    private static int PAGE_ONE = 50;
     private static final String TAG = "ChatSetPresenter";
     protected static final String AT_ALL_CONTENT = "所有人 ";
 
+    private int PAGE_ONE = 20;
     private VoiceHelper voiceHelper;
     private volatile long voiceTimeStart;
     private Set<String> sendReadStatusSet;
@@ -77,7 +77,8 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
     private HashMap<String, ChatData> downloadData;
     private HashMap<String, ChatData> checkedData;
 
-    private RoamData roamData;//漫游
+    private RoamData roamData;//漫游工具
+    private boolean openRoam = true;//是否打开漫游
 
     public ChatPresenter(IChatView iView) {
         super(iView);
@@ -134,13 +135,10 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
         if (lastLoadHistoryFromRemote) {//服务器没有历史消息了需要加载本地
             if (roamData != null && roamData.roamOpen) {
                 getHistory(false, roamData.startTime, roamData.endTime, chatMsg.size() == 0 ? "" : chatMsg.get(0).getMsgId());
+            } else if (openRoam) {
+                getHistory(false, 0, chatMsg.size() == 0 ? "" : chatMsg.get(0).getMsgId());
             } else {
-                if (chatMsg.size() > 0) {
-                    ChatData chatDataTemp = chatMsg.get(0);
-                    getHistory(false, 0L, chatDataTemp.getMsgId());
-                } else {
-                    getHistory(false, 0L, "");
-                }
+                getHistory(false, 0L, chatMsg.size() == 0 ? "" : chatMsg.get(0).getMsgId());
             }
             return;
         }
@@ -452,6 +450,8 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
         if (searchMsgId == null) {
             if (roamData != null && roamData.roamOpen) {
                 getHistory(true, roamData.startTime, roamData.endTime, "");//全部从服务器获取消息
+            } else if (openRoam) {
+                getHistory(true, 0, "");
             } else {
                 getHistory(false, 0L, "");
             }
@@ -466,6 +466,8 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
             ChatData chatData = chatMsg.get(0);
             if (roamData != null && roamData.roamOpen) {
                 getHistory(true, roamData.startTime, roamData.endTime, chatData.getMsgId());
+            } else if (openRoam) {
+                getHistory(true, chatData.getTime(), chatData.getMsgId());
             } else {
                 if (!getIView().isGroup() && chatMsg.size() >= LIMIT_LOADREMOTE) {//单人消息从本地拉取LIMIT_LOADREMOTE条之后，从服务器拉取
                     getHistory(true, chatData.getTime(), chatData.getMsgId());
@@ -476,6 +478,8 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
         } else {
             if (roamData != null && roamData.roamOpen) {
                 getHistory(true, roamData.startTime, roamData.endTime, "");
+            } else if (openRoam) {
+                getHistory(true, 0, "");
             } else {
                 getHistory(false, 0L, "");
             }
