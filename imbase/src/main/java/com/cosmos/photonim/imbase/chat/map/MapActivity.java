@@ -74,7 +74,9 @@ public class MapActivity extends BaseActivity {
                 mapFragment.getLocationLatLng(new GeocodeHelper.GeocodeListener() {
                     @Override
                     public void onGeocodeResult(boolean success, MyLocation myLocation) {
-                        dialogFragment.dismiss();
+                        if (dialogFragment != null) {
+                            dialogFragment.dismiss();
+                        }
                         if (!success) {
                             ToastUtils.showText("定位失败");
                             return;
