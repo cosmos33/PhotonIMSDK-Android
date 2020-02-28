@@ -58,11 +58,13 @@ public class TakePhotoFragment extends BaseFragment {
 //            }
 //        });
         recorder = RecorderFactory.createRecorder();
-        recorder.prepare(getActivity(), getConfig());
+//        recorder.prepare(getActivity(), getConfig());
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
-
+                if (recorder != null) {
+                    recorder.prepare(getActivity(), getConfig());
+                }
             }
 
             @Override
@@ -77,6 +79,11 @@ public class TakePhotoFragment extends BaseFragment {
 
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     @Override
