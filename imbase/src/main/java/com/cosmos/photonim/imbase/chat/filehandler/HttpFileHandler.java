@@ -5,6 +5,8 @@ import com.cosmos.photon.im.PhotonIMMessage;
 import com.cosmos.photonim.imbase.ImBaseBridge;
 import com.cosmos.photonim.imbase.chat.ChatData;
 import com.cosmos.photonim.imbase.chat.ichat.IChatModel;
+import com.cosmos.photonim.imbase.utils.FileUtils;
+import com.cosmos.photonim.imbase.utils.LogUtils;
 import com.cosmos.photonim.imbase.utils.ToastUtils;
 import com.cosmos.photonim.imbase.utils.http.HttpUtils;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;
@@ -13,7 +15,11 @@ import com.cosmos.photonim.imbase.utils.looperexecute.CustomRunnable;
 import com.cosmos.photonim.imbase.utils.looperexecute.MainLooperExecuteUtil;
 import com.cosmos.photonim.imbase.utils.task.TaskExecutor;
 
+import java.io.File;
+
 public class HttpFileHandler implements IFileHandler {
+
+    private String TAG = "HttpFileHandler";
 
     @Override
     public void uploadFile(ChatData chatData, IChatModel.OnFileUploadListener onFileUploadListener) {
@@ -32,6 +38,16 @@ public class HttpFileHandler implements IFileHandler {
 
     @Override
     public void downloadFile(ChatData data, String savePath, IChatModel.OnGetFileListener onGetFileListener) {
+        if (savePath == null) {
+            String fileUrlName = getFileUrlName(data.getFileUrl());
+            if (fileUrlName == null) {
+                LogUtils.log(TAG, "fileurl == null");
+                return;
+            }
+            File file = new File(FileUtils.getVoicePathReceive(), FileUtils.VOICE_PATH_RECEIVE + fileUrlName);
+            FileUtils.createFile(file);
+            savePath = file.getAbsolutePath();
+        }
         switch (data.getMsgType()) {
             case PhotonIMMessage.AUDIO:
                 getVoiceFile(data, savePath, onGetFileListener);
@@ -91,5 +107,13 @@ public class HttpFileHandler implements IFileHandler {
     private Object getVoiceFileInner(ChatData data, String fileUrl, String savePath, IChatModel.OnGetFileListener onGetFileListener) {
         HttpUtils.getInstance().getFile(fileUrl, savePath, onGetFileListener);
         return null;
+    }
+
+    private String getFileUrlName(String fileUrl) {
+        if (fileUrl == null) {
+            return null;
+        }
+        String[] split = fileUrl.split("/");
+        return split[split.length - 1];
     }
 }

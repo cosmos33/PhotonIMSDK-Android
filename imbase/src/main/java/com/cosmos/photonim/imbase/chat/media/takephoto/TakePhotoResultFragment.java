@@ -1,6 +1,5 @@
 package com.cosmos.photonim.imbase.chat.media.takephoto;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
@@ -9,6 +8,7 @@ import com.cosmos.photonim.imbase.R2;
 import com.cosmos.photonim.imbase.base.BaseFragment;
 import com.cosmos.photonim.imbase.chat.media.OnReturnPicFragmentListener;
 import com.cosmos.photonim.imbase.utils.ToastUtils;
+import com.cosmos.photonim.imbase.utils.image.ImageLoaderUtils;
 import com.github.chrisbanes.photoview.PhotoView;
 
 import butterknife.BindView;
@@ -39,8 +39,8 @@ public class TakePhotoResultFragment extends BaseFragment {
             return;
         }
         photoPath = arguments.getString(BUNDLE_PHOTO_PATH);
-        photoView.setImageURI(Uri.parse(photoPath));
-//        ImageLoaderUtils.getInstance().loadImage(getContext(), photoPath, R.drawable.chat_placeholder, ivPhoto);
+//        photoView.setImageURI(Uri.parse(photoPath));
+        ImageLoaderUtils.getInstance().loadImage(getContext(), photoPath, R.drawable.chat_placeholder, photoView);
     }
 
     @OnClick(R2.id.ivReturn)

@@ -68,7 +68,7 @@ public class ForwardPresenter extends IForwardPresenter<IForwardView, IChatModel
                         getiModel().updateAndsendMsg(chatData, null);
                     } else {
                         getiModel().updateStatus(chatData.getChatType(), chatData.getChatWith(), chatData.getMsgId(), PhotonIMMessage.SEND_FAILED);
-                        EventBus.getDefault().post(new ChatDataWrapper(chatData, ChatModel.MSG_ERROR_CODE_UPLOAD_PIC_FAILED, "上传失败"));
+                        EventBus.getDefault().post(new ChatDataWrapper(chatData, ChatModel.MSG_ERROR_CODE_UPLOAD_FILE_FAILED, "上传失败"));
                     }
                 }
 

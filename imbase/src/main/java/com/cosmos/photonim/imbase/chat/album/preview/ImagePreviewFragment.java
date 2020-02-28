@@ -1,6 +1,5 @@
 package com.cosmos.photonim.imbase.chat.album.preview;
 
-import android.net.Uri;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
@@ -10,6 +9,7 @@ import com.cosmos.photonim.imbase.R2;
 import com.cosmos.photonim.imbase.base.BaseFragment;
 import com.cosmos.photonim.imbase.chat.album.AlbumPresenter;
 import com.cosmos.photonim.imbase.chat.album.adapter.CategoryFile;
+import com.cosmos.photonim.imbase.utils.image.ImageLoaderUtils;
 import com.github.chrisbanes.photoview.PhotoView;
 
 import butterknife.BindView;
@@ -40,8 +40,8 @@ public class ImagePreviewFragment extends BaseFragment {
 
     @Override
     protected void initView(View view) {
-//        ImageLoaderUtils.getInstance().loadImage(getContext(), categoryFile.mPath, R.drawable.chat_placeholder, view.findViewById(R.id.ivImage));
-        photoView.setImageURI(Uri.parse(categoryFile.mPath));
+        ImageLoaderUtils.getInstance().loadImage(getContext(), categoryFile.mPath, R.drawable.chat_placeholder, view.findViewById(R.id.photoView));
+//        photoView.setImageURI(Uri.parse(categoryFile.mPath));
         cbCheck.setChecked(categoryFile.checked);
         if (keepCheckedSize != -1) {
             tvSend.setText(String.format("发送 %d/%d", keepCheckedSize, AlbumPresenter.MAX_CHECKED));

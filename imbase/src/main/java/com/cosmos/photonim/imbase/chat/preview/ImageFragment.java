@@ -51,6 +51,9 @@ public class ImageFragment extends BaseFragment {
             url = chatData.getLocalFile();
         } else {
             url = chatData.getThumbnailUrl();
+            if (TextUtils.isEmpty(url)) {
+                url = chatData.getFileUrl();
+            }
         }
         if (url != null && url.startsWith("http")) {
             ImageLoaderUtils.getInstance().loadImage(view.getContext(), url, R.drawable.head_placeholder, photoView);

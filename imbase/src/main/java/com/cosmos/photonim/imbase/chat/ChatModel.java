@@ -36,7 +36,7 @@ public class ChatModel extends IChatModel {
     public static final int MSG_ERROR_CODE_PIC_ILLEGAL = 1002;//图片非法
     public static final int MSG_ERROR_CODE_FREQUENCY = 1003;//消息发送频率过高
     public static final int MSG_ERROR_CODE_CANT_REVOKE = 1004;//消息不可撤回
-    public static final int MSG_ERROR_CODE_UPLOAD_PIC_FAILED = 2000;//图片上传失败  自己定义，非服务器返回
+    public static final int MSG_ERROR_CODE_UPLOAD_FILE_FAILED = 2000;//上传失败  自己定义，非服务器返回
     public static final int MSG_ERROR_CODE_TIME_OUT = -1; // 发送超时，java层定义，非服务器返回
     private IFileHandler iFileHandler;
 

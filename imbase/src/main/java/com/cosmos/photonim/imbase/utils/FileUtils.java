@@ -57,6 +57,10 @@ public class FileUtils {
         return getPath(VIDEO_IMAGE_ORIGIN_PATH);
     }
 
+    public static String getVoicePathReceive() {
+        return getPath(VOICE_PATH_RECEIVE);
+    }
+
     public static String getPath(String path) {
         File file = new File(Environment.getExternalStorageDirectory(), path);
         if (!file.exists()) {

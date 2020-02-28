@@ -229,7 +229,7 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
                         getiModel().updateAndsendMsg(chatData, null);
                     } else {
                         getiModel().updateStatus(chatData.getChatType(), chatData.getChatWith(), chatData.getMsgId(), PhotonIMMessage.SEND_FAILED);
-                        EventBus.getDefault().post(new ChatDataWrapper(chatData, ChatModel.MSG_ERROR_CODE_UPLOAD_PIC_FAILED, "上传失败"));
+                        EventBus.getDefault().post(new ChatDataWrapper(chatData, ChatModel.MSG_ERROR_CODE_UPLOAD_FILE_FAILED, "上传失败"));
                     }
                 }
 
@@ -617,7 +617,7 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
             case ChatModel.MSG_ERROR_CODE_SUCCESS:
                 temp.setMsgStatus(PhotonIMMessage.SENT);
                 break;
-            case ChatModel.MSG_ERROR_CODE_UPLOAD_PIC_FAILED:
+            case ChatModel.MSG_ERROR_CODE_UPLOAD_FILE_FAILED:
             case ChatModel.MSG_ERROR_CODE_SERVER_ERROR:
                 temp.setMsgStatus(PhotonIMMessage.SEND_FAILED);
                 if (!TextUtils.isEmpty(msg)) {
@@ -660,7 +660,7 @@ public class ChatPresenter extends IChatPresenter<IChatView, IChatModel> {
 //                getiModel().updateAndsendMsg(chatData, null);
 //            } else {
 //                getiModel().updateStatus(chatData.getChatType(), chatData.getChatWith(), chatData.getMsgId(), PhotonIMMessage.SEND_FAILED);
-//                EventBus.getDefault().post(new ChatDataWrapper(chatData, ChatModel.MSG_ERROR_CODE_UPLOAD_PIC_FAILED, "上传图片失败"));
+//                EventBus.getDefault().post(new ChatDataWrapper(chatData, ChatModel.MSG_ERROR_CODE_UPLOAD_FILE_FAILED, "上传图片失败"));
 //            }
 //        });
 //    }

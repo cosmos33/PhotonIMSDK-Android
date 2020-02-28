@@ -91,7 +91,11 @@ public abstract class ChatItemTypeAbstract extends ItemTypeAbstract {
                 if (!TextUtils.isEmpty(chatData.getLocalFile())) {
                     ImageLoaderUtils.getInstance().loadImage(pic.getContext(), chatData.getLocalFile(), R.drawable.chat_placeholder, pic);
                 } else {
-                    ImageLoaderUtils.getInstance().loadImage(pic.getContext(), chatData.getThumbnailUrl(), R.drawable.chat_placeholder, pic);
+                    if (TextUtils.isEmpty(chatData.getThumbnailUrl())) {
+                        ImageLoaderUtils.getInstance().loadImage(pic.getContext(), chatData.getFileUrl(), R.drawable.chat_placeholder, pic);
+                    } else {
+                        ImageLoaderUtils.getInstance().loadImage(pic.getContext(), chatData.getThumbnailUrl(), R.drawable.chat_placeholder, pic);
+                    }
                 }
                 break;
             case PhotonIMMessage.LOCATION:
