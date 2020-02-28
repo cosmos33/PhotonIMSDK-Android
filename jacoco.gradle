@@ -1,0 +1,5 @@
+apply plugin: 'jacoco'
+jacoco {
+    toolVersion = '0.8.5'
+    reportsDir = file("$buildDir/JacocoReport") //指定jacoco⽣成报告的⽂件夹
+}

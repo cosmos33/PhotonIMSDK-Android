@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply from: "../jacoco.gradle"
 
 def releaseTime() {
     return new Date().format("MMddHHmm")
@@ -82,6 +83,7 @@ android {
                     }
                 }
             }
+            testCoverageEnabled = true
 //            multiDexKeepProguard file('multidex-config.pro')
         }
         release {
@@ -166,6 +168,8 @@ dependencies {
 //    implementation "com.cosmos.photon:thirdpush-meizu:$thirdPushVersion"
 //    implementation "com.cosmos.photon:thirdpush:$thirdPushVersion"
 //    implementation "com.cosmos.photon:baseim:$pushIMVersion"
+
+    implementation 'com.immomo.qa.coverage:coverage:1.0'
 
 }
 

@@ -26,6 +26,7 @@ import com.cosmos.photonim.imbase.utils.http.HttpUtils;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonContactRecent;
 import com.cosmos.photonim.imbase.utils.http.jsons.JsonResult;
 import com.immomo.media_cosmos.RecorderFactory;
+import com.mm.coverage.JacocoController;
 import com.momo.demo.login.LoginActivity;
 import com.momo.demo.login.LoginInfo;
 import com.momo.demo.main.contacts.single.userinfo.UserInfoModel;
@@ -53,7 +54,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         myApplication = this;
         super.onCreate();
-
+        JacocoController.init(getApplicationContext());
         pushInit();
         mediaInit();
         imInit();

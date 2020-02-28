@@ -13,6 +13,7 @@ buildscript {
         classpath 'com.android.tools.build:gradle:3.4.1'
         classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.6'
         classpath 'com.jakewharton:butterknife-gradle-plugin:9.0.0'
+        classpath 'com.dicedmelon.gradle:jacoco-android:0.1.4'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -21,14 +22,21 @@ buildscript {
 
 allprojects {
     repositories {
+        maven {
+            url FRAMEWORK_RELEASE_REPOSITORY_URL
+            credentials {
+                username NEXUS_USERNAME
+                password NEXUS_PASSWORD
+            }
+        }
         mavenLocal()
         maven { url 'https://cosmos1602.bintray.com/photon/' }
         maven { url 'https://cosmos1602.bintray.com/mediax/' }
+        jcenter()
         maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/' }
         maven { url 'http://developer.huawei.com/repo' }// 华为push
         maven { url "https://jitpack.io" }
         google()
-        jcenter()
 
         
     }
