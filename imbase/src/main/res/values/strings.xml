@@ -53,4 +53,5 @@
     <string name="chat_file">文件</string>
     <string name="chat_media_video_record">按住\n录制</string>
     <string name="chatset_clearcontent">清空聊天记录</string>
+    <string name="login_wait">请稍后...</string>
 </resources>

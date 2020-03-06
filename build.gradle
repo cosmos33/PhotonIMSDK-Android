@@ -1,5 +1,4 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-
 buildscript {
     repositories {
         maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/' }
@@ -7,6 +6,9 @@ buildscript {
         mavenCentral()
         google()
         jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
         
     }
     dependencies {
@@ -14,6 +16,7 @@ buildscript {
         classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.6'
         classpath 'com.jakewharton:butterknife-gradle-plugin:9.0.0'
         classpath 'com.dicedmelon.gradle:jacoco-android:0.1.4'
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.8"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -35,8 +38,8 @@ allprojects {
         jcenter()
         maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/' }
         maven { url 'http://developer.huawei.com/repo' }// 华为push
-        maven { url "https://jitpack.io" }
         google()
+        maven { url "https://jitpack.io" }
 
         
     }
@@ -66,3 +69,12 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+
+apply plugin: "org.sonarqube"
+//sonarqube {
+//    properties {
+//        property "sonar.projectName", "android_im_demo"
+//        property "sonar.java.source", 1.1
+//    }
+//}
