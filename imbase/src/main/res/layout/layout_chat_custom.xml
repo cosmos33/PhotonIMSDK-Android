@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    >
+
+    <com.cosmos.photonim.imbase.view.TitleBar
+        android:id="@+id/titleBar1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/customArg1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="customArg1 :"
+        android:textSize="20dp"
+
+    />
+
+    <EditText
+        android:id="@+id/customArg2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="customArg2 :"
+        android:textSize="20dp"
+
+        />
+
+
+    <EditText
+        android:id="@+id/customData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="customData :"
+        android:textSize="20dp"
+
+        />
+
+
+
+    <EditText
+        android:id="@+id/customDataSize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="customDataSize :"
+        android:textSize="20dp"
+
+        />
+
+
+
+</LinearLayout>

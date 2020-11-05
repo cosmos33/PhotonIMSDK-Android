@@ -1,0 +1,40 @@
+package com.cosmos.photonim.imbase.utils;
+
+public class Constants {
+    public static final int ITEM_TYPE_MSG = 1;
+    public static final int ITEM_TYPE_ONLINEUSER = 2;
+    public static final int ITEM_TYPE_CHAT_NORMAL_LEFT = 4;
+    public static final int ITEM_TYPE_CHAT_NORMAL_RIGHT = 5;
+    public static final int ITEM_TYPE_CHAT_SYSINFO = 6;
+    public static final int ITEM_TYPE_FORWARD = 7;
+    public static final int ITEM_TYPE_EMOJI = 8;
+    public static final int ITEM_TYPE_GROUP = 9;
+    public static final int ITEM_TYPE_CONTACT = 10;
+    public static final int ITEM_TYPE_GROUP_MEMBER_SELECTED = 11;
+    public static final int ITEM_TYPE_GROUP_MEMBER_SELECTED_ALL = 12;
+    public static final int ITEM_TYPE_GROUP_MEMBER_INFO = 13;
+    public static final int ITEM_TYPE_GROUP_MEMBER_DETAIL = 14;
+    public static final int ITEM_TYPE_MSG_TEST = 15;
+    public static final int ITEM_TYPE_LIST_DIALOG = 16;
+    public static final int ITEM_TYPE_CHAT_EXTRA = 17;
+    public static final int ITEM_TYPE_SEARCH = 18;
+    public static final int ITEM_TYPE_ALBUM = 19;
+    public static final int ITEM_TYPE_FILE = 20;
+    public static final int ITEM_TYPE_ROOM = 21;
+
+    public static final int REQUEST_CAMERA = 1000;
+    public static final int REQUEST_IMAGE_CODE = 1001;
+    public static final int REQUEST_VIDEO = 1002;
+    public static final int REQUEST_MAP = 1003;
+    public static final int REQUEST_PREVIEW_CODE = 1004;
+    public static final int REQUEST_FILE = 1005;
+    public static final int REQUEST_CUSTOM = 1006;
+
+
+    public static final String FLIE_URL_PRE = "http://beta.pivot-transcoder.momo.com/dispatcher/cos_im";
+
+    public static String getFlieUrl(String url) {
+//        return String.format("%s%s", FLIE_URL_PRE, url);
+        return url;
+    }
+}

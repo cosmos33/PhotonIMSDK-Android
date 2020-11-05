@@ -1,0 +1,35 @@
+apply plugin: 'com.android.library'
+
+
+android {
+    compileSdkVersion ext_complieSdkVersion
+    buildToolsVersion ext_buildToolsVersion
+
+
+    defaultConfig {
+        minSdkVersion ext_minSdkVersion
+        targetSdkVersion ext_targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+
+    buildTypes {
+        debug {
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.cosmos.mediax:recorder:2.2.5'
+    api 'com.cosmos.mediax:playersdk:1.2.4'
+    api 'com.cosmos.mediax:glcore:2.2.5-20191014172300'
+
+}

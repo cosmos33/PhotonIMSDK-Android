@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:apps="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="right"
+    android:orientation="vertical"
+    android:padding="@dimen/chat_content_padding">
+
+
+    <include layout="@layout/layout_chat_item_sysinfo" />
+
+    <LinearLayout
+        android:id="@+id/llMsgRoot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/chat_item_margin"
+        android:gravity="left">
+
+        <CheckBox
+            android:id="@+id/cbCheck"
+            style="@style/checkboxStyle_forward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="8dp" />
+
+        <ImageView
+            android:id="@+id/ivIcon"
+            android:layout_width="@dimen/chat_icon"
+            android:layout_height="@dimen/chat_icon"
+            android:layout_marginRight="4dp"
+            android:src="@drawable/head_placeholder" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvSenderName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                apps:text="hahha" />
+
+            <include layout="@layout/chat_type_text" />
+
+            <include layout="@layout/chat_type_image" />
+
+            <include layout="@layout/chat_type_voice" />
+
+            <include layout="@layout/chat_type_location" />
+
+            <include layout="@layout/chat_type_file" />
+
+            <include layout="@layout/chat_type_video" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

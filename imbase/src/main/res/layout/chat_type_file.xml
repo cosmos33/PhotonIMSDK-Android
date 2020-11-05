@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/chat_content"
+    android:padding="8dp"
+    android:id="@+id/llFileContainer"
+    android:visibility="visible"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="50dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvFileName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="hhhhhhhhhhhhhhhh" />
+
+        <TextView
+            android:id="@+id/tvFileSize"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_height="wrap_content"
+            android:text="500K" />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_vertical|right"
+        android:layout_marginLeft="8dp"
+        android:src="@drawable/chat_file" />
+
+    <com.cosmos.photonim.imbase.view.DownLoadProgress
+        android:id="@+id/fileProgress"
+        android:visibility="gone"
+        android:layout_width="50dp"
+        android:layout_gravity="center"
+        android:layout_height="50dp" />
+</FrameLayout>

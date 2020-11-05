@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/media_bg"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/tvClose"
+            android:src="@drawable/media_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/tvFlashing"
+            android:layout_width="@dimen/chat_media_camera_switch"
+            android:layout_height="@dimen/chat_media_camera_switch"
+            android:layout_gravity="center"
+            android:src="@drawable/media_flashing" />
+    </FrameLayout>
+
+    <SurfaceView
+        android:id="@+id/surfaceView"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="0dp" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_margin="8dp"
+        android:minHeight="100dp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:id="@+id/tvTime"
+            android:textColor="@color/white"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="wrap_content" />
+
+        <com.cosmos.photonim.imbase.chat.media.video.TouchTextView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:background="@drawable/video_record"
+            android:gravity="center"
+            android:id="@+id/tvTakePhoto" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:textColor="@color/white"
+            android:layout_gravity="center_horizontal|bottom"
+            android:text="按住录制"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/ivSwitch"
+            android:layout_width="@dimen/chat_media_camera_switch"
+            android:layout_height="@dimen/chat_media_camera_switch"
+            android:layout_marginRight="40dp"
+            android:layout_gravity="right|center"
+            android:src="@drawable/media_camera_switch" />
+
+    </FrameLayout>
+</LinearLayout>

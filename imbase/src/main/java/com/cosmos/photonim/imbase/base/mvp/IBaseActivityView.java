@@ -1,0 +1,27 @@
+package com.cosmos.photonim.imbase.base.mvp;
+
+import android.os.Bundle;
+import androidx.annotation.Nullable;
+
+import com.cosmos.photonim.imbase.base.BaseActivity;
+import com.cosmos.photonim.imbase.base.mvp.base.IPresenter;
+import com.cosmos.photonim.imbase.base.mvp.base.IView;
+import com.cosmos.photonim.imbase.utils.ToastUtils;
+
+public abstract class IBaseActivityView<P extends IPresenter> extends BaseActivity implements IView<P> {
+    protected P presenter;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        presenter = (P) getIPresenter();
+        if (presenter == null) {
+            throw new IllegalStateException("chatPresenter is null");
+        }
+    }
+
+    @Override
+    public void toast(String content) {
+        ToastUtils.showText(content);
+    }
+}

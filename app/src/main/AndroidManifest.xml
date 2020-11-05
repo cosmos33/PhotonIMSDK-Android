@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.momo.demo">
+
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+
+    <application
+        android:name="com.momo.demo.MyApplication"
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="PhotonIM"
+        android:persistent="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
+        tools:ignore="GoogleAppIndexingWarning"
+        tools:replace="android:allowBackup">
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_stat_ic_notification" />
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="4df034e6888f33d0016430540ab0812b" />
+
+        <activity
+            android:name=".login.LoginActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
+
+        </activity>
+        <activity
+            android:name=".regist.RegistActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".main.forward.ForwardActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".main.MainActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <data android:scheme="growing.22685a4d9be187e8"/>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+
+        </activity>
+
+
+        <activity
+            android:name="com.cosmos.photonim.imbase.chat.chatset.ChatSetActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.cosmos.photonim.imbase.chat.preview.ImageCheckActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".main.service.MusicActivity" />
+        <activity android:name=".SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".main.contacts.single.OnLineUserActivity" />
+        <activity android:name=".main.groupmemberselected.GroupMemberSelectActivity" />
+        <activity android:name=".main.contacts.group.GroupActivity" />
+        <activity android:name=".main.contacts.single.userinfo.UserInfoActivity" />
+        <activity android:name=".main.groupmember.GroupMemberActivity" />
+        <activity android:name=".main.contacts.room.RoomActivity" />
+        <activity android:name=".main.roomInfo.RoomInfoActivity" />
+        <activity android:name=".main.me.SwitchAccoutActivity"/>
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.cosmos.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <service
+            android:name=".main.service.MusicService" >
+            <intent-filter>
+                <action android:name="service.MusicService" />
+            </intent-filter>
+        </service>
+
+    </application>
+
+</manifest>

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "199317083281",
+    "firebase_url": "https://imdemo-e2fb7.firebaseio.com",
+    "project_id": "imdemo-e2fb7",
+    "storage_bucket": "imdemo-e2fb7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:199317083281:android:f979164b69117b84f5db30",
+        "android_client_info": {
+          "package_name": "com.wemomo.cosmos.hwphotonim"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "199317083281-7146lkttg6epdstclpssdj3a3svg7777.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7GQw-kMUYtNMpjphjrxqbdQDNwJ8iNVs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "199317083281-7146lkttg6epdstclpssdj3a3svg7777.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

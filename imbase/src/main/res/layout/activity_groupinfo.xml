@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.cosmos.photonim.imbase.view.SwipeLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/activity_bg"
+    android:orientation="vertical">
+
+    <com.cosmos.photonim.imbase.view.TitleBar
+        android:id="@+id/titleBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/chat_set_item_height"
+                android:layout_marginTop="@dimen/title_margin_top"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:padding="@dimen/activity_padding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="聊天组名称" />
+
+                <TextView
+                    android:id="@+id/tvGroupName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|right"
+                    android:layout_marginRight="48dp"
+                    android:text="无" />
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="right"
+                    android:src="@drawable/arrow_right" />
+            </FrameLayout>
+
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/chat_set_item_height"
+                android:layout_marginTop="@dimen/title_margin_top"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:padding="@dimen/activity_padding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="聊天组公告" />
+
+                <TextView
+                    android:id="@+id/tvNotic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|right"
+                    android:layout_marginRight="48dp"
+                    android:text="无" />
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="right"
+                    android:src="@drawable/arrow_right" />
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/title_margin_top"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:padding="@dimen/activity_padding">
+
+                <FrameLayout
+                    android:id="@+id/flMemberRoot"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="组成员" />
+
+                    <TextView
+                        android:id="@+id/tvMemberCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|right"
+                        android:layout_marginRight="48dp"
+                        android:text="0人" />
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="right"
+                        android:src="@drawable/arrow_right" />
+                </FrameLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp" />
+            </LinearLayout>
+
+            <include layout="@layout/searchcontent" />
+
+            <include layout="@layout/chat_set_top" />
+
+            <include layout="@layout/chat_set_ban" />
+
+            <include layout="@layout/chat_content_clear" />
+
+        </LinearLayout>
+
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</com.cosmos.photonim.imbase.view.SwipeLinearLayout>

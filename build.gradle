@@ -1,0 +1,79 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    ext.kotlin_version = '1.3.72'
+
+    repositories {
+        maven { url 'https://maven.aliyun.com/repository/google/' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter/'}
+
+//        mavenLocal()
+        mavenCentral()
+        google()
+        jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.4.1'
+        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.6'
+        classpath 'com.jakewharton:butterknife-gradle-plugin:9.0.0'
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.8"
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+        classpath 'com.google.gms:google-services:4.2.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version" // kotlin
+
+
+    }
+
+}
+
+allprojects {
+    repositories {
+
+//        mavenLocal()
+        maven { url 'https://cosmos1602.bintray.com/photon/' }
+        maven { url 'https://cosmos1602.bintray.com/mediax/' }
+        jcenter()
+        maven { url 'https://maven.aliyun.com/repository/google/' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter/'}
+        maven { url 'http://developer.huawei.com/repo' }// 华为push
+        google()
+        maven { url "https://jitpack.io" }
+
+
+
+
+
+    }
+
+    ext{
+        ext_complieSdkVersion = 28
+        ext_minSdkVersion = 19
+        ext_targetSdkVersion = 26
+        ext_buildToolsVersion = "28.0.3"
+        // 国内
+//        imversion = "com.cosmos.photon:im:2.2.0"
+//        applicationID = "com.wemomo.cosmos.photonim"
+
+        // 海外
+//        imversion = "com.cosmos.photon:im:2.2.8"
+        imversion = "2.2.17"
+        applicationID = "com.wemomo.cosmos.hwphotonim"
+        butterknifeversion = "10.0.0"
+        glideversion = "4.9.0"
+        supportverion = "27.1.1"
+        thirdPushVersion = '2.1.6'
+        pushIMVersion = '2.2.1'
+        codedlibversion = '2.0.1'
+        gexiangversion = '3.2.2.0'
+
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+

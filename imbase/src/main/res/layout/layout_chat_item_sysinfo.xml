@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:apps="http://schemas.android.com/tools"
+    android:id="@+id/llSysInfo"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/drawable_sysinfo"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:textColor="@color/white"
+        apps:text="ssssss" />
+
+    <TextView
+        android:id="@+id/tvSysInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/drawable_sysinfo"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:textColor="@color/white"
+        apps:text="ssssss" />
+
+</LinearLayout>

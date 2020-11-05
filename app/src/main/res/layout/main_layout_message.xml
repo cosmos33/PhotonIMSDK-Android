@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:apps="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/ivIcon"
+                android:layout_width="@dimen/main_tab_img_size"
+                android:layout_height="@dimen/main_tab_img_size"
+                android:src="@drawable/drawable_main_message" />
+
+            <TextView
+                android:id="@+id/tvMessageUnread"
+                android:layout_marginTop="0dp"
+                android:layout_gravity="right"
+                android:visibility="gone"
+                apps:visibility="visible"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/drawable_main_unread"
+                android:textSize="@dimen/main_tab_unread_size"
+                android:textColor="@color/main_unread"
+                apps:text="20" />
+        </FrameLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/main_tab_textsize"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/main_message" />
+    </LinearLayout>
+</FrameLayout>

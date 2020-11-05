@@ -1,0 +1,20 @@
+<FrameLayout android:layout_width="match_parent"
+    android:layout_height="@dimen/chat_set_item_height"
+    android:layout_marginTop="@dimen/title_margin_top"
+    android:background="@color/white"
+    android:padding="@dimen/activity_padding"
+    android:visibility="gone"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="@string/chatset_timeout" />
+
+    <Switch
+        android:id="@+id/sSendTimeOut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|center_vertical" />
+</FrameLayout>

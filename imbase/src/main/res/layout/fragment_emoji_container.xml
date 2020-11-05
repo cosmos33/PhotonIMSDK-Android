@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:id="@+id/emojiRoot"
+    android:layout_height="@dimen/chat_emoji_height">
+
+    <fragment
+        android:name="com.cosmos.photonim.imbase.chat.emoji.EmojiContainerFragment"
+        android:layout_width="match_parent"
+        android:id="@+id/emojiContainerFragment"
+        android:layout_height="@dimen/chat_emoji_height" />
+
+</FrameLayout>

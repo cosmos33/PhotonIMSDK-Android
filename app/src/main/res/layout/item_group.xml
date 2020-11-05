@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:apps="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:id="@+id/item_contact_llRoot"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/activity_padding">
+
+    <ImageView
+        android:id="@+id/ivIcon"
+        android:layout_width="@dimen/contacts_icon_size"
+        android:layout_height="@dimen/contacts_icon_size"
+        apps:src="@drawable/head_placeholder" />
+
+    <TextView
+        android:id="@+id/tvNickName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="58dp"
+        apps:text="昵称" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvJoin"
+        android:padding="8dp"
+        android:background="@drawable/selector_btn"
+        android:layout_gravity="right|center_vertical"
+        android:text="加入群组" />
+
+</FrameLayout>

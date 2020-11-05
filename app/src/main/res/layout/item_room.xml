@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:apps="http://schemas.android.com/tools"
+    android:id="@+id/item_room_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:padding="@dimen/activity_padding">
+
+    <ImageView
+        android:id="@+id/ivIcon"
+        android:layout_width="@dimen/contacts_icon_size"
+        android:layout_height="@dimen/contacts_icon_size"
+        apps:src="@drawable/head_placeholder" />
+
+    <TextView
+        android:id="@+id/tvNickName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="58dp"
+        apps:text="昵称" />
+</FrameLayout>

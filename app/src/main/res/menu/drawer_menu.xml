@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<group android:checkableBehavior="single">
+    <item android:id="@+id/hobby"
+        android:title="购物爱好">
+        <menu>
+            <item android:id="@+id/photo"
+                android:icon="@drawable/photos"
+                android:title="图片"/>
+            <item android:id="@+id/mall"
+                android:icon="@drawable/file"
+                android:title="文件"/>
+        </menu>
+    </item>
+</group>
+<group  android:checkableBehavior="single">
+    <item android:id="@+id/people"
+        android:title="个人中心">
+        <menu>
+            <item android:id="@+id/wallet"
+                android:icon="@drawable/smiles"
+                android:title="钱包"/>
+            <item android:id="@+id/collect"
+                android:icon="@drawable/admin"
+                android:title="收藏"/>
+
+            <item android:id="@+id/setting"
+                android:icon="@drawable/notifications_settings"
+                android:title="设置"/>
+        </menu>
+    </item>
+
+</group>
+
+</menu>

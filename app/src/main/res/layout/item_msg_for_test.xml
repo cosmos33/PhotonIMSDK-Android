@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:apps="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:id="@+id/item_msg_llRoot"
+    android:padding="6dp">
+
+    <ImageView
+        android:id="@+id/ivIcon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:paddingRight="2dp"
+        apps:src="@drawable/main_nomsg" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:gravity="top"
+            android:layout_marginRight="100dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvNickName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:singleLine="true"
+                android:maxEms="15"
+                android:ellipsize="end"
+                apps:text="昵称昵称昵称昵称昵称昵称昵称昵称昵称昵称昵称昵称昵称昵称昵称昵称" />
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_gravity="bottom"
+            android:gravity="bottom"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvMsgContent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_gravity="bottom"
+                android:paddingRight="40dp"
+                apps:text="这是一条消息这是一条消息这是一条消息这是一条消息" />
+        </FrameLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvStartTest"
+            android:background="@drawable/selector_sendmsg"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="4dp"
+            android:textColor="@color/white"
+            android:paddingBottom="4dp"
+            android:layout_gravity="right|center_vertical"
+            android:text="开始" />
+    </FrameLayout>
+</LinearLayout>

@@ -1,0 +1,49 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.cosmos.photonim.imbase">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <application>
+        <activity
+            android:name=".chat.preview.ImageCheckActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".chat.chatset.ChatSetActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".chat.ChatSingleActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".chat.ChatGroupActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.momo.demo.main.groupinfo.GroupInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".chat.map.MapActivity" />
+        <activity android:name=".chat.media.takephoto.TakePhotoActivity" />
+        <activity android:name=".chat.media.video.VideoActivity" />
+        <activity android:name=".chat.searchhistory.SearchHistoryActivity" />
+        <activity android:name=".chat.album.AlbumActivity" />
+        <activity android:name=".chat.album.preview.ImagePreviewActivity" />
+        <activity android:name=".chat.file.FileActivity" />
+        <activity android:name=".chat.preview.VideoPreviewActivity" />
+        <activity android:name=".chat.chatroom.ChatRoomActivity" />
+        <activity android:name=".chat.custom.CustomActivity"/>
+
+        <provider
+            android:name=".utils.GenericFileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+    </application>
+</manifest>
